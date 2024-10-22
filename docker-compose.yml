@@ -107,7 +107,44 @@ services:
       MYSQL_USER: engage
       MYSQL_PASSWORD: engage
     volumes:
-      - mysql:/var/lib/mysql
+      - mysql-engage:/var/lib/mysql
+
+  training-db:
+    container_name: training-db
+    image: mongo
+    ports:
+      - "4001:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: training
+      MONGO_INITDB_ROOT_PASSWORD: training
+      MONGO_INITDB_DATABASE: training
+    volumes:
+      - mongo-training:/data/db
+
+  payment-db:
+    container_name: payment-db
+    image: mysql:9.0.1
+    ports:
+      - "4002:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: payment
+      MYSQL_DATABASE: payment
+      MYSQL_USER: payment
+      MYSQL_PASSWORD: payment
+    volumes:
+      - mysql-payment:/var/lib/mysql
+
+  auth-db:
+    container_name: auth-db
+    image: mongo
+    ports:
+      - "4003:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: auth
+      MONGO_INITDB_ROOT_PASSWORD: auth
+      MONGO_INITDB_DATABASE: auth
+    volumes:
+      - mongo-auth:/data/db
 
 volumes:
   frontend-node_modules:
@@ -117,4 +154,7 @@ volumes:
   payment-service-node_modules:
   auth-service-node_modules:
   api-gateway-node_modules:
-  mysql:
+  mysql-engage:
+  mongo-training:
+  mysql-payment:
+  mongo-auth:
