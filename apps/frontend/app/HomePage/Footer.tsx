@@ -45,7 +45,6 @@ export default function Footer() {
               }`}
             />
 
-            {/* Cambiar color a rojo solo en la imagen activa */}
             {activeIcon === id && (
               <div className="absolute inset-0 w-full h-full">
                 <Image
