@@ -15,7 +15,7 @@ export default function HomePage() {
         className="col-span-1 sm:col-span-3 custom-row-span relative cursor-pointer group rounded-lg overflow-hidden" 
         src={motivationalImage} 
         alt="Motivational phrase" 
-        label="Motivational phrase" 
+        label="“Every repetition brings you closer to your best version.” 💪" 
         onClickOption = "Frase motivadora"
      
       />
