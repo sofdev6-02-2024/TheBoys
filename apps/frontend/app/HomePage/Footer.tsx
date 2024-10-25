@@ -26,7 +26,7 @@ export default function Footer() {
   };
 
   return (
-    <div className="w-full bg-[#28292E] p-4 fixed bottom-0 block sm:hidden">
+    <div className="w-full bg-[#28292E] p-2 fixed bottom-0 block sm:hidden ">
       <div className="flex justify-between items-center max-w-lg mx-auto">
         {icons.map(({ id, src, alt }) => (
           <div

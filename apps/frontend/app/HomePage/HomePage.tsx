@@ -13,7 +13,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 p-8 h-screen overflow-hidden bg-[#28292E]"> 
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 ms:py-5 p-8  h-screen overflow-hidden bg-[#28292E] sm:pb-5 pb-20"> 
 
       <div 
         className="col-span-1 sm:col-span-3 custom-row-span relative cursor-pointer group"
