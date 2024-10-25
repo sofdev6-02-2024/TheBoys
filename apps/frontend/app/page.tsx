@@ -1,4 +1,4 @@
-import Header from "../app/HomePage/Header";
+import Header from "./HomePage/NavBarDisplay";
 import Footer from "./HomePage/Footer";
 import HomePage from "./HomePage/HomePage";
 
@@ -10,7 +10,7 @@ export default function Home() {
         <main className="flex-grow">
           <HomePage />
         </main>
-        <Footer />
+        
       </div>
     </div>
   );
