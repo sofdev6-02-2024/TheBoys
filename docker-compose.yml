@@ -24,6 +24,13 @@ services:
       - engage-hub-service-node_modules:/app/node_modules
     environment:
       - NODE_ENV=development
+      - DB_HOST=engage-db
+      - DB_USER=engage
+      - DB_PASSWORD=engage
+      - DB_NAME=engage
+      - DB_PORT=3306
+    depends_on:
+      - engage-db
 
   training-agenda-service:
     container_name: training-agenda-service
@@ -37,6 +44,8 @@ services:
       - training-agenda-service-node_modules:/app/node_modules
     environment:
       - NODE_ENV=development
+    depends_on:
+      - training-db
 
   ai-service:
     container_name: ai-service
@@ -63,6 +72,8 @@ services:
       - payment-service-node_modules:/app/node_modules
     environment:
       - NODE_ENV=development
+    depends_on:
+      - payment-db
 
   auth-service:
     container_name: auth-service
@@ -76,6 +87,8 @@ services:
       - auth-service-node_modules:/app/node_modules
     environment:
       - NODE_ENV=development
+    depends_on:
+      - auth-db
 
   api-gateway:
     container_name: api-gateway
