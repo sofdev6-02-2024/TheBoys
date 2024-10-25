@@ -30,7 +30,7 @@ export class ExerciseService {
             const parsedData = JSON.parse(data);
             resolve(parsedData);
           } catch (error) {
-            reject(new Error('Error parsing response data'));
+            reject(new Error(error.message));
           }
         });
 

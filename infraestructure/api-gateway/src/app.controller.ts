@@ -45,6 +45,9 @@ export class AppController {
 
   @Get('engage/exercises/filterByName')
   filterExercises(@Query('name') name: string): Observable<any> {
-    return this.engageHubService.send({ cmd: 'filterExercisesByName' }, { name });
+    return this.engageHubService.send(
+      { cmd: 'filterExercisesByName' },
+      { name },
+    );
   }
 }
