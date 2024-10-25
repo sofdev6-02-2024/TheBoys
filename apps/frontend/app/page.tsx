@@ -1,4 +1,4 @@
-import Header from "./HomePage/NavBarDisplay";
+import Header from "./Header/NavBarDisplay";
 import HomePage from "./HomePage/HomePage";
 
 export default function Home() {
