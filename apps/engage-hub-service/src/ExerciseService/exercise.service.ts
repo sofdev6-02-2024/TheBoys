@@ -31,11 +31,6 @@ export class ExerciseService {
           }
         });
       });
-
-      req.on('error', () => {
-        reject(new Error('Error making request'));
-      });
-
       req.end();
     });
   }
