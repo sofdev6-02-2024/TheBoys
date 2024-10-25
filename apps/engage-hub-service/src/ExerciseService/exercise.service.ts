@@ -30,6 +30,11 @@ export class ExerciseService {
             reject(new Error('Error parsing response data'));
           }
         });
+
+        res.on('error', (error) => {
+          reject(error);
+        });
+        
       });
       req.end();
     });
