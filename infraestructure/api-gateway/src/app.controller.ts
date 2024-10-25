@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
 
@@ -36,5 +36,15 @@ export class AppController {
   @Get('Auth')
   getAuth(): Observable<any> {
     return this.authService.send({ cmd: 'Auth' }, {});
+  }
+
+  @Get('engage/exercises')
+  getExercises(): Observable<any> {
+    return this.engageHubService.send({ cmd: 'getExercises' }, {});
+  }
+
+  @Get('engage/exercises/filterByName')
+  filterExercises(@Query('name') name: string): Observable<any> {
+    return this.engageHubService.send({ cmd: 'filterExercisesByName' }, { name });
   }
 }

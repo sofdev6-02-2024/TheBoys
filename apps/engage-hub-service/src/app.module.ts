@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ExerciseModule } from './ExerciseService/exercise.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoutinesModule } from './routines/routines.module';
 
@@ -17,7 +18,7 @@ import { RoutinesModule } from './routines/routines.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
-    RoutinesModule,
+    RoutinesModule, ExerciseModule
   ],
   controllers: [AppController],
   providers: [AppService],
