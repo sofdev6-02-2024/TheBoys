@@ -1,7 +1,7 @@
 import Header from "../app/HomePage/Header";
 import Footer from "./HomePage/Footer";
 import HomePage from "./HomePage/HomePage";
-import Link from "next/link";
+
 
 export default function Home() {
   return (
