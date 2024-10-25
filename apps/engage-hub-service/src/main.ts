@@ -1,6 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+import {
+  Transport,
+  MicroserviceOptions,
+  RpcException,
+} from '@nestjs/microservices';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -14,6 +19,22 @@ async function bootstrap() {
     },
   );
 
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      exceptionFactory: (errors) => {
+        const errorMessages = errors.map((err) => ({
+          field: err.property,
+          errors: Object.values(err.constraints),
+        }));
+        throw new RpcException({
+          statusCode: 400,
+          message: errorMessages,
+          error: 'Bad Request',
+        });
+      },
+    }),
+  );
   await app.listen();
 }
 
