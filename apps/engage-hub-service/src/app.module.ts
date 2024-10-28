@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ExerciseModule } from './ExerciseService/exercise.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoutinesModule } from './routines/routines.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -18,6 +20,10 @@ import { RoutinesModule } from './routines/routines.module';
       autoLoadEntities: true,
     }),
     RoutinesModule,
+    ExerciseModule,
+    ConfigModule.forRoot({
+      isGlobal: true, // Esto permite acceder a las variables en toda la aplicación
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
