@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Query } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
 
@@ -37,5 +37,4 @@ export class AppController {
   getAuth(): Observable<any> {
     return this.authService.send({ cmd: 'Auth' }, {});
   }
-
 }
