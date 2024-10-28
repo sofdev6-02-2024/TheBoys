@@ -1,5 +1,5 @@
 
-import Header from "./NavBar";
+import NavBar from "./NavBar";
 import logo from "../Images/logo.png";
 import menuIcon from "../Images/IconImages/menuIcon.png";
 import notificationIcon from "../Images/IconImages/notification.png";
@@ -19,7 +19,7 @@ const icons = [
 export default function HomePage() {
 
   return (
-    <Header
+    <NavBar
       appName="BODY BOOST"
       logoSrc={logo}
       menuItems={["Home", "Community", "Trainers"]}
