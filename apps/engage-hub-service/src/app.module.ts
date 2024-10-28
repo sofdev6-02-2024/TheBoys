@@ -6,7 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoutinesModule } from './routines/routines.module';
 import { ConfigModule } from '@nestjs/config';
 
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -20,7 +19,8 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
       autoLoadEntities: true,
     }),
-    RoutinesModule, ExerciseModule,
+    RoutinesModule,
+    ExerciseModule,
     ConfigModule.forRoot({
       isGlobal: true, // Esto permite acceder a las variables en toda la aplicación
     }),

@@ -38,16 +38,4 @@ export class AppController {
     return this.authService.send({ cmd: 'Auth' }, {});
   }
 
-  @Get('engage/exercises')
-  getExercises(): Observable<any> {
-    return this.engageHubService.send({ cmd: 'getExercises' }, {});
-  }
-
-  @Get('engage/exercises/filterByName')
-  filterExercises(@Query('name') name: string): Observable<any> {
-    return this.engageHubService.send(
-      { cmd: 'filterExercisesByName' },
-      { name },
-    );
-  }
 }

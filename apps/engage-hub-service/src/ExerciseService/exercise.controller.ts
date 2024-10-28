@@ -6,7 +6,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 export class ExerciseController {
   constructor(private readonly exerciseService: ExerciseService) {}
 
-  @MessagePattern('getExercises' )
+  @MessagePattern('getExercises')
   getExercises(): Promise<any> {
     return this.exerciseService.getExercises();
   }
