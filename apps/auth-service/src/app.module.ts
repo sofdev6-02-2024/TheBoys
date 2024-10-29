@@ -8,9 +8,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     UsersModule,
     UsersInformationsModule,
     TypeOrmModule.forRoot({
-      type: "mysql",
+      type: "mongodb",
       host: "localhost",
-      port: 4003,
+      port: 27017,
       username: "auth",
       password: "auth",
       database: "auth-db",
