@@ -21,15 +21,15 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async findOne(id: UUID) {  // Cambiado de number a UUID
+  async findOne(id: UUID) {  
     return await this.userRepository.findOneBy({ id });
   }
 
-  async update(id: UUID, updateUserDto: UpdateUserDto) {  // Cambiado de number a UUID
+  async update(id: UUID, updateUserDto: UpdateUserDto) {  
     return await this.userRepository.update(id, updateUserDto);
   }
 
-  async remove(id: UUID) {  // Cambiado de number a UUID
+  async remove(id: UUID) {
     return await this.userRepository.softDelete({ id });
   }
 }
