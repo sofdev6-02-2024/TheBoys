@@ -20,18 +20,18 @@ export class UsersController {
   }
 
   @MessagePattern('findOneUser')
-  findOne(@Payload() id: number) {
+  findOne(@Payload() id: UUID) { 
     return this.usersService.findOne(id);
   }
 
   @MessagePattern('updateUser')
-  update(@Payload() payload: { id: number; updateUserDto: UpdateUserDto }) {
+  update(@Payload() payload: { id: UUID; updateUserDto: UpdateUserDto }) {  
     const { id, updateUserDto } = payload;
     return this.usersService.update(id, updateUserDto);
   }
 
   @MessagePattern('removeUser')
-  remove(@Payload() id: number) {
+  remove(@Payload() id: UUID) {
     return this.usersService.remove(id);
   }
 }

@@ -4,15 +4,15 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class UsersService {
-
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-z
+
   async create(createUserDto: CreateUserDto) {
     return await this.userRepository.save(createUserDto);
   }
@@ -21,15 +21,15 @@ z
     return await this.userRepository.find();
   }
 
-  async findOne(id: number) {
-    return await this.userRepository.findOneBy({id});
+  async findOne(id: UUID) {  // Cambiado de number a UUID
+    return await this.userRepository.findOneBy({ id });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: UUID, updateUserDto: UpdateUserDto) {  // Cambiado de number a UUID
     return await this.userRepository.update(id, updateUserDto);
   }
 
-  async remove(id: number) {
-    return await this.userRepository.softDelete({id});
+  async remove(id: UUID) {  // Cambiado de number a UUID
+    return await this.userRepository.softDelete({ id });
   }
 }

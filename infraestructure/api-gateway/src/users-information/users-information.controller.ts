@@ -12,7 +12,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
 @Controller('usersInformation')
-export class USersInformationController {
+export class UsersInformationController {
   constructor(
     @Inject('AUTH_SERVICE')
     private readonly authService: ClientProxy,

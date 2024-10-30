@@ -1,12 +1,13 @@
+import { UUID } from "crypto";
 import { UsersInformation } from "src/users-informations/entities/users-information.entity";
-import { Column, DeleteDateColumn, Entity, OneToOne } from "typeorm";
+import { Column, DeleteDateColumn, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
 
-  //@PrimaryGeneratedColumn()
-  @Column({primary: true, generated: true})
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  //@Column({primary: true, generated: true})
+  id: UUID;
 
   @Column()
   username: string;

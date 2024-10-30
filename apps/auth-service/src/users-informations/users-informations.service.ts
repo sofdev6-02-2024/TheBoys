@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { UsersInformation } from './entities/users-information.entity';
 import { CreateUsersInformationDto } from './dto/create-users-information.dto';
 import { UpdateUsersInformationDto } from './dto/update-users-information.dto';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class UsersInformationsService {
@@ -21,15 +22,15 @@ export class UsersInformationsService {
     return await this.usersInformationRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: UUID) {
     return await this.usersInformationRepository.findOneBy({id});
   }
 
-  async update(id: number, updateUsersInformationDto: UpdateUsersInformationDto) {
+  async update(id: UUID, updateUsersInformationDto: UpdateUsersInformationDto) {
     return await this.usersInformationRepository.update(id, updateUsersInformationDto);
   }
 
-  async remove(id: number) {
+  async remove(id: UUID) {
     return await this.usersInformationRepository.softDelete({id});
   }
 }
