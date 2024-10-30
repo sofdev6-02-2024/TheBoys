@@ -9,6 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { UUID } from 'crypto';
 import { Observable } from 'rxjs';
 
 @Controller('usersInformation')
@@ -24,7 +25,7 @@ export class UsersInformationController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Observable<any> {
+  findOne(@Param('id') id: UUID): Observable<any> {
     return this.authService.send('findOneUsersInfo', id);
   }
 
@@ -36,7 +37,7 @@ export class UsersInformationController {
   @Put(':id')
   update(
     @Body() updateUserInfoDto: any,
-    @Param('id') id: number,
+    @Param('id') id: UUID,
   ): Observable<any> {
     return this.authService.send('updateUsersInfo', {
       id,
@@ -45,7 +46,7 @@ export class UsersInformationController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number): Observable<any> {
+  remove(@Param('id') id: UUID): Observable<any> {
     return this.authService.send('removeUsersInfo', id);
   }
 }
