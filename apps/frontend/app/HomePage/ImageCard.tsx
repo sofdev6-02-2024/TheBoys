@@ -16,7 +16,11 @@ export default function ImageCard({ className, src, alt, label, onClickOption }:
 
   const handleImageClick = (text: string) => {
     console.log(text); 
-    router.push(RutasNavegacion.Routines); 
+    if (text == "Routines"){
+      router.push(RutasNavegacion.Routines); 
+    }else{
+      router.push(RutasNavegacion.HomePage); 
+    }
   };
 
   return (

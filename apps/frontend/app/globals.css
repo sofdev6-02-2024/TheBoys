@@ -26,13 +26,6 @@ body {
   }
 }
 
-.icon-default {
-  filter: brightness(0) invert(1); 
-}
-
-.icon-active {
-  filter: brightness(0) saturate(100%) hue-rotate(-50deg) brightness(1.2);
-}
 
 .custom-row-span {
   min-height: 100px; 

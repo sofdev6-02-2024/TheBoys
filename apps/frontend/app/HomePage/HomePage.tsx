@@ -1,9 +1,8 @@
 
-
-import motivationalImage from "../Images/HomePage/motivational.png"; 
-import routinesImage from "../Images/HomePage/routines.png"; 
-import chatImage from "../Images/HomePage/chat.png"; 
-import calendarImage from "../Images/HomePage/calendar.png"; 
+import motivationalImage from "../../public/HomePage/motivational.png"; 
+import routinesImage from "../../public/HomePage/routines.png"; 
+import chatImage from "../../public/HomePage/chat.png"; 
+import calendarImage from "../../public/HomePage/calendar.png"; 
 import ImageCard from "./ImageCard"
 
 export default function HomePage() {
