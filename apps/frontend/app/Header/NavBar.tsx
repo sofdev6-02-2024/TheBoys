@@ -4,12 +4,12 @@ import { useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import SubMenu from "./SubMenu";
 import { ReactNode } from "react";
-import RutasNavegacion from "../../ routes"; // Importar las rutas
+import RutasNavegacion from "../../ routes"; 
 import { useRouter } from 'next/navigation';
 
 interface IconType {
   id: string;
-  IconElement: JSX.Element; // Cambiado para aceptar el icono ya renderizado
+  IconElement: JSX.Element; 
   alt: string;
 }
 
@@ -18,9 +18,9 @@ interface HeaderProps {
   logoSrc: StaticImageData;
   menuItems: string[];
   icons: IconType[];
-  menuIcon: ReactNode;          // Cambiado a ReactNode
-  notificationIcon: ReactNode;   // Cambiado a ReactNode
-  userIcon: ReactNode;           // Cambiado a ReactNode
+  menuIcon: ReactNode;         
+  notificationIcon: ReactNode;   
+  userIcon: ReactNode;           
 }
 
 const NavBar = ({
