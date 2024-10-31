@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import Icon from "./Icon"; 
 import SubMenu from "./SubMenu";
+import { ReactNode } from "react";
+import RutasNavegacion from "../../ routes"; // Importar las rutas
+import { useRouter } from 'next/navigation';
 
 interface IconType {
   id: string;
-  src: StaticImageData;
+  IconElement: JSX.Element; // Cambiado para aceptar el icono ya renderizado
   alt: string;
 }
 
@@ -16,9 +18,9 @@ interface HeaderProps {
   logoSrc: StaticImageData;
   menuItems: string[];
   icons: IconType[];
-  menuIcon: StaticImageData;
-  notificationIcon: StaticImageData;
-  userIcon: StaticImageData;
+  menuIcon: ReactNode;          // Cambiado a ReactNode
+  notificationIcon: ReactNode;   // Cambiado a ReactNode
+  userIcon: ReactNode;           // Cambiado a ReactNode
 }
 
 const NavBar = ({
@@ -32,6 +34,7 @@ const NavBar = ({
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIcon, setActiveIcon] = useState<string | null>(null);
+  const router = useRouter(); 
 
   const toggleMenu = () => {
     setIsMenuOpen(prev => !prev);
@@ -39,6 +42,7 @@ const NavBar = ({
 
   const handleMenuItemClick = (item: string) => {
     console.log(`${item} clicked`);
+    router.push(RutasNavegacion.HomePage)
   };
 
   const handleIconClick = (id: string) => {
@@ -46,16 +50,11 @@ const NavBar = ({
     console.log(`Icon clicked: ${id}`);
   };
 
-  const renderIcon = (src: StaticImageData, alt: string, onClick: () => void) => (
-    <Icon src={src} alt={alt} onClick={onClick} />
-  );
-
   return (
     <div className="bg-[#28292E]">
       <header className="relative flex items-center justify-between py-4">
-        <div className="hidden sm:flex cursor-pointer px-5">
-          <Image src={menuIcon} alt="Menu icon" width={44} height={44} onClick={toggleMenu} 
-          />
+        <div className="hidden sm:flex cursor-pointer px-5" onClick={toggleMenu}>
+          {menuIcon}
         </div>
         <div className="flex-grow flex justify-center">
           <div className="flex flex-row items-center">
@@ -64,8 +63,8 @@ const NavBar = ({
           </div>
         </div>
         <div className="hidden sm:flex items-center gap-4 px-5">
-          {renderIcon(notificationIcon, "Notification icon", () => console.log("Notification clicked"))}
-          {renderIcon(userIcon, "User icon", () => console.log("User clicked"))}
+          {notificationIcon}
+          {userIcon}
         </div>
       </header>
 
@@ -73,9 +72,10 @@ const NavBar = ({
 
       <footer className="w-full bg-[#28292E] p-2 fixed bottom-0 block sm:hidden z-50">
         <div className="flex justify-between items-center max-w-lg mx-auto">
-          {icons.map(({ id, src, alt }) => (
-            <Icon key={id} src={src} alt={alt} isActive={activeIcon === id} onClick={() => handleIconClick(id)} 
-            />
+          {icons.map(({ id, IconElement, alt }) => (
+            <div key={id} title={alt} onClick={() => handleIconClick(id)} className={`cursor-pointer ${activeIcon === id ? "text-red-500" : "text-white"}`}>
+              {IconElement}
+            </div>
           ))}
         </div>
       </footer>
@@ -83,5 +83,5 @@ const NavBar = ({
   );
 }
 
-export default NavBar;
 
+export default NavBar;
