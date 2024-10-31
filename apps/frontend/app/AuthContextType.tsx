@@ -1,5 +1,4 @@
-// AuthProvider.tsx
-"use client"; // Asegúrate de agregar esto al principio del archivo
+"use client"; 
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 

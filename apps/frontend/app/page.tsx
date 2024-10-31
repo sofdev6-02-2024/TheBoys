@@ -1,10 +1,7 @@
 import Header from "./Header/NavBarDisplay";
 import HomePage from "./HomePage/HomePage";
-import { createContext, useContext, useState } from 'react';
 
 export default function Home() {
-
-
 
   return (
     <div className="min-h-screen bg-[#28292E] flex flex-col items-center">

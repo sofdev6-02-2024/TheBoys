@@ -6,9 +6,6 @@ import { FaHouseChimney } from "react-icons/fa6";
 import { HiUsers } from "react-icons/hi";
 import { FaMonument,FaDumbbell } from "react-icons/fa";
 
-
-
-
 const icons = [
   { id: 'home', IconElement: <FaHouseChimney className="w-11 h-11" />, alt: 'Home icon' },
   { id: 'users', IconElement: <HiUsers className="w-11 h-11" />, alt: 'Users icon' },
