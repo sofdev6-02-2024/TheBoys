@@ -3,7 +3,6 @@ import routinesImage from "../../public/HomePage/routines.png";
 import chatImage from "../../public/HomePage/chat.png"; 
 import calendarImage from "../../public/HomePage/calendar.png"; 
 import ImageCard from "./ImageCard";
-import RoutesNavigation from "../../ routes"; // Asegúrate de importar las rutas
 
 export default function HomePage() {
   return (
