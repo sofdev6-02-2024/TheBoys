@@ -1,8 +1,8 @@
 
-const RutasNavegacion = {
+const RoutesNavigation = {
     HomePage: "/",
     Routines: "/Routines",
   };
   
-  export default RutasNavegacion;
+  export default RoutesNavigation;
   

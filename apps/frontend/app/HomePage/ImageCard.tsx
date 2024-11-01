@@ -1,32 +1,33 @@
-"use client"; 
+"use client";
+
 import Image, { StaticImageData } from "next/image";
-import { useRouter } from 'next/navigation';
-import RutasNavegacion from "../../ routes"; 
+import { useRouter } from "next/navigation";
+import RoutesNavigation from "../../ routes"; 
 
 interface ImageCardProps {
   className: string;
   src: StaticImageData;
   alt: string;
   label: string;
-  onClickOption: string;
+  onClickOption: keyof typeof RoutesNavigation;
 }
 
 export default function ImageCard({ className, src, alt, label, onClickOption }: ImageCardProps) {
-  const router = useRouter(); 
+  const router = useRouter();
 
-  const handleImageClick = (text: string) => {
-    console.log(text); 
-    if (text == "Routines"){
-      router.push(RutasNavegacion.Routines); 
-    }else{
-      router.push(RutasNavegacion.HomePage); 
+  const handleImageClick = () => {
+    const route = RoutesNavigation[onClickOption];
+    if (route) {
+      router.push(route);
+    } else {
+      console.error("Route doesn't exist.");
     }
   };
 
   return (
     <div 
-      className={`${className}`}
-      onClick={() => handleImageClick(onClickOption)}
+      className={`${className} cursor-pointer`}
+      onClick={handleImageClick}
     >
       <Image 
         src={src} 

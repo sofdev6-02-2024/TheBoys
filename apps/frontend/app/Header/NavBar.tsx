@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import SubMenu from "./SubMenu";
 import { ReactNode } from "react";
-import RutasNavegacion from "../../ routes"; 
+import RoutesNavigation from "../../ routes"; 
 import { useRouter } from 'next/navigation';
 
 interface IconType {
@@ -42,7 +42,7 @@ const NavBar = ({
 
   const handleMenuItemClick = (item: string) => {
     console.log(`${item} clicked`);
-    router.push(RutasNavegacion.HomePage)
+    router.push(RoutesNavigation.HomePage)
   };
 
   const handleIconClick = (id: string) => {
@@ -51,36 +51,39 @@ const NavBar = ({
   };
 
   return (
-    <div className="bg-[#28292E]">
-      <header className="relative flex items-center justify-between py-4">
-        <div className="hidden sm:flex cursor-pointer px-5" onClick={toggleMenu}>
-          {menuIcon}
+    <>
+    <header className="relative flex items-center justify-between py-4 bg-[#28292E]">
+      <div className="hidden sm:flex cursor-pointer px-5" onClick={toggleMenu}>
+        {menuIcon}
+      </div>
+      <div className="flex-grow flex justify-center">
+        <div className="flex flex-row items-center">
+          <code className="text-3xl font-semibold text-white px-5">{appName}</code>
+          <Image src={logoSrc} alt="App logo" width={70} height={70} priority />
         </div>
-        <div className="flex-grow flex justify-center">
-          <div className="flex flex-row items-center">
-            <code className="text-3xl font-semibold text-white px-5">{appName}</code>
-            <Image src={logoSrc} alt="App logo" width={70} height={70} priority />
+      </div>
+      <div className="hidden sm:flex items-center gap-4 px-5">
+        {notificationIcon}
+        {userIcon}
+      </div>
+    </header>
+    {isMenuOpen && <SubMenu menuItemsSearch={menuItems} onClickItem={handleMenuItemClick} />}
+    <footer className="w-full bg-[#28292E] p-2 fixed bottom-0 block sm:hidden z-50">
+      <div className="flex justify-between items-center max-w-lg mx-auto">
+        {icons.map(({ id, IconElement, alt }) => (
+          <div
+            key={id}
+            title={alt}
+            onClick={() => handleIconClick(id)}
+            className={`cursor-pointer ${activeIcon === id ? "text-red-500" : "text-white"}`}
+          >
+            {IconElement}
           </div>
-        </div>
-        <div className="hidden sm:flex items-center gap-4 px-5">
-          {notificationIcon}
-          {userIcon}
-        </div>
-      </header>
-
-      {isMenuOpen && <SubMenu menuItemsSearch={menuItems} onClickItem={handleMenuItemClick} />}
-
-      <footer className="w-full bg-[#28292E] p-2 fixed bottom-0 block sm:hidden z-50">
-        <div className="flex justify-between items-center max-w-lg mx-auto">
-          {icons.map(({ id, IconElement, alt }) => (
-            <div key={id} title={alt} onClick={() => handleIconClick(id)} className={`cursor-pointer ${activeIcon === id ? "text-red-500" : "text-white"}`}>
-              {IconElement}
-            </div>
-          ))}
-        </div>
-      </footer>
-    </div>
-  );
+        ))}
+      </div>
+    </footer>
+  </>
+);
 }
 
 
