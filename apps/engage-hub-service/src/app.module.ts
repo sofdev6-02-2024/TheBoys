@@ -22,7 +22,8 @@ import { ConfigModule } from '@nestjs/config';
     RoutinesModule,
     ExerciseModule,
     ConfigModule.forRoot({
-      isGlobal: true, // Esto permite acceder a las variables en toda la aplicación
+      isGlobal: true,
+      envFilePath: ['.env'],
     }),
   ],
   controllers: [AppController],

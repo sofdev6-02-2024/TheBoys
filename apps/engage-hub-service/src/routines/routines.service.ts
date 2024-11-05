@@ -1,41 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Routine } from './entities/routine.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UUID } from 'crypto';
 import { CreateRoutineDto } from './dto/create-routine.dto';
 import { UpdateRoutineDto } from './dto/update-routine.dto';
-import { Exercise } from 'src/exercises/entities/exercise.entity';
-import { RpcException } from '@nestjs/microservices';
+import { ExerciseService } from 'src/ExerciseService/exercise.service';
+import { RoutineExercise } from 'src/routines_exercises/entities/routine-exercise.entity';
 
 @Injectable()
 export class RoutinesService {
   constructor(
     @InjectRepository(Routine)
     private readonly routinesRepository: Repository<Routine>,
-    @InjectRepository(Exercise)
-    private readonly exercisesRepository: Repository<Exercise>,
+    @InjectRepository(RoutineExercise)
+    private readonly routineExerciseRepository: Repository<RoutineExercise>,
+    private readonly exerciseService: ExerciseService,
   ) {}
+
+  async getValidExerciseList(exercises: string[]) {
+    const exercisesList = [];
+    for (const exerciseId of exercises) {
+      const exercise = await this.exerciseService.getExercisesById(exerciseId);
+      if (exercise) exercisesList.push(exercise);
+    }
+    return exercisesList;
+  }
 
   async create(createRoutineDto: CreateRoutineDto) {
     const { exercises, ...routineData } = createRoutineDto;
 
-    const exercisesList = await this.exercisesRepository.findBy({
-      id: In(exercises),
-    });
+    const exercisesList = await this.getValidExerciseList(exercises);
 
-    if (exercisesList.length === 0) {
-      throw new RpcException({
-        statusCode: 404,
-        message: 'Exercises Not Found',
-      });
-    }
+    if (exercisesList.length === 0)
+      throw new NotFoundException('Exercises Not Found');
 
     const newRoutine = this.routinesRepository.create({
       ...routineData,
-      exercises: exercisesList,
     });
+
     await this.routinesRepository.save(newRoutine);
+
+    for (const exercise of exercisesList) {
+      const routineExercise = this.routineExerciseRepository.create({
+        routineId: newRoutine.id,
+        exerciseId: exercise.id,
+      });
+      await this.routineExerciseRepository.save(routineExercise);
+    }
 
     return newRoutine;
   }
@@ -49,31 +61,7 @@ export class RoutinesService {
   }
 
   async update(id: UUID, updateRoutineDto: UpdateRoutineDto) {
-    const routine = await this.routinesRepository.findOne({
-      where: { id },
-      relations: ['exercises'],
-    });
-
-    if (!routine) {
-      throw new RpcException({
-        statusCode: 404,
-        message: 'Routine Not Found',
-      });
-    }
-
-    routine.title = updateRoutineDto.title ?? routine.title;
-    routine.difficultLevel =
-      updateRoutineDto.difficultLevel ?? routine.difficultLevel;
-    routine.creatorId = updateRoutineDto.creatorId ?? routine.creatorId;
-
-    if (updateRoutineDto.exercises && updateRoutineDto.exercises.length > 0) {
-      const exercises = await this.exercisesRepository.findBy({
-        id: In(updateRoutineDto.exercises),
-      });
-      routine.exercises = exercises;
-    }
-
-    return await this.routinesRepository.save(routine);
+    return this.routinesRepository.update(id, updateRoutineDto);
   }
 
   remove(id: UUID) {

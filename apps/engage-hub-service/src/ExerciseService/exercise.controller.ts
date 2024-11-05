@@ -15,4 +15,9 @@ export class ExerciseController {
   getExercisesByName(@Payload() data: { name: string }): Promise<any> {
     return this.exerciseService.getExercisesByName(data.name);
   }
+
+  @MessagePattern('getExerciseById')
+  getExerciseById(@Payload() data: { id: string }) {
+    return this.exerciseService.getExercisesById(data.id);
+  }
 }

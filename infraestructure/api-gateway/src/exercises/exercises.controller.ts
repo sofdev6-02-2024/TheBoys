@@ -18,4 +18,9 @@ export class ExercisesController {
   getExercisesByName(@Param('name') name: string): Observable<any> {
     return this.engageHubService.send('getExercisesByName', { name });
   }
+
+  @Get('exercise/:id')
+  getExercisesById(@Param('id') id: string) {
+    return this.engageHubService.send('getExerciseById', { id });
+  }
 }

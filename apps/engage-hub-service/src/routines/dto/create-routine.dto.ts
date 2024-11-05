@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUrl,
   IsUUID,
 } from 'class-validator';
 
@@ -15,6 +16,7 @@ export class CreateRoutineDto {
 
   @IsOptional()
   @IsUUID()
+  @IsNotEmpty()
   creatorId: UUID;
 
   @IsNotEmpty()
@@ -23,6 +25,10 @@ export class CreateRoutineDto {
 
   @IsNotEmpty()
   @IsArray()
-  @IsUUID(4, { each: true })
-  exercises: UUID[];
+  @IsString({ each: true })
+  exercises: string[];
+
+  @IsNotEmpty()
+  @IsUrl()
+  imageUrl: string;
 }
