@@ -68,4 +68,14 @@ export class RoutinesService {
     this.routinesRepository.delete({ id });
     return { id };
   }
+
+  findOneByUserId(id: UUID) {
+    const user = this.routinesRepository.findBy({
+      userRutine: { userId: id },
+    });
+
+    if (!user) throw new NotFoundException('User Not Found');
+
+    return user;
+  }
 }

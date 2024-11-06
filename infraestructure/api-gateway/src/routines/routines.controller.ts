@@ -49,4 +49,9 @@ export class RutinesController {
   remove(@Param('id') id: UUID): Observable<any> {
     return this.engageHubService.send('removeRoutine', id);
   }
+
+  @Get('user/:id')
+  findOneByUserId(@Param('id') id: UUID): Observable<any> {
+    return this.engageHubService.send('findOneByUserId', id);
+  }
 }
