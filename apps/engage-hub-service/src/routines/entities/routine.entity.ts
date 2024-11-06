@@ -22,6 +22,9 @@ export class Routine {
   @Column({ nullable: true })
   creatorId: UUID;
 
+  @Column()
+  description: string;
+
   @Column({ type: 'enum', enum: ['easy', 'medium', 'hard'] })
   difficultLevel: 'easy' | 'medium' | 'hard';
 

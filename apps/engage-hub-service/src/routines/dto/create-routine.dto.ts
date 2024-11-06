@@ -31,4 +31,8 @@ export class CreateRoutineDto {
   @IsNotEmpty()
   @IsUrl()
   imageUrl: string;
+
+  @IsNotEmpty()
+  @IsString()
+  description: string;
 }

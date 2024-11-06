@@ -1,16 +1,21 @@
-import { Exercise, ExerciseListLayoutProps } from "@/app/types";
-import ExerciseListItem from "../atoms/ExerciseListItem";
+import { Exercise } from "@/app/types";
+import ExerciseListItem from "./ExerciseListItem";
 
-function ExerciseListLayout(prop: ExerciseListLayoutProps) {
+interface Props {
+  exercises: Exercise[];
+  setExercises: (exercises: Exercise[]) => void;
+}
+
+function ExerciseListLayout({ exercises, setExercises }: Props) {
   const handleRemoveExercise = (exercise: Exercise) => {
-    prop.setExercises(prop.exercises.filter((e) => e !== exercise));
+    setExercises(exercises.filter((e) => e !== exercise));
   };
 
   return (
     <section className="flex flex-col gap-6">
       <h2 className="text-2xl font-bold">Exercises</h2>
       <ul>
-        {prop.exercises.map((exercise, index) => (
+        {exercises.map((exercise, index) => (
           <ExerciseListItem
             key={index}
             exerciseName={exercise.name}

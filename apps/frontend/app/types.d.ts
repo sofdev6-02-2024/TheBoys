@@ -1,18 +1,5 @@
 export interface InputFieldProps {
-  type:
-    | "text"
-    | "password"
-    | "email"
-    | "number"
-    | "date"
-    | "time"
-    | "datetime-local"
-    | "month"
-    | "week"
-    | "url"
-    | "tel"
-    | "search"
-    | "color";
+  type: string;
   placeholder?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   labelText: string;
@@ -67,27 +54,9 @@ export interface Exercise {
   instructions: string[]
 }
 
-export interface ExerciseListLayoutProps {
-  exercises: Exercise[];
-  setExercises: (exercises: Exercise[]) => void;
-}
-
-export interface ExerciseControlProps {
-  exercises: Exercise[];
-  setExercises: (exercises: Exercise[]) => void;
-  title: string;
-  description: string;
-}
-
 export interface RoutineActionButtonsProps {
   exercises: Exercise[];
   setExercises: (exercises: Exercise[]) => void;
   title: string;
   description: string;
 }
-
-export interface RoutineInfoFormProps {
-  setTitle: (title: string) => void;
-  setDescription: (description: string) => void;
-}
-

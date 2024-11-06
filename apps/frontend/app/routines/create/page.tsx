@@ -1,9 +1,9 @@
 import Header from "./../../Header/NavBarDisplay";
-import RoutineFormWrapper from "./components/molecules/RoutineFormWrapper";
+import RoutineFormWrapper from "./components/RoutineFormWrapper";
 
 function RoutineCreationPage() {
   return (
-    <main>
+    <main className="text-white">
       <Header />
       <RoutineFormWrapper />
     </main>

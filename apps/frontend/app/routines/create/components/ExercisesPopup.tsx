@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Button from "@/app/components/Button";
 import { Exercise, PopupProps } from "@/app/types";
-import ExerciseCard from "./atoms/ExerciseDisplay";
+import ExerciseCard from "./ExerciseDisplay";
 
 function ExercisesPopup(props: PopupProps) {
   const [selectedExercises, setSelectedExercises] = useState([] as Exercise[]);

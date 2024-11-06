@@ -27,4 +27,8 @@ export class UpdateRoutineDto {
   @IsNotEmpty()
   @IsUrl()
   imageUrl: string;
+
+  @IsNotEmpty()
+  @IsString()
+  description: string;
 }
