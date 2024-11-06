@@ -1,32 +1,29 @@
-
 import NavBar from "./NavBar";
-import logo from "../Images/logo.png";
-import menuIcon from "../Images/IconImages/menuIcon.png";
-import notificationIcon from "../Images/IconImages/notification.png";
-import userIcon from "../Images/IconImages/user.png";
-import homeIcon from "../Images/IconImages/home.png";
-import usersIcon from "../Images/IconImages/users.png";
-import workoutIcon from "../Images/IconImages/workout.png";
+import logo from "../../public/logo.png";
+import {  FiMenu } from "react-icons/fi";
+import { FaUser } from "react-icons/fa";
+import { FaHouseChimney } from "react-icons/fa6";
+import { HiUsers } from "react-icons/hi";
+import { FaMonument,FaDumbbell } from "react-icons/fa";
 
 const icons = [
-  { id: 'home', src: homeIcon, alt: 'Home icon' },
-  { id: 'users', src: usersIcon, alt: 'Users icon' },
-  { id: 'workout', src: workoutIcon, alt: 'Workout icon' },
-  { id: 'profile', src: userIcon, alt: 'Profile icon' },
-  { id: 'notifications', src: notificationIcon, alt: 'Notifications icon' },
+  { id: 'home', IconElement: <FaHouseChimney className="w-11 h-11" />, alt: 'Home icon' },
+  { id: 'users', IconElement: <HiUsers className="w-11 h-11" />, alt: 'Users icon' },
+  { id: 'workout', IconElement: <FaDumbbell className="w-11 h-11" />, alt: 'Workout icon' },
+  { id: 'profile', IconElement: <FaUser className="w-11 h-11" />, alt: 'Profile icon' },
+  { id: 'notifications', IconElement: <FaMonument className="w-11 h-11" />, alt: 'Notifications icon' },
 ];
 
 export default function HomePage() {
-
   return (
     <NavBar
       appName="BODY BOOST"
       logoSrc={logo}
       menuItems={["Home", "Community", "Trainers"]}
       icons={icons}
-      menuIcon={menuIcon}
-      notificationIcon={notificationIcon}
-      userIcon={userIcon}
+      menuIcon={<FiMenu className="text-white w-10 h-10" />}
+      notificationIcon={<FaMonument className="text-white w-10 h-10 cursor-pointer" />}
+      userIcon={<FaUser className="text-white w-10 h-10 cursor-pointer" />}
     />
   );
 }
