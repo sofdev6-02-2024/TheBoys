@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import * as https from 'https';
 import { ConfigService } from '@nestjs/config';
 
@@ -87,5 +91,33 @@ export class ExerciseService {
       });
       req.end();
     });
+  }
+
+  async getExercisesById(id: string) {
+    if (id.length < 4) return new BadRequestException('ID is not valid');
+
+    const response = await fetch(
+      `https://${process.env.EXERCISE_DB_API_HOST}/exercises/exercise/${id}`,
+      {
+        headers: {
+          'x-rapidapi-key': this.configService.get<string>(
+            'EXERCISE_DB_API_KEY',
+          ),
+          'x-rapidapi-host': this.configService.get<string>(
+            'EXERCISE_DB_API_HOST',
+          ),
+        },
+      },
+    );
+
+    if (!response)
+      return new ServiceUnavailableException('Service is down right now');
+
+    const data = await response.json();
+
+    if (!data)
+      return new ServiceUnavailableException('Service is down right now');
+
+    return data;
   }
 }

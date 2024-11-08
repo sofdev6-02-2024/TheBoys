@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsUUID,
   IsEnum,
-  IsArray,
+  IsUrl,
 } from 'class-validator';
 
 export class UpdateRoutineDto {
@@ -25,7 +25,10 @@ export class UpdateRoutineDto {
 
   @IsOptional()
   @IsNotEmpty()
-  @IsArray()
-  @IsUUID(4, { each: true })
-  exercises: UUID[];
+  @IsUrl()
+  imageUrl: string;
+
+  @IsNotEmpty()
+  @IsString()
+  description: string;
 }

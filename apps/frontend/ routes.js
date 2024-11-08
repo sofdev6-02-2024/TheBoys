@@ -5,6 +5,7 @@ const RoutesNavigation = {
     Motivational: "/",
     Calendar: "/Calendar",
     ChatBot: "/ChatBot",
+    CreateRoutine: "/routines/create"
   };
   
   export default RoutesNavigation;

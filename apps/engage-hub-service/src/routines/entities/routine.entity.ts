@@ -1,13 +1,14 @@
 import { UUID } from 'crypto';
-import { Exercise } from 'src/exercises/entities/exercise.entity';
+import { RoutineExercise } from 'src/routines_exercises/entities/routine-exercise.entity';
 import { UserRoutine } from 'src/user/entities/user.routine.entity';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -21,16 +22,30 @@ export class Routine {
   @Column({ nullable: true })
   creatorId: UUID;
 
+  @Column()
+  description: string;
+
   @Column({ type: 'enum', enum: ['easy', 'medium', 'hard'] })
   difficultLevel: 'easy' | 'medium' | 'hard';
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @Column()
+  imageUrl: string;
+
+  @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @OneToMany(() => UserRoutine, (userRutine) => userRutine.rutine)
   userRutine: UserRoutine;
 
-  @ManyToMany(() => Exercise)
-  @JoinTable()
-  exercises: Exercise[];
+  @OneToMany(
+    () => RoutineExercise,
+    (routineExercise) => routineExercise.routine,
+  )
+  exercises: UUID[];
 }

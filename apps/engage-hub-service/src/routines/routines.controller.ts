@@ -34,4 +34,9 @@ export class RoutinesController {
   remove(@Payload() id: UUID) {
     return this.routinesService.remove(id);
   }
+
+  @MessagePattern('findOneByUserId')
+  findOneByUserId(@Payload() id: UUID) {
+    return this.routinesService.findOneByUserId(id);
+  }
 }

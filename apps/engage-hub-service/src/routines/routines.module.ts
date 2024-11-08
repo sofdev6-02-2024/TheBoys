@@ -3,11 +3,12 @@ import { RoutinesService } from './routines.service';
 import { RoutinesController } from './routines.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Routine } from './entities/routine.entity';
-import { Exercise } from 'src/exercises/entities/exercise.entity';
+import { ExerciseService } from 'src/ExerciseService/exercise.service';
+import { RoutineExercise } from 'src/routines_exercises/entities/routine-exercise.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Routine, Exercise])],
+  imports: [TypeOrmModule.forFeature([Routine, RoutineExercise])],
   controllers: [RoutinesController],
-  providers: [RoutinesService],
+  providers: [RoutinesService, ExerciseService],
 })
 export class RoutinesModule {}
