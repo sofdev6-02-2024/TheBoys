@@ -1,10 +1,15 @@
-import { UUID } from "crypto";
-import { UsersInformation } from "src/users-informations/entities/users-information.entity";
-import { Column, DeleteDateColumn, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { UUID } from 'crypto';
+import { UsersInformation } from 'src/users-informations/entities/users-information.entity';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
-
   @PrimaryGeneratedColumn('uuid')
   id: UUID;
 
@@ -29,7 +34,10 @@ export class User {
   @DeleteDateColumn()
   deleteAt: Date;
 
-
-  @OneToOne(() => UsersInformation, (usersInformation) => usersInformation.user, { cascade: true })
+  @OneToOne(
+    () => UsersInformation,
+    (usersInformation) => usersInformation.user,
+    { cascade: true },
+  )
   userInformation: UsersInformation;
 }

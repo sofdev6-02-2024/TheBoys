@@ -1,20 +1,22 @@
-import { UUID } from "crypto";
-import { User } from "src/users/entities/user.entity";
-import { Column, DeleteDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { UUID } from 'crypto';
+import { User } from 'src/users/entities/user.entity';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class UsersInformation {
-
   @PrimaryGeneratedColumn('uuid')
   id: UUID;
 
   @Column()
-  user_id: number;
-
-  @Column()
   height: number;
 
-  @Column("decimal")
+  @Column('decimal')
   weight: number;
 
   @Column()
@@ -23,7 +25,7 @@ export class UsersInformation {
   @Column()
   gender: string;
 
-  @Column("decimal")
+  @Column('decimal')
   body_fat_porcentage: number;
 
   @Column()
@@ -35,14 +37,16 @@ export class UsersInformation {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
   updated_at: Date;
 
   @DeleteDateColumn()
   deleteAt: Date;
 
-
   @OneToOne(() => User, (user) => user.userInformation)
-  @JoinColumn({ name: "user_id" }) 
-  user: User; 
+  user: User;
 }

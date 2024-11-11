@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { RutinesController as RoutinesController } from './routines/routines.controller';
 import { ExercisesController as ExercisesController } from './exercises/exercises.controller';
+import { UsersController } from './users/users.controller';
 
 @Module({
   imports: [
@@ -35,7 +36,12 @@ import { ExercisesController as ExercisesController } from './exercises/exercise
       },
     ]),
   ],
-  controllers: [AppController, RoutinesController, ExercisesController],
+  controllers: [
+    AppController,
+    RoutinesController,
+    ExercisesController,
+    UsersController,
+  ],
   providers: [AppService],
 })
 export class AppModule {}

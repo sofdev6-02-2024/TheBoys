@@ -21,11 +21,11 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async findOne(id: UUID) {  
+  async findOne(id: UUID) {
     return await this.userRepository.findOneBy({ id });
   }
 
-  async update(id: UUID, updateUserDto: UpdateUserDto) {  
+  async update(id: UUID, updateUserDto: UpdateUserDto) {
     return await this.userRepository.update(id, updateUserDto);
   }
 

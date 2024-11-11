@@ -1,8 +1,8 @@
-import { Module } from "@nestjs/common";
-import { UsersModule } from "./users/users.module";
-import { UsersInformationsModule } from "./users-informations/users-informations.module";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { ConfigModule } from "@nestjs/config";
+import { Module } from '@nestjs/common';
+import { UsersModule } from './users/users.module';
+import { UsersInformationsModule } from './users-informations/users-informations.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -13,14 +13,10 @@ import { ConfigModule } from "@nestjs/config";
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
-        type: process.env.DB_TYPE as "mongodb",
-        host: process.env.DB_HOST,
-        port: +process.env.DB_PORT,
-        username: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
+        type: process.env.DB_TYPE as 'mongodb',
+        url: `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=admin`,
         autoLoadEntities: true,
-        synchronize: process.env.DB_SYNCHRONIZE === 'true',
+        synchronize: true,
       }),
     }),
   ],

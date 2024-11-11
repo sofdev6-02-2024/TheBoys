@@ -8,14 +8,15 @@ import { UUID } from 'crypto';
 
 @Injectable()
 export class UsersInformationsService {
-
   constructor(
     @InjectRepository(UsersInformation)
     private readonly usersInformationRepository: Repository<UsersInformation>,
   ) {}
 
   async create(createUsersInformationDto: CreateUsersInformationDto) {
-    return await this.usersInformationRepository.save(createUsersInformationDto);
+    return await this.usersInformationRepository.save(
+      createUsersInformationDto,
+    );
   }
 
   async findAll() {
@@ -23,15 +24,17 @@ export class UsersInformationsService {
   }
 
   async findOne(id: UUID) {
-    return await this.usersInformationRepository.findOneBy({id});
+    return await this.usersInformationRepository.findOneBy({ id });
   }
 
   async update(id: UUID, updateUsersInformationDto: UpdateUsersInformationDto) {
-    return await this.usersInformationRepository.update(id, updateUsersInformationDto);
+    return await this.usersInformationRepository.update(
+      id,
+      updateUsersInformationDto,
+    );
   }
 
   async remove(id: UUID) {
-    return await this.usersInformationRepository.softDelete({id});
+    return await this.usersInformationRepository.softDelete({ id });
   }
 }
-
