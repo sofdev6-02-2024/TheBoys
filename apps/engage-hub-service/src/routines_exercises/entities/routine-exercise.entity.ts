@@ -19,6 +19,12 @@ export class RoutineExercise {
   @Column({ nullable: true })
   time: number;
 
+  @Column({
+    type: 'enum',
+    enum: ['not started', 'in progress', 'completed'],
+    default: 'not started', 
+  })
+
   @ManyToOne(() => Routine, (routine) => routine.exercises, { cascade: true })
   routine: Routine;
 }

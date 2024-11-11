@@ -29,7 +29,7 @@ function ExercisesPopup(props: PopupProps) {
   useEffect(() => {
     const fetchExercises = async () => {
       const localExercises = localStorage.getItem("exercises");
-      if (!localExercises) {
+      if (!localExercises || !Array.isArray(localExercises)) {
         const res = await fetch("http://localhost:4444/exercises");
         const data = await res.json();
         setAvailableExercises(data);

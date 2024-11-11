@@ -59,7 +59,6 @@ function RoutinesPage() {
     return (
         
         <main className="w-full max-w-7xl mx-auto px-4  ">
-            <Header />
             <RoutineHero
                 desktopSrc={routineHero}
                 mobileSrc={routineHeroMobile}
