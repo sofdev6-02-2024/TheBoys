@@ -47,9 +47,13 @@ function RoutinesPage() {
         ? "Join us to start creating your personalized workout routines and track your progress."
         : undefined;
 
-        const handleMenuItemClick = () => {
+        const handleNewRoutineClick = () => {
             router.push(RoutesNavigation.CreateRoutine)
           };
+
+          const handleYourRoutineClick = () => {
+            router.push(RoutesNavigation.YouRoutine)
+          };  
 
     
     return (
@@ -67,8 +71,8 @@ function RoutinesPage() {
             {isLoggedIn ? (
                 <>
                     <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <RoutineButton buttonText="New Routine" description="Start with a new training routine" onClick={handleMenuItemClick}/>
-                        <RoutineButton buttonText="Your Routines" description="Go to your routines" />
+                        <RoutineButton buttonText="New Routine" description="Start with a new training routine" onClick={handleNewRoutineClick}/>
+                        <RoutineButton buttonText="Your Routines" description="Go to your routines" onClick={handleYourRoutineClick}/>
                         <RoutineButton buttonText="AI GYM" description="Generate your routine with our bot" />
                     </section>
 
