@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import ProgressCircle from './ProgressCircle';
 
+interface Exercise {
+    status: 'completed' | 'in progress' | 'not started';
+  }
+
 interface RoutineCardProps {
   title: string;
   imageUrl: string;
-  exercises: Array<any>;
+  exercises: Exercise[];
   userStatus: 'completed' | 'in progress' | 'not started';
 }
 
@@ -64,3 +68,4 @@ const RoutineCard: React.FC<RoutineCardProps> = ({ title, imageUrl, exercises, u
 };
 
 export default RoutineCard;
+
