@@ -1,3 +1,5 @@
+"use client"; 
+
 import { RoutineButton } from "./Components/RoutineButton";
 import { RoutineBox } from "./Components/RoutineBox";
 import { RoutineHero } from "./Components/RoutineHero";
@@ -14,12 +16,25 @@ import benefit1Mobile from "./Assets/benefit1Mobile.webp";
 import benefit2Mobile from "./Assets/benefit2Mobile.webp";
 import benefit3Mobile from "./Assets/benefit3Mobile.webp";
 import benefit4Mobile from "./Assets/benefit4Mobile.webp";
+import { AuthProvider, useAuth } from "../AuthContextType"; 
+import { useRouter } from 'next/navigation';
+import RoutesNavigation from "../../ routes"; 
 
-interface RoutinesPageProps {
-  isLoggedIn: boolean;
-}
 
-export default function RoutinesPage({ isLoggedIn }: RoutinesPageProps) {
+
+export default function RoutinesUser() {
+    return (
+      <AuthProvider>
+        <RoutinesPage />
+      </AuthProvider>
+    );
+  }
+
+function RoutinesPage() {
+
+    const {isLoggedIn}  = useAuth(); 
+    const router = useRouter(); 
+
     const routineBenefits = [
         { src: benefit1, mobileSrc: benefit1Mobile, alt: "Image 1", title: "Create your Routines", text: "Customize and create the routine that best suits your objectives."},
         { src: benefit2, mobileSrc: benefit2Mobile, alt: "Image 2", title: "Generate Routines", text: "Generate a routine for yourself with AI."},
@@ -31,10 +46,18 @@ export default function RoutinesPage({ isLoggedIn }: RoutinesPageProps) {
         ? "Join us to start creating your personalized workout routines and track your progress."
         : undefined;
 
+        const handleNewRoutineClick = () => {
+            router.push(RoutesNavigation.CreateRoutine)
+          };
 
+          const handleYourRoutineClick = () => {
+            router.push(RoutesNavigation.YouRoutine)
+          };  
 
+    
     return (
-        <main className="w-full max-w-7xl mx-auto px-4 py-8 mt-28">
+        
+        <main className="w-full max-w-7xl mx-auto px-4  ">
             <RoutineHero
                 desktopSrc={routineHero}
                 mobileSrc={routineHeroMobile}
@@ -46,8 +69,8 @@ export default function RoutinesPage({ isLoggedIn }: RoutinesPageProps) {
             {isLoggedIn ? (
                 <>
                     <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <RoutineButton buttonText="New Routine" description="Start with a new training routine" />
-                        <RoutineButton buttonText="Your Routines" description="Go to your routines" />
+                        <RoutineButton buttonText="New Routine" description="Start with a new training routine" onClick={handleNewRoutineClick}/>
+                        <RoutineButton buttonText="Your Routines" description="Go to your routines" onClick={handleYourRoutineClick}/>
                         <RoutineButton buttonText="AI GYM" description="Generate your routine with our bot" />
                     </section>
 
@@ -60,5 +83,6 @@ export default function RoutinesPage({ isLoggedIn }: RoutinesPageProps) {
                 <RoutineBenefits images={routineBenefits} />
             )}
         </main>
+        
     );
 }
