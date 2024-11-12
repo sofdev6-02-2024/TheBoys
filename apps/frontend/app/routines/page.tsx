@@ -16,7 +16,6 @@ import benefit1Mobile from "./Assets/benefit1Mobile.webp";
 import benefit2Mobile from "./Assets/benefit2Mobile.webp";
 import benefit3Mobile from "./Assets/benefit3Mobile.webp";
 import benefit4Mobile from "./Assets/benefit4Mobile.webp";
-import Header from "../Header/NavBarDisplay";
 import { AuthProvider, useAuth } from "../AuthContextType"; 
 import { useRouter } from 'next/navigation';
 import RoutesNavigation from "../../ routes"; 

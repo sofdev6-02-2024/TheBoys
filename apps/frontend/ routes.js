@@ -1,7 +1,7 @@
 
 const RoutesNavigation = {
     HomePage: "/",
-    Routines: "/Routines",
+    Routines: "/routines",
     Motivational: "/",
     Calendar: "/Calendar",
     ChatBot: "/ChatBot",

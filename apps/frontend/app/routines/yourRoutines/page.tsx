@@ -1,4 +1,3 @@
-import Header from "./../../Header/NavBarDisplay";
 
 import RoutinesGrid from "./components/RoutinesGrid";
 
@@ -10,8 +9,6 @@ export default function Home() {
       <div className="max-w-[1440px] w-full flex flex-col">
         <h1 className="text-2xl font-bold text-center text-white mt-4">Your Routines</h1>
         <RoutinesGrid />
-
-        
       </div>
     </div>
   );

@@ -20,10 +20,13 @@ export class RoutineExercise {
   time: number;
 
   @Column({
+    name: 'status',
     type: 'enum',
     enum: ['not started', 'in progress', 'completed'],
     default: 'not started', 
   })
+  status: 'not started' | 'in progress' | 'completed';
+
 
   @ManyToOne(() => Routine, (routine) => routine.exercises, { cascade: true })
   routine: Routine;
