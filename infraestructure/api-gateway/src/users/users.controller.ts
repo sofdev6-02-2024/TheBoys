@@ -1,15 +1,15 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Inject,
-    Param,
-    Post,
-    Put,
-  } from '@nestjs/common';
-  import { ClientProxy } from '@nestjs/microservices';
-  import { Observable } from 'rxjs';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 import { ObjectId } from 'mongodb';
   
 @Controller('users')
