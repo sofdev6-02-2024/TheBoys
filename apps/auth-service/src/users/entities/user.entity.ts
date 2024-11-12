@@ -1,17 +1,11 @@
-import { UUID } from 'crypto';
+import { Entity, ObjectIdColumn, Column, OneToOne } from 'typeorm';
+import { ObjectId } from 'mongodb';
 import { UsersInformation } from 'src/users-informations/entities/users-information.entity';
-import {
-  Column,
-  DeleteDateColumn,
-  Entity,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+  @ObjectIdColumn()
+  id: ObjectId;
 
   @Column()
   username: string;
@@ -22,22 +16,18 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: 'User' })
   role: string;
 
-  @Column()
+  @Column({ default: 'UTC' })
   timezone: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @DeleteDateColumn()
+  @Column({ type: 'timestamp', nullable: true })
   deleteAt: Date;
 
-  @OneToOne(
-    () => UsersInformation,
-    (usersInformation) => usersInformation.user,
-    { cascade: true },
-  )
+  @OneToOne(() => UsersInformation, (usersInformation) => usersInformation.user, { cascade: true })
   userInformation: UsersInformation;
 }
