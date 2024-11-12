@@ -25,7 +25,7 @@ import { ObjectId } from 'mongodb';
     }
   
     @Get(':id')
-    findOne(@Param('id') id: ObjectId): Observable<any> { 
+    findOne(@Param('id') id: string): Observable<any> { 
       return this.authService.send('findOneUser', id);
     }
   
@@ -43,7 +43,7 @@ import { ObjectId } from 'mongodb';
     }
   
     @Delete(':id')
-    remove(@Param('id') id: ObjectId): Observable<any> {  
+    remove(@Param('id') id: string): Observable<any> {  
       return this.authService.send('removeUser', id);
     }
   }

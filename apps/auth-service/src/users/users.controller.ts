@@ -20,8 +20,9 @@ export class UsersController {
   }
 
   @MessagePattern('findOneUser')
-  findOne(@Payload() id: ObjectId) { 
-    return this.usersService.findOne(id);
+  findOne(@Payload() id: string) { 
+    const objectId = new ObjectId(id);
+    return this.usersService.findOne(objectId);
   }
 
   @MessagePattern('updateUser')
@@ -31,7 +32,8 @@ export class UsersController {
   }
 
   @MessagePattern('removeUser')
-  remove(@Payload() id: ObjectId) {
-    return this.usersService.remove(id);
+  remove(@Payload() id: string) {
+    const objectId = new ObjectId(id);
+    return this.usersService.remove(objectId);
   }
 }

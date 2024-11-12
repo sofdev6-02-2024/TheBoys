@@ -5,7 +5,7 @@ import { UsersInformation } from 'src/users-informations/entities/users-informat
 @Entity()
 export class User {
   @ObjectIdColumn()
-  id: ObjectId;
+  userId: ObjectId;
 
   @Column()
   username: string;

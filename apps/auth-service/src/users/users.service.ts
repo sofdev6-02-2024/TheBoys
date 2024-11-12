@@ -34,34 +34,48 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.find({
-      select: ['id', 'username', 'email', 'password', 'role', 'timezone', 'created_at'],
+      select: [
+        'userId', 
+        'username', 
+        'email', 
+        'password', 
+        'role', 
+        'timezone', 
+        'created_at'],
     });
   }
 
   async findOne(id: ObjectId): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id: id } });
-
+    const users = await this.findAll(); 
+    const user = users.find(user => user.userId.toString() === id.toString());
+  
     if (!user) {
       throw new Error('User not found');
     }
-
+  
     return user;
   }
 
   async update(id: ObjectId, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.preload({
-      id: id,
-      ...updateUserDto,
-    });
+    const user = await this.findOne(id);
 
     if (!user) {
       throw new Error('User not found');
     }
 
-    return await this.userRepository.save(user);
+    const updatedUser = Object.assign(user, updateUserDto);
+    await this.userRepository.save(updatedUser);
+    return updatedUser;
   }
 
-  async remove(id: ObjectId): Promise<void> {
-    await this.userRepository.softDelete(id);
+  async remove(id: ObjectId) {
+    const user = await this.findOne(id); 
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    await this.userRepository.remove(user);  
+    return { message: 'User successfully removed' }; 
   }
 }
