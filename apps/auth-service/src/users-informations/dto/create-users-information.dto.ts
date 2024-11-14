@@ -1,5 +1,4 @@
-import { IsDecimal, IsInt, IsNumber, IsString } from 'class-validator';
-import { Types } from 'mongoose';
+import { IsInt, IsNumber, IsString } from 'class-validator';
 
 export class CreateUserInformationDto {
   @IsString()
