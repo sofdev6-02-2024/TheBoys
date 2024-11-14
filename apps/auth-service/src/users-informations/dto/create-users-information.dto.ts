@@ -1,14 +1,17 @@
-import { IsDecimal, IsInt, IsString } from "class-validator";
+import { IsDecimal, IsInt, IsNumber, IsString } from 'class-validator';
+import { Types } from 'mongoose';
 
-export class CreateUsersInformationDto {
-
-  @IsInt()
-  user_id: number;
+export class CreateUserInformationDto {
+  @IsString()
+  userId: string;
 
   @IsInt()
   height: number;
 
-  @IsDecimal()
+  @IsNumber({
+    allowInfinity: false,
+    maxDecimalPlaces: 2,
+  })
   weight: number;
 
   @IsInt()
@@ -17,12 +20,15 @@ export class CreateUsersInformationDto {
   @IsString()
   gender: string;
 
-  @IsDecimal()
+  @IsNumber({
+    allowInfinity: false,
+    maxDecimalPlaces: 2,
+  })
   body_fat_porcentage: number;
 
   @IsString()
   activity_level: string;
 
   @IsString()
-  goal: string; 
+  goal: string;
 }

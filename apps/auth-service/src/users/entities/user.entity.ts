@@ -1,33 +1,44 @@
-import { Entity, ObjectIdColumn, Column, OneToOne } from 'typeorm';
-import { ObjectId } from 'mongodb';
-import { UsersInformation } from 'src/users-informations/entities/users-information.entity';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
-@Entity()
-export class User {
-  @ObjectIdColumn()
-  userId: ObjectId;
+export type UserDocument = User & Document;
 
-  @Column()
+@Schema({ versionKey: false })
+export class User extends Document {
+  @Prop({ type: Types.ObjectId })
+  userId: Types.ObjectId;
+
+  @Prop()
   username: string;
 
-  @Column()
+  @Prop()
   email: string;
 
-  @Column()
+  @Prop()
   password: string;
 
-  @Column({ default: 'User' })
+  @Prop({ default: 'User' })
   role: string;
 
-  @Column({ default: 'UTC' })
+  @Prop({ default: 'UTC' })
   timezone: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Prop({ type: Date, default: Date.now })
   created_at: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Prop({ type: Date, nullable: true })
   deleteAt: Date;
 
-  @OneToOne(() => UsersInformation, (usersInformation) => usersInformation.user, { cascade: true })
-  userInformation: UsersInformation;
+  @Prop({ type: Types.ObjectId, ref: 'UserInformation' })
+  userInformation: Types.ObjectId;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    return ret;
+  },
+});

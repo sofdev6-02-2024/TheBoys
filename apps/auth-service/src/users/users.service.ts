@@ -1,31 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import { User, UserDocument } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ObjectId } from 'mongodb';
+import { Model, Types } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { UserInformationsService } from 'src/users-informations/users-informations.service';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectModel(User.name)
+    private readonly userModel: Model<UserDocument>,
+    @Inject(forwardRef(() => UserInformationsService))
+    private readonly userInformationService: UserInformationsService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      const user = this.userRepository.create({
+      const createdUser = new this.userModel({
         ...createUserDto,
-        role: 'User',
+        role: createUserDto.role || 'User',
         timezone: 'UTC',
         created_at: new Date(),
         deleteAt: null,
       });
 
-      await this.userRepository.save(user);
-
-      return user;
+      await createdUser.save();
+      return createdUser;
     } catch (error) {
       console.error('Error creating user:', error);
       throw new Error('Error creating user');
@@ -33,49 +34,48 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return await this.userRepository.find({
-      select: [
-        'userId', 
-        'username', 
-        'email', 
-        'password', 
-        'role', 
-        'timezone', 
-        'created_at'],
-    });
+    return await this.userModel.find().exec();
   }
 
-  async findOne(id: ObjectId): Promise<User> {
-    const users = await this.findAll(); 
-    const user = users.find(user => user.userId.toString() === id.toString());
-  
+  async findOne(id: Types.ObjectId) {
+    const user = await this.userModel.findOne({ _id: id }).exec();
+
     if (!user) {
       throw new Error('User not found');
     }
-  
+
     return user;
   }
 
-  async update(id: ObjectId, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(
+    id: Types.ObjectId,
+    updateUserDto: UpdateUserDto,
+  ): Promise<User> {
     const user = await this.findOne(id);
 
     if (!user) {
       throw new Error('User not found');
     }
 
-    const updatedUser = Object.assign(user, updateUserDto);
-    await this.userRepository.save(updatedUser);
+    const updatedUser = await this.userModel
+      .findByIdAndUpdate(user._id, updateUserDto, {
+        new: true,
+      })
+      .exec();
+
     return updatedUser;
   }
 
-  async remove(id: ObjectId) {
-    const user = await this.findOne(id); 
+  async remove(id: Types.ObjectId): Promise<{ message: string }> {
+    const user = await this.findOne(id);
 
     if (!user) {
       throw new Error('User not found');
     }
 
-    await this.userRepository.remove(user);  
-    return { message: 'User successfully removed' }; 
+    await this.userInformationService.removeUserInformationByUserId(id);
+
+    await this.userModel.findByIdAndDelete(user._id).exec();
+    return { message: 'User successfully removed' };
   }
 }

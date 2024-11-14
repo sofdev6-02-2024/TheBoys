@@ -12,8 +12,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { Types } from 'mongoose';
 import { Observable } from 'rxjs';
 
-@Controller('users')
-export class UsersController {
+@Controller('users-information')
+export class UsersInformationController {
   constructor(
     @Inject('AUTH_SERVICE')
     private readonly authService: ClientProxy,
@@ -21,32 +21,32 @@ export class UsersController {
 
   @Get()
   findAll(): Observable<any> {
-    return this.authService.send('findAllUsers', {});
+    return this.authService.send('findAllUsersInfo', {});
   }
 
   @Get(':id')
   findOne(@Param('id') id: Types.ObjectId): Observable<any> {
-    return this.authService.send('findOneUser', id);
+    return this.authService.send('findOneUsersInfo', id);
   }
 
   @Post()
-  create(@Body() createUserDto: any): Observable<any> {
-    return this.authService.send('createUser', createUserDto);
+  create(@Body() createUserInfoDto: any): Observable<any> {
+    return this.authService.send('createUsersInfo', createUserInfoDto);
   }
 
   @Put(':id')
   update(
-    @Body() updateUserDto: any,
+    @Body() updateUserInfoDto: any,
     @Param('id') id: Types.ObjectId,
   ): Observable<any> {
-    return this.authService.send('updateUser', {
+    return this.authService.send('updateUsersInfo', {
       id: id,
-      updateUserDto,
+      updateUserInfoDto,
     });
   }
 
   @Delete(':id')
   remove(@Param('id') id: Types.ObjectId): Observable<any> {
-    return this.authService.send('removeUser', id);
+    return this.authService.send('removeUsersInfo', id);
   }
 }

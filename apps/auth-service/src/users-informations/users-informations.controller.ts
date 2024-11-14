@@ -1,37 +1,44 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { UsersInformationsService } from './users-informations.service';
-import { CreateUsersInformationDto } from './dto/create-users-information.dto';
-import { UpdateUsersInformationDto } from './dto/update-users-information.dto';
-import { UUID } from 'crypto';
+import { UserInformationsService } from './users-informations.service';
+import { CreateUserInformationDto } from './dto/create-users-information.dto';
+import { UpdateUserInformationDto } from './dto/update-users-information.dto';
+import { Types } from 'mongoose';
+import { UserInformation } from './entities/users-information.entity';
 
 @Controller('users-information')
-export class UsersInformationsController {
-  constructor(private readonly usersInformationsService: UsersInformationsService) {}
+export class UserInformationsController {
+  constructor(private userInformationsService: UserInformationsService) {}
 
   @MessagePattern('createUsersInfo')
-  create(@Payload() createUsersInformationDto: CreateUsersInformationDto) {
-    return this.usersInformationsService.create(createUsersInformationDto);
+  create(@Payload() createUsersInformationDto: CreateUserInformationDto) {
+    return this.userInformationsService.create(createUsersInformationDto);
   }
 
   @MessagePattern('findAllUsersInfo')
-  findAll() {
-    return this.usersInformationsService.findAll();
+  findAll(): Promise<UserInformation[]> {
+    return this.userInformationsService.findAll();
   }
 
   @MessagePattern('findOneUsersInfo')
-  findOne(@Payload() id: UUID) {
-    return this.usersInformationsService.findOne(id);
+  findOne(@Payload() id: Types.ObjectId) {
+    return this.userInformationsService.findOne(id);
   }
 
   @MessagePattern('updateUsersInfo')
-  update(@Payload() payload: { id: UUID; updateUsersInformationDto: UpdateUsersInformationDto }) {
-    const { id, updateUsersInformationDto } = payload;
-    return this.usersInformationsService.update(id, updateUsersInformationDto);
+  update(
+    @Payload()
+    payload: {
+      id: Types.ObjectId;
+      updateUserInfoDto: UpdateUserInformationDto;
+    },
+  ) {
+    const { id, updateUserInfoDto } = payload;
+    return this.userInformationsService.update(id, updateUserInfoDto);
   }
 
   @MessagePattern('removeUsersInfo')
-  remove(@Payload() id: UUID) {
-    return this.usersInformationsService.remove(id);
+  remove(@Payload() id: Types.ObjectId) {
+    return this.userInformationsService.remove(id);
   }
 }

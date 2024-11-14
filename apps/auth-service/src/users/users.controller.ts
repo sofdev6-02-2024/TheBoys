@@ -1,13 +1,13 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ObjectId } from 'mongodb';
+import { Types } from 'mongoose';
 
 @Controller('user')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UserController {
+  constructor(private readonly usersService: UserService) {}
 
   @MessagePattern('createUser')
   create(@Payload() createUserDto: CreateUserDto) {
@@ -20,20 +20,20 @@ export class UsersController {
   }
 
   @MessagePattern('findOneUser')
-  findOne(@Payload() id: string) { 
-    const objectId = new ObjectId(id);
-    return this.usersService.findOne(objectId);
+  findOne(@Payload() id: Types.ObjectId) {
+    return this.usersService.findOne(id);
   }
 
   @MessagePattern('updateUser')
-  update(@Payload() payload: { id: ObjectId; updateUserDto: UpdateUserDto }) {  
+  update(
+    @Payload() payload: { id: Types.ObjectId; updateUserDto: UpdateUserDto },
+  ) {
     const { id, updateUserDto } = payload;
     return this.usersService.update(id, updateUserDto);
   }
 
   @MessagePattern('removeUser')
-  remove(@Payload() id: string) {
-    const objectId = new ObjectId(id);
-    return this.usersService.remove(objectId);
+  remove(@Payload() id: Types.ObjectId) {
+    return this.usersService.remove(id);
   }
 }

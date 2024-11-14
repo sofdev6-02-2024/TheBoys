@@ -1,12 +1,19 @@
-import { Module } from '@nestjs/common';
-import { UsersInformationsService } from './users-informations.service';
-import { UsersInformationsController } from './users-informations.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersInformation } from './entities/users-information.entity';
+import { forwardRef, Module } from '@nestjs/common';
+import { UserInformationsService } from './users-informations.service';
+import { UserInformationsController } from './users-informations.controller';
+import { UserInformationSchema } from './entities/users-information.entity';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsersInformation])],
-  controllers: [UsersInformationsController],
-  providers: [UsersInformationsService],
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'UserInformation', schema: UserInformationSchema },
+    ]),
+    forwardRef(() => UsersModule),
+  ],
+  controllers: [UserInformationsController],
+  providers: [UserInformationsService],
+  exports: [UserInformationsService],
 })
 export class UsersInformationsModule {}

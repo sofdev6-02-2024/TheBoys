@@ -1,36 +1,37 @@
-import { IsDecimal, IsInt, IsOptional, IsString } from "class-validator";
+import { IsInt, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class UpdateUsersInformationDto {
+export class UpdateUserInformationDto {
+  @IsInt()
+  @IsOptional()
+  height?: number;
+
+  @IsNumber({
+    allowInfinity: false,
+    maxDecimalPlaces: 2,
+  })
+  @IsOptional()
+  weight?: number;
 
   @IsInt()
   @IsOptional()
-  user_id: number;
-
-  @IsInt()
-  @IsOptional()
-  height: number;
-
-  @IsDecimal()
-  @IsOptional()
-  weight: number;
-
-  @IsInt()
-  @IsOptional()
-  age: number;
+  age?: number;
 
   @IsString()
   @IsOptional()
-  gender: string;
+  gender?: string;
 
-  @IsDecimal()
+  @IsNumber({
+    allowInfinity: false,
+    maxDecimalPlaces: 2,
+  })
   @IsOptional()
-  body_fat_porcentage: number;
+  body_fat_porcentage?: number;
 
   @IsString()
   @IsOptional()
-  activity_level: string;
+  activity_level?: string;
 
   @IsString()
   @IsOptional()
-  goal: string; 
+  goal?: string;
 }

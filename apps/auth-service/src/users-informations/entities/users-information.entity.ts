@@ -1,52 +1,60 @@
-import { UUID } from 'crypto';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, ObjectId, Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 import { User } from 'src/users/entities/user.entity';
-import {
-  Column,
-  DeleteDateColumn,
-  Entity,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { DeleteDateColumn, OneToOne } from 'typeorm';
 
-@Entity()
-export class UsersInformation {
-  @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+export type UserInformationDocument = UserInformation & Document;
 
-  @Column()
+@Schema({ versionKey: false })
+export class UserInformation {
+  @Prop({ type: Types.ObjectId })
+  userInformationId: Types.ObjectId;
+
+  @Prop()
+  userId: Types.ObjectId;
+
+  @Prop()
   height: number;
 
-  @Column('decimal')
+  @Prop({ type: MongooseSchema.Types.Decimal128 })
   weight: number;
 
-  @Column()
+  @Prop()
   age: number;
 
-  @Column()
+  @Prop()
   gender: string;
 
-  @Column('decimal')
+  @Prop({ type: MongooseSchema.Types.Decimal128 })
   body_fat_porcentage: number;
 
-  @Column()
+  @Prop()
   activity_level: string;
 
-  @Column()
+  @Prop()
   goal: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Prop({ type: Date, default: () => new Date() })
   created_at: Date;
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
+  @Prop({ type: Date, default: () => new Date(), onUpdate: new Date() })
   updated_at: Date;
 
   @DeleteDateColumn()
   deleteAt: Date;
 
-  @OneToOne(() => User, (user) => user.userInformation)
-  user: User;
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  user: Types.ObjectId;
 }
+
+export const UserInformationSchema =
+  SchemaFactory.createForClass(UserInformation);
+
+UserInformationSchema.set('toJSON', {
+  transform: function (ret) {
+    ret.id = ret._id; 
+    delete ret._id; 
+    return ret;
+  },
+});
