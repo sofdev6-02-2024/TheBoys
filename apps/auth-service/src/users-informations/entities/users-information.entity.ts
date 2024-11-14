@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, ObjectId, Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
-import { User } from 'src/users/entities/user.entity';
-import { DeleteDateColumn, OneToOne } from 'typeorm';
+import { DeleteDateColumn } from 'typeorm';
 
 export type UserInformationDocument = UserInformation & Document;
 
