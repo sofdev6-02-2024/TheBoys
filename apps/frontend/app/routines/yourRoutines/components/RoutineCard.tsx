@@ -1,39 +1,51 @@
-import React, { useState } from 'react';
-import ProgressCircle from './ProgressCircle';
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import ProgressCircle from "./ProgressCircle";
 
 interface Exercise {
-    status: 'completed' | 'in progress' | 'not started';
-  }
+  status: "completed" | "in progress" | "not started";
+}
 
 interface RoutineCardProps {
   title: string;
   imageUrl: string;
   exercises: Exercise[];
-  userStatus: 'completed' | 'in progress' | 'not started';
+  userStatus: "completed" | "in progress" | "not started";
+  id: string;
 }
 
-const RoutineCard: React.FC<RoutineCardProps> = ({ title, imageUrl, exercises, userStatus }) => {
+const RoutineCard: React.FC<RoutineCardProps> = ({
+  title,
+  imageUrl,
+  exercises,
+  userStatus,
+  id,
+}) => {
   const totalExercises = exercises.length;
-  const completedExercises = exercises.filter(exercise => exercise.status === 'completed').length;
+  const completedExercises = exercises.filter(
+    (exercise) => exercise.status === "completed"
+  ).length;
   const progress = totalExercises > 0 ? (completedExercises / totalExercises) * 100 : 0;
   const [started, setStarted] = useState(progress > 0);
-
-  const handleStartRoutine = () => {
-    setStarted(true);
-  };
+  const router = useRouter();
 
   const handleOverlayClick = () => {
-    if (started) {
-      alert("Routine in progress");
+    if (started || progress > 0) {
+      router.push(`/routines/yourRoutines/listRoutines/${id}`);
     }
   };
 
   return (
     <div className="relative rounded-lg overflow-hidden shadow-lg w-full h-auto xxl:w-[450px] xxl:h-[250px] flex-shrink-0 group">
       <img
-        src={imageUrl}
+        src={imageUrl || "/default-image.jpg"} // Fallback para imagen
         alt={title}
         className="object-cover w-[450px] h-[250px]"
+        onError={(e) => {
+          e.currentTarget.src = "/default-image.jpg";
+        }}
       />
 
       {(started || progress > 0) && (
@@ -56,7 +68,7 @@ const RoutineCard: React.FC<RoutineCardProps> = ({ title, imageUrl, exercises, u
       {!started && progress === 0 && (
         <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
           <button
-            onClick={handleStartRoutine}
+            onClick={() => setStarted(true)}
             className="mt-36 px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600"
           >
             Start Routine
@@ -68,4 +80,3 @@ const RoutineCard: React.FC<RoutineCardProps> = ({ title, imageUrl, exercises, u
 };
 
 export default RoutineCard;
-

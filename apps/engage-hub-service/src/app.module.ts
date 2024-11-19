@@ -8,7 +8,13 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env'],
+    }),
+    
     TypeOrmModule.forRoot({
+      
       type: 'mysql',
       host: `${process.env.DB_HOST}`,
       username: `${process.env.DB_USER}`,
@@ -21,10 +27,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     RoutinesModule,
     ExerciseModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: ['.env'],
-    }),
+
   ],
   controllers: [AppController],
   providers: [AppService],
