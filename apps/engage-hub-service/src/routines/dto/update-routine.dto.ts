@@ -6,7 +6,11 @@ import {
   IsUUID,
   IsEnum,
   IsUrl,
+  IsArray,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+import { UpdateRoutineExerciseDto } from './UpdateRoutineExerciseDto';
 
 export class UpdateRoutineDto {
   @IsOptional()
@@ -31,4 +35,10 @@ export class UpdateRoutineDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => UpdateRoutineExerciseDto)
+  exercises: UpdateRoutineExerciseDto[];
 }

@@ -61,8 +61,33 @@ export class RoutinesService {
   }
 
   async update(id: UUID, updateRoutineDto: UpdateRoutineDto) {
-    return this.routinesRepository.update(id, updateRoutineDto);
+    const { exercises, ...routineData } = updateRoutineDto;
+  
+    await this.routinesRepository.update(id, routineData);
+  
+    if (exercises && exercises.length > 0) {
+      for (const exercise of exercises) {
+        await this.routineExerciseRepository.update(exercise.id, {
+          repetitions: exercise.repetitions,
+          time: exercise.time,
+          status: exercise.status,
+        });
+      }
+    }
+  
+    const updatedRoutine = await this.routinesRepository.findOne({
+      where: { id },
+      relations: ['exercises'],
+    });
+  
+    if (!updatedRoutine) {
+      throw new NotFoundException('Routine not found after update');
+    }
+  
+    return updatedRoutine;
   }
+  
+  
 
   remove(id: UUID) {
     this.routinesRepository.delete({ id });
