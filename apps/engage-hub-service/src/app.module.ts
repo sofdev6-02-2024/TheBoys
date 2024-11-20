@@ -5,6 +5,7 @@ import { ExerciseModule } from './ExerciseService/exercise.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoutinesModule } from './routines/routines.module';
 import { ConfigModule } from '@nestjs/config';
+import { TrainterRequestModule } from './trainter-request/trainter-request.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: ['.env'],
     }),
+    TrainterRequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
