@@ -45,12 +45,15 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
   return (
     <div className="relative rounded-lg overflow-hidden shadow-lg w-full h-auto xxl:w-[450px] xxl:h-[250px] flex-shrink-0 group">
       <Image
-        src={imageUrl || "/default-image.jpg"} // Fallback para imagen
+        src={imageUrl } 
         alt={title}
         className="object-cover w-[450px] h-[250px]"
         onError={(e) => {
           e.currentTarget.src = "/default-image.jpg";
         }}
+
+        width={400}
+        height={300}
       />
 
       {(started || progress > 0) && (

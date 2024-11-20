@@ -118,6 +118,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
             exerciseStatus !== "not started" ? "filter brightness-50" : ""
           }`}
           style={{ maxHeight: "460px" }}
+          width={400}
+          height={300}
         />
         {exerciseStatus !== "not started" && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

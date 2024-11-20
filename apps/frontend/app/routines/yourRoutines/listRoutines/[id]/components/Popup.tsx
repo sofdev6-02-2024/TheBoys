@@ -47,6 +47,8 @@ const Popup: React.FC<PopupProps> = ({
           src={gifUrl}
           alt={`Ejercicio ${name}`}
           className="w-full sm:h-96 h-52 object-contain mb-4"
+          width={400}
+          height={300}
         />
 <div className="mb-4 text-white flex flex-col items-center">
   <h3 className="text-xl font-semibold mb-2">Instrucciones:</h3>
