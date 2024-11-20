@@ -27,7 +27,11 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
   const completedExercises = exercises.filter(
     (exercise) => exercise.status === "completed"
   ).length;
-  const progress = totalExercises > 0 ? (completedExercises / totalExercises) * 100 : 0;
+
+  const inProgressExercises = exercises?.filter((exercise) => exercise.status === "in progress").length || 0;
+
+  const progress = totalExercises > 0 ? ((completedExercises + inProgressExercises * 0.5) / totalExercises) * 100 : 0;
+
   const [started, setStarted] = useState(progress > 0);
   const router = useRouter();
 

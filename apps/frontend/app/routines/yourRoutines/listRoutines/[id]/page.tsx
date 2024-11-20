@@ -2,10 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import ProgressMessage from "./ProgressMessage";
-import ProgressBar from "./ProgressBar";
-import Pagination from "./Pagination";
-import ExerciseCard from "./ExerciseCard";
+import ProgressMessage from "./components/ProgressMessage";
+import Pagination from "./components/Pagination";
+import ExerciseCard from "./components/ExerciseCard";
 
 interface Exercise {
   id: string;
@@ -21,6 +20,7 @@ interface DetailedExercise {
   name: string;
   gifUrl: string;
   instructions: string[];
+  exerciseId: string;
 }
 
 interface Routine {
@@ -38,6 +38,7 @@ const RoutineExercisesPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const exercisesPerPage = 9;
 
+
   useEffect(() => {
     if (!id) {
       setError("No se proporcionó un ID de rutina.");
@@ -49,8 +50,7 @@ const RoutineExercisesPage: React.FC = () => {
       try {
         setLoading(true);
 
-        // Fetch de las rutinas
-        const routineRes = await fetch("http://localhost:4444/routines/user/673a9754eda4707d9db77058");
+        const routineRes = await fetch(`http://localhost:4444/routines/user/673a9754eda4707d9db77058`);
         if (!routineRes.ok) {
           throw new Error(`Error al obtener las rutinas: ${routineRes.statusText}`);
         }
@@ -60,19 +60,33 @@ const RoutineExercisesPage: React.FC = () => {
           throw new Error(`No se encontró ninguna rutina con el ID: ${id}`);
         }
 
-        // Fetch de los ejercicios
         const exerciseRes = await fetch("http://localhost:4444/exercises");
         if (!exerciseRes.ok) {
           throw new Error(`Error al obtener los ejercicios: ${exerciseRes.statusText}`);
         }
         const allExercises: DetailedExercise[] = await exerciseRes.json();
 
-        // Mapeo de los ejercicios detallados
         const detailedExercises = foundRoutine.exercises.map((exercise) => {
-          const detailed = allExercises.find((e) => e.id === exercise.exerciseId);
-          return detailed
-            ? { ...exercise, ...detailed }
-            : { ...exercise, name: "Desconocido", gifUrl: "", instructions: [] };
+          const detailedById = allExercises.find((e) => e.id === exercise.exerciseId);
+        
+          if (detailedById) {
+            return {
+              ...detailedById, 
+              id: exercise.id,
+              exerciseId: exercise.exerciseId,  
+              routineId: exercise.routineId,   
+              repetitions: exercise.repetitions,
+              time: exercise.time,
+              status: exercise.status,
+            };
+          } else {
+            return {
+              ...exercise,  
+              name: "Desconocido",
+              gifUrl: "",
+              instructions: [],
+            };
+          }
         });
 
         setExercises(detailedExercises);
@@ -86,13 +100,32 @@ const RoutineExercisesPage: React.FC = () => {
     fetchRoutineAndExercises();
   }, [id]);
 
+  const calculateProgress = (exercises: (Exercise & DetailedExercise)[]) => {
+    const totalExercises = exercises.length;
+    const completedExercises = exercises.filter(ex => ex.status === "completed").length;
+    const inProgressExercises = exercises.filter(ex => ex.status === "in progress").length;
+
+    return ((completedExercises + inProgressExercises * 0.5) / totalExercises) * 100;
+  };
+
   const totalPages = exercises ? Math.ceil(exercises.length / exercisesPerPage) : 1;
-  const completedExercises = exercises?.filter((exercise) => exercise.status === "completed").length || 0;
   const currentExercises = exercises?.slice(
     (currentPage - 1) * exercisesPerPage,
     currentPage * exercisesPerPage
   );
-  const progressPercentage = exercises ? (completedExercises / exercises.length) * 100 : 0;
+
+  const handleStatusChange = (id: string | undefined, newStatus: "completed" | "in progress" | "not started") => {
+    setExercises((prevExercises) => {
+      if (prevExercises === null) {
+        return [];
+      }
+      return prevExercises.map((exercise) =>
+        exercise.id === id ? { ...exercise, status: newStatus } : exercise
+      );
+    });
+  };
+  
+  const progressPercentage = exercises ? calculateProgress(exercises) : 0;
 
   if (loading) return <p className="text-white">Cargando ejercicios...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
@@ -120,6 +153,9 @@ const RoutineExercisesPage: React.FC = () => {
             status={exercise.status}
             instructions={exercise.instructions}
             repetitions={exercise.repetitions}
+            routineId={exercise.routineId}
+            id={exercise.id}
+            onStatusChange={handleStatusChange}  
           />
         ))}
       </div>
