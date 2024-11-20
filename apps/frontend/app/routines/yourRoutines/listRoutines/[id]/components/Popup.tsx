@@ -1,6 +1,7 @@
 import React from "react";
 import ExerciseStatusButton from "./ExerciseStatusButton";
 import { FaTimes } from "react-icons/fa";
+import Image from 'next/image';
 
 interface PopupProps {
   gifUrl: string;
@@ -42,7 +43,7 @@ const Popup: React.FC<PopupProps> = ({
         </button>
 
         <h2 className="text-2xl font-bold mb-4 text-center text-white">{name}</h2>
-        <img
+        <Image
           src={gifUrl}
           alt={`Ejercicio ${name}`}
           className="w-full sm:h-96 h-52 object-contain mb-4"

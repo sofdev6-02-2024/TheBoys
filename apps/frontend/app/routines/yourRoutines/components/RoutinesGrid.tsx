@@ -27,7 +27,7 @@ const RoutinesGrid: React.FC = () => {
   useEffect(() => {
     const loggedInUserId = localStorage.getItem("userId");
     setUserId(loggedInUserId);
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const fetchRoutines = async () => {
@@ -57,7 +57,7 @@ const RoutinesGrid: React.FC = () => {
     };
 
     fetchRoutines();
-  }, []);
+  }, [userId]);
 
   if (loading) {
     return <div className="text-white text-center">Loading routines...</div>;

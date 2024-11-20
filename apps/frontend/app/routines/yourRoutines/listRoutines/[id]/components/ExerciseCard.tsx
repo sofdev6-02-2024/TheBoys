@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ProgressCircle from "../../../components/ProgressCircle";
 import Popup from "./Popup";
 import Notification from "./Notification";
+import Image from 'next/image';
 
 interface ExerciseCardProps {
   gifUrl: string;
@@ -28,7 +29,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [exerciseStatus, setExerciseStatus] = useState<"completed" | "in progress" | "not started">(status);
   const [reps, setReps] = useState<number | null>(repetitions);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [notification, setNotification] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
   const handleClick = () => {
@@ -110,7 +111,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
         className="w-full h-full"
         aria-label={`Seleccionar ejercicio ${name}`}
       >
-        <img
+        <Image
           src={gifUrl}
           alt={`Ejercicio ${name}`}
           className={`w-full h-full object-contain transition-all duration-500 ${

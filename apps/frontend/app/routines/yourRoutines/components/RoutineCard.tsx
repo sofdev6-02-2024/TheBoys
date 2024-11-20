@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import ProgressCircle from "./ProgressCircle";
+import Image from 'next/image';
 
 interface Exercise {
   status: "completed" | "in progress" | "not started";
@@ -43,7 +44,7 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
 
   return (
     <div className="relative rounded-lg overflow-hidden shadow-lg w-full h-auto xxl:w-[450px] xxl:h-[250px] flex-shrink-0 group">
-      <img
+      <Image
         src={imageUrl || "/default-image.jpg"} // Fallback para imagen
         alt={title}
         className="object-cover w-[450px] h-[250px]"
