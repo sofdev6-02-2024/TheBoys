@@ -60,3 +60,14 @@ export interface RoutineActionButtonsProps {
   title: string;
   description: string;
 }
+
+export interface User {
+  userId: string;
+  username: string;
+  email: string;
+  password?: string;
+  userImage?: string;
+  role: string;
+  timezone: string;
+  userInformation?: any;
+}
