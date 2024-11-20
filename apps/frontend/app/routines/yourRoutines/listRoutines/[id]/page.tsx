@@ -32,16 +32,22 @@ const RoutineExercisesPage: React.FC = () => {
   const params = useParams();
   const id = params?.id;
 
+  const [userId, setUserId] = useState<string | null>(null);
   const [exercises, setExercises] = useState<(Exercise & DetailedExercise)[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const exercisesPerPage = 9;
 
+  useEffect(() => {
+    const loggedInUserId = localStorage.getItem("userId");
+    setUserId(loggedInUserId);
+  }, []);
 
   useEffect(() => {
-    if (!id) {
-      setError("No se proporcionó un ID de rutina.");
+    if (!id || !userId) {
+      if (!id) setError("A routine ID was not provided.");
+      if (!userId) setError("User is not logged in.");
       setLoading(false);
       return;
     }
@@ -50,19 +56,19 @@ const RoutineExercisesPage: React.FC = () => {
       try {
         setLoading(true);
 
-        const routineRes = await fetch(`http://localhost:4444/routines/user/673a9754eda4707d9db77058`);
+        const routineRes = await fetch(`http://localhost:4444/routines/user/${userId}`);
         if (!routineRes.ok) {
-          throw new Error(`Error al obtener las rutinas: ${routineRes.statusText}`);
+          throw new Error(`Error in obtaining the routines: ${routineRes.statusText}`);
         }
         const routines: Routine[] = await routineRes.json();
         const foundRoutine = routines.find((routine) => routine.id === id);
         if (!foundRoutine) {
-          throw new Error(`No se encontró ninguna rutina con el ID: ${id}`);
+          throw new Error(`No routine was found with the ID: ${id}`);
         }
 
         const exerciseRes = await fetch("http://localhost:4444/exercises");
         if (!exerciseRes.ok) {
-          throw new Error(`Error al obtener los ejercicios: ${exerciseRes.statusText}`);
+          throw new Error(`Error in obtaining the exercises:  ${exerciseRes.statusText}`);
         }
         const allExercises: DetailedExercise[] = await exerciseRes.json();
 
@@ -82,7 +88,7 @@ const RoutineExercisesPage: React.FC = () => {
           } else {
             return {
               ...exercise,  
-              name: "Desconocido",
+              name: "Unknown",
               gifUrl: "",
               instructions: [],
             };
@@ -91,7 +97,7 @@ const RoutineExercisesPage: React.FC = () => {
 
         setExercises(detailedExercises);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Error inesperado");
+        setError(err instanceof Error ? err.message : "Unexpected error");
       } finally {
         setLoading(false);
       }
@@ -130,7 +136,7 @@ const RoutineExercisesPage: React.FC = () => {
   if (loading) return <p className="text-white">Cargando ejercicios...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
   if (!exercises || exercises.length === 0)
-    return <p className="text-white">No se encontraron ejercicios para la rutina con ID: {id}</p>;
+    return <p className="text-white">No exercises were found for the routine with ID: {id}</p>;
 
   return (
     <div className="p-4">

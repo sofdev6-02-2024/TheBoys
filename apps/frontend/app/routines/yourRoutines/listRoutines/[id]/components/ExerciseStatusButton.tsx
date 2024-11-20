@@ -18,17 +18,17 @@ const ExerciseStatusButton: React.FC<ExerciseStatusButtonProps> = ({
   switch (status) {
     case "completed":
       icon = <FaCheckCircle className="mr-2" />;
-      buttonText = "Completado";
+      buttonText = "completed";
       buttonColor = currentStatus === status ? "bg-green-500 border-2 border-white" : "bg-green-200";
       break;
     case "in progress":
       icon = <FaPauseCircle className="mr-2" />;
-      buttonText = "En Progreso";
+      buttonText = "in progress";
       buttonColor = currentStatus === status ? "bg-blue-500 border-2 border-white" : "bg-blue-200";
       break;
     case "not started":
       icon = <FaRegCircle className="mr-2" />;
-      buttonText = "No Iniciado";
+      buttonText = "not started";
       buttonColor = currentStatus === status ? "bg-yellow-500 border-2 border-white" : "bg-yellow-200";
       break;
   }

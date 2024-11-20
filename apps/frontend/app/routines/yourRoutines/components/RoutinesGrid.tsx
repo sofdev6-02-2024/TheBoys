@@ -22,19 +22,24 @@ interface Routine {
 const RoutinesGrid: React.FC = () => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loggedInUserId = localStorage.getItem("userId");
+    setUserId(loggedInUserId);
+  }, []);
 
   useEffect(() => {
     const fetchRoutines = async () => {
       try {
         const res = await fetch(
-          "http://localhost:4444/routines/user/673a9754eda4707d9db77058"
+          `http://localhost:4444/routines/user/${userId}`
         );
         if (!res.ok) {
           throw new Error(`Error fetching routines: ${res.statusText}`);
         }
         const data: Routine[] = await res.json();
 
-        // Mapeo adicional para asegurarnos de que los datos se ajusten al formato esperado
         const mappedData = data.map((routine) => ({
           ...routine,
           exercises: routine.exercises.map((exercise) => ({

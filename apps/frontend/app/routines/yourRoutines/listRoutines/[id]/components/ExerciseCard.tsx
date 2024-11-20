@@ -71,12 +71,12 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       });
 
       if (!response.ok) {
-        throw new Error("Error al actualizar el ejercicio");
+        throw new Error("Error updating the fiscal year");
       }
 
-      showNotification("Ejercicio actualizado correctamente.", "success");
+      showNotification("Exercise successfully updated.", "success");
     } catch (error) {
-      showNotification("Ocurrió un error al actualizar el ejercicio.", "error");
+      showNotification("An error occurred while updating the exercise.", "error");
       console.error(error);
     } finally {
       setLoading(false);
