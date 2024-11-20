@@ -1,10 +1,14 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UUID } from 'crypto';
-import { TrainerRequest } from './entities/trainter-request.entity';
-import { UpdateTrainerRequestDto } from './dto/update-trainter-request.dto';
-import { CreateTrainerRequestDto } from './dto/create-trainter-request.dto';
+import { TrainerRequest } from './entities/trainer-request.entity';
+import { UpdateTrainerRequestDto } from './dto/update-trainer-request.dto';
+import { CreateTrainerRequestDto } from './dto/create-trainer-request.dto';
 
 @Injectable()
 export class TrainerRequestService {
@@ -21,7 +25,9 @@ export class TrainerRequestService {
       throw new BadRequestException('Ya tienes una solicitud en revisión.');
     }
 
-    const newRequest = this.trainerRequestRepository.create(createTrainerRequestDto);
+    const newRequest = this.trainerRequestRepository.create(
+      createTrainerRequestDto,
+    );
     return this.trainerRequestRepository.save(newRequest);
   }
 

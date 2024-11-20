@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UUID } from 'crypto';
-import { CreateTrainerRequestDto } from './dto/create-trainter-request.dto';
-import { UpdateTrainerRequestDto } from './dto/update-trainter-request.dto';
-import { TrainerRequestService } from './trainter-request.service';
+import { CreateTrainerRequestDto } from './dto/create-trainer-request.dto';
+import { UpdateTrainerRequestDto } from './dto/update-trainer-request.dto';
+import { TrainerRequestService } from './trainer-request.service';
 
 @Controller('trainer-request')
 export class TrainerRequestController {
@@ -25,7 +25,13 @@ export class TrainerRequestController {
   }
 
   @MessagePattern('updateTrainerRequest')
-  update(@Payload() payload: { id: UUID; updateTrainerRequestDto: UpdateTrainerRequestDto }) {
+  update(
+    @Payload()
+    payload: {
+      id: UUID;
+      updateTrainerRequestDto: UpdateTrainerRequestDto;
+    },
+  ) {
     const { id, updateTrainerRequestDto } = payload;
     return this.trainerRequestService.update(id, updateTrainerRequestDto);
   }

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TrainerRequestController } from './trainter-request.controller';
-import { TrainerRequestService } from './trainter-request.service';
-import { TrainerRequest } from './entities/trainter-request.entity';
+import { TrainerRequestController } from './trainer-request.controller';
+import { TrainerRequestService } from './trainer-request.service';
+import { TrainerRequest } from './entities/trainer-request.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TrainerRequest])],

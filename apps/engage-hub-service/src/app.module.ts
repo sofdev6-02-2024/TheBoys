@@ -5,7 +5,7 @@ import { ExerciseModule } from './ExerciseService/exercise.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoutinesModule } from './routines/routines.module';
 import { ConfigModule } from '@nestjs/config';
-import { TrainterRequestModule } from './trainter-request/trainter-request.module';
+import { TrainterRequestModule } from './trainer-request/trainer-request.module';
 
 @Module({
   imports: [

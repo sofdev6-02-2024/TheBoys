@@ -1,12 +1,6 @@
 import { UUID } from 'crypto';
-import {
-  IsArray,
-  IsEnum,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from 'class-validator';
-import { CertificationDto } from './create-trainter-request.dto';
+import { IsArray, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+import { CertificationDto } from './create-trainer-request.dto';
 
 export class UpdateTrainerRequestDto {
   @IsOptional()
