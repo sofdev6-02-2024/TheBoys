@@ -34,11 +34,11 @@ interface CustomSession extends DefaultSession {
 }
 
 async function refreshAccessToken(token: Token): Promise<Token> {
-  const resp = await fetch(`${process.env.REFRESH_TOKEN_URL}`, {
+  const resp = await fetch(`http://host.docker.internal:8080/realms/bodybost/protocol/openid-connect/token`, {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
-      client_id: process.env.FRONTEND_CLIENT_ID!,
-      client_secret: process.env.FRONTEND_CLIENT_SECRET!,
+      client_id: 'nextjs',
+      client_secret: 'GwiCZfxus2kTB6e14glNJDAf63VjoNKv',
       grant_type: 'refresh_token',
       refresh_token: token.refresh_token!,
     }),
@@ -61,9 +61,9 @@ async function refreshAccessToken(token: Token): Promise<Token> {
 export const authOptions: AuthOptions = {
   providers: [
     KeycloakProvider({
-      clientId: `${process.env.FRONTEND_CLIENT_ID}`,
-      clientSecret: `${process.env.FRONTEND_CLIENT_SECRET}`,
-      issuer: `${process.env.AUTH_ISSUER}`,
+      clientId: `nextjs`,
+      clientSecret: `GwiCZfxus2kTB6e14glNJDAf63VjoNKv`,
+      issuer: `http://host.docker.internal:8080/realms/body-boost/`,
     }),
   ],
   callbacks: {

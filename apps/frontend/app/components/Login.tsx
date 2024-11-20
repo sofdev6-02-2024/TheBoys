@@ -1,14 +1,16 @@
-import { signIn } from "next-auth/react"
+'use client';
 
-export default function SignIn() {
+import { signIn } from 'next-auth/react';
+
+export default function Login() {
   return (
     <form
-      action={async () => {
-        "use server"
-        await signIn("keycloak")
+      onSubmit={(e) => {
+        e.preventDefault();
+        signIn('keycloak');
       }}
     >
       <button type="submit">Signin with Keycloak</button>
     </form>
-  )
-} 
+  );
+}
