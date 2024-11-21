@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import RoutineCard from "./RoutineCard";
 
 interface Exercise {
@@ -33,7 +33,7 @@ const RoutinesGrid: React.FC = () => {
     const fetchRoutines = async () => {
       try {
         const res = await fetch(
-          `http://localhost:4444/routines/user/673a9754eda4707d9db77058`
+          `http://localhost:4444/routines/user/${userId}`
         );
         if (!res.ok) {
           throw new Error(`Error fetching routines: ${res.statusText}`);

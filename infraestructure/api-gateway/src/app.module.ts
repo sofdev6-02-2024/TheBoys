@@ -6,6 +6,7 @@ import { RutinesController as RoutinesController } from './routines/routines.con
 import { ExercisesController as ExercisesController } from './exercises/exercises.controller';
 import { UsersController } from './users/users.controller';
 import { UsersInformationController } from './users/users.information.controller';
+import { TrainerRequestController } from './trainer_request/trainer-request.controller';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { UsersInformationController } from './users/users.information.controller
     ExercisesController,
     UsersController,
     UsersInformationController,
+    TrainerRequestController,
   ],
   providers: [AppService],
 })

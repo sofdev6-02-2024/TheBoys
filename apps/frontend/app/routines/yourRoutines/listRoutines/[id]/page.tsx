@@ -55,7 +55,7 @@ const RoutineExercisesPage: React.FC = () => {
       try {
         setLoading(true);
 
-        const routineRes = await fetch(`http://localhost:4444/routines/user/673a9754eda4707d9db77058`);
+        const routineRes = await fetch(`http://localhost:4444/routines/user/${userId}`);
         if (!routineRes.ok) {
           throw new Error(`Error in obtaining the routines: ${routineRes.statusText}`);
         }
