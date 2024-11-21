@@ -2,60 +2,81 @@
 
 import { Session } from "next-auth";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 interface CustomSession extends Session {
   error?: string;
 }
 
+interface AuthStatusProps {
+  onClose: () => void;
+}
+
 async function keycloakSessionLogOut() {
-    try {
-      await fetch(`/api/auth/logout`, { method: "GET" });
-    } catch (err) {
-      console.error(err);
-    }
+  try {
+    await fetch(`/api/auth/logout`, { method: "GET" });
+  } catch (err) {
+    console.error(err);
   }
+}
 
-export default function AuthStatus() {
-  const { data: session, status } = useSession(); 
+export default function AuthStatus({ onClose }: AuthStatusProps) {
+  const { data: session, status } = useSession();
   const customSession = session as CustomSession;
+  const router = useRouter();
+
   useEffect(() => {
-    
-    if (
-      status != "loading" &&
-      customSession &&
-      customSession?.error === "RefreshAccessTokenError"
-    ) {
+    if (status !== "loading" && customSession?.error === "RefreshAccessTokenError") {
       signOut({ callbackUrl: "/" });
+      onClose();
     }
-  }, [session, status, customSession]);
+  }, [status, customSession, onClose]);
 
-
-  if (status == "loading") {
-    return <div className="my-3">Loading...</div>;
-  } else if (session) {
+  if (status === "loading") {
     return (
-      <div className="my-3">
-        Logged in as <span className="text-yellow-100">{session.user?.email}</span>{" "}
-        <button
-          className="bg-blue-900 font-bold text-white py-1 px-2 rounded border border-gray-50"
-          onClick={() => {
-            keycloakSessionLogOut().then(() => signOut({ callbackUrl: "/" }));
-          }}>
-          Log out
-        </button>
+      <div className="absolute top-20 right-10 bg-white text-black flex flex-col items-start py-2 px-4 rounded-sm shadow-md z-50 w-auto">
+        <span>Loading...</span>
       </div>
     );
   }
 
   return (
-    <div className="my-3">
-      Not logged in.{" "}
-      <button
-        className="bg-blue-900 font-bold text-white py-1 px-2 rounded border border-gray-50"
-        onClick={() => signIn("keycloak")}>
-        Log in
-      </button>
+    <div className="absolute top-20 right-10 bg-[#1E1E24] text-black flex flex-col items-start py-2 px-4 rounded-sm shadow-md z-50 w-[150px]">
+      {session ? (
+        <>
+          <button
+            className="w-full text-left px-4 py-2 bg-[#33333D] text-white hover:bg-[#44444F] rounded my-1"
+            onClick={() => {
+              router.push("/");
+              onClose();
+            }}
+          >
+            Profile
+          </button>
+          <button
+            className="w-full text-left px-4 py-2 bg-[#33333D] text-white hover:bg-[#44444F] rounded my-1"
+            onClick={() => {
+              keycloakSessionLogOut().then(() => {
+                signOut({ callbackUrl: "/" });
+                onClose();
+              });
+            }}
+          >
+            Log Out
+          </button>
+        </>
+      ) : (
+        <button
+          className="w-full text-left px-4 py-2 bg-[#33333D] text-white hover:bg-[#44444F] rounded my-1"
+          onClick={() => {
+            signIn("keycloak");
+            onClose();
+          }}
+        >
+          Log In
+        </button>
+      )}
     </div>
   );
 }
