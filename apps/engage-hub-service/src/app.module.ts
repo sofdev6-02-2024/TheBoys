@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoutinesModule } from './routines/routines.module';
 import { ConfigModule } from '@nestjs/config';
 import { TrainerRequestModule } from './trainer-request/trainer-request.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -27,6 +29,10 @@ import { TrainerRequestModule } from './trainer-request/trainer-request.module';
       envFilePath: ['.env'],
     }),
     TrainerRequestModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'apps/engage-hub-service/resources'),
+      serveRoot: '/resources',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

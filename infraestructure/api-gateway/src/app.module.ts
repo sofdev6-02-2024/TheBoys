@@ -7,6 +7,7 @@ import { ExercisesController as ExercisesController } from './exercises/exercise
 import { UsersController } from './users/users.controller';
 import { UsersInformationController } from './users/users.information.controller';
 import { TrainerRequestController } from './trainer_request/trainer-request.controller';
+import { MailerController } from './trainer_request/mailer.controller';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { TrainerRequestController } from './trainer_request/trainer-request.cont
     UsersController,
     UsersInformationController,
     TrainerRequestController,
+    MailerController,
   ],
   providers: [AppService],
 })
