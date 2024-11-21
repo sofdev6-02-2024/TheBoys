@@ -3,43 +3,54 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Certification } from './certification.entity';
+import { SpecializationTypes } from './especialization-types.entity';
+import { StatusTypes } from './status-types.entity';
 
 @Entity()
 export class TrainerRequest {
   @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+  TrainerRequestId: UUID;
 
   @Column()
   experience: string;
 
-  @Column('jsonb')
-  certifications: {
-    name: string;
-    issuedBy: string;
-    issueDate: Date;
-  }[];
+  @OneToMany(
+    () => Certification,
+    (certification) => certification.trainerRequest,
+    { cascade: true },
+  )
+  certifications: Certification[];
 
   @Column()
   availability: string;
 
-  @Column({ type: 'enum', enum: ['Weightlifting', 'Resistance Training', 'Cardio'] })
-  specialization: 'Weightlifting' | 'Resistance Training' | 'Cardio';
+  @Column({
+    type: 'enum',
+    enum: SpecializationTypes.getAllSpecializations(),
+  })
+  specialization: string;
 
-  @Column({ type: 'enum', enum: ['Pending', 'Accepted', 'Rejected', 'Discontinued'], default: 'Pending' })
-  status: 'Pending' | 'Accepted' | 'Rejected' | 'Discontinued';
+  @Column({
+    type: 'enum',
+    enum: StatusTypes.getAllStatuses(),
+    default: StatusTypes.Pending,
+  })
+  status: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: null })
   comments: string;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
 
   @Column({ type: 'uuid' })
   userId: UUID;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }

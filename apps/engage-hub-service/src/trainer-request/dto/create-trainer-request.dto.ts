@@ -1,34 +1,20 @@
-import { UUID } from 'crypto';
 import {
   IsArray,
-  IsDate,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
-
-export class CertificationDto {
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @IsNotEmpty()
-  @IsString()
-  issuedBy: string;
-
-  @IsNotEmpty()
-  @IsDate()
-  issueDate: Date;
-}
+import { CertificationDto } from './certification.dto';
+import { UUID } from 'crypto';
+import { SpecializationTypes } from '../entities/especialization-types.entity';
 
 export class CreateTrainerRequestDto {
   @IsNotEmpty()
   @IsString()
   experience: string;
 
-  @IsNotEmpty()
   @IsArray()
   certifications: CertificationDto[];
 
@@ -37,8 +23,14 @@ export class CreateTrainerRequestDto {
   availability: string;
 
   @IsNotEmpty()
-  @IsEnum(['Weightlifting', 'Resistance Training', 'Cardio'])
-  specialization: 'Weightlifting' | 'Resistance Training' | 'Cardio';
+  @IsEnum(SpecializationTypes.getAllSpecializations(), {
+    message: `specialization must be one of: ${SpecializationTypes.getAllSpecializations().join(', ')}`,
+  })
+  specialization: string;
+
+  @IsOptional()
+  @IsString()
+  comments?: string;
 
   @IsOptional()
   @IsUUID()

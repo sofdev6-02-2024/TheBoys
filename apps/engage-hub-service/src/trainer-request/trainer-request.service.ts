@@ -22,7 +22,7 @@ export class TrainerRequestService {
 
     const activeRequest = await this.findOneActiveRequestByUserId(userId);
     if (activeRequest) {
-      throw new BadRequestException('Ya tienes una solicitud en revisión.');
+      throw new BadRequestException('You already have a request under review.');
     }
 
     const newRequest = this.trainerRequestRepository.create(
@@ -31,25 +31,38 @@ export class TrainerRequestService {
     return this.trainerRequestRepository.save(newRequest);
   }
 
-  findAll() {
-    return this.trainerRequestRepository.find();
+  async findAll() {
+    return this.trainerRequestRepository.find({
+      relations: ['certifications'],
+    });
   }
 
-  findOne(id: UUID) {
-    return this.trainerRequestRepository.findOne({ where: { id } });
+  async findOne(id: UUID) {
+    const request = await this.trainerRequestRepository.findOne({
+      where: { TrainerRequestId: id },
+      relations: ['certifications'],
+    });
+    if (!request) {
+      throw new NotFoundException('Request not found.');
+    }
+    return request;
   }
 
   async update(id: UUID, updateTrainerRequestDto: UpdateTrainerRequestDto) {
     const request = await this.findOne(id);
-    if (!request) throw new NotFoundException('Solicitud no encontrada.');
 
     await this.trainerRequestRepository.update(id, updateTrainerRequestDto);
-    return this.trainerRequestRepository.findOne({ where: { id } });
+
+    return this.trainerRequestRepository.findOne({
+      where: { TrainerRequestId: id },
+    });
   }
 
-  remove(id: UUID) {
-    this.trainerRequestRepository.delete({ id });
-    return { id };
+  async remove(id: UUID) {
+    const request = await this.findOne(id);
+
+    await this.trainerRequestRepository.delete(id);
+    return { message: `Request ${id} successfully deleted.` };
   }
 
   async findOneActiveRequestByUserId(userId: UUID) {

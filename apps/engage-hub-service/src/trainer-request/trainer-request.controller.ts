@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { UUID } from 'crypto';
+import { TrainerRequestService } from './trainer-request.service';
 import { CreateTrainerRequestDto } from './dto/create-trainer-request.dto';
 import { UpdateTrainerRequestDto } from './dto/update-trainer-request.dto';
-import { TrainerRequestService } from './trainer-request.service';
+import { UUID } from 'crypto';
 
 @Controller('trainer-request')
 export class TrainerRequestController {
@@ -41,8 +41,8 @@ export class TrainerRequestController {
     return this.trainerRequestService.remove(id);
   }
 
-  @MessagePattern('findOneActiveRequestByUserId')
-  findOneActiveRequestByUserId(@Payload() userId: UUID) {
-    return this.trainerRequestService.findOneActiveRequestByUserId(userId);
+  @MessagePattern('findTrainerRequestByUserId')
+  findOneByUserId(@Payload() id: UUID) {
+    return this.trainerRequestService.findOneActiveRequestByUserId(id);
   }
 }
