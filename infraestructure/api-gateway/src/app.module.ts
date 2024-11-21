@@ -7,17 +7,22 @@ import {
   ResourceGuard,
   RoleGuard,
 } from 'nest-keycloak-connect';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    KeycloakConnectModule.register({
-      authServerUrl: 'http://host.docker.internal:8080',
-      realm: 'body-boost',
-      clientId: 'nextjs',
-      secret: 'GwiCZfxus2kTB6e14glNJDAf63VjoNKv',
+    ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
+    KeycloakConnectModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        authServerUrl: configService.get<string>('keycloak.domain'),
+        realm: configService.get<string>('keycloak.realm'),
+        clientId: configService.get<string>('keycloak.client_id'),
+        secret: configService.get<string>('keycloak.client_secret'),
+      }),
     }),
     UsersModule,
     EngageHubModule,
