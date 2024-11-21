@@ -13,7 +13,7 @@ import { UUID } from 'crypto';
 import { Observable } from 'rxjs';
 
 @Controller('routines')
-export class RutinesController {
+export class RoutinesController {
   constructor(
     @Inject('ENGAGE_HUB_SERVICE')
     private readonly engageHubService: ClientProxy,
