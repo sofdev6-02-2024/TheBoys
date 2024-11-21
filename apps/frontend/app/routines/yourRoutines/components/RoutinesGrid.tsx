@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useId, useState } from "react";
+import React, { useEffect, useState } from "react";
 import RoutineCard from "./RoutineCard";
 
 interface Exercise {

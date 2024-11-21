@@ -42,7 +42,7 @@ const RoutineExercisesPage: React.FC = () => {
   useEffect(() => {
     const loggedInUserId = localStorage.getItem("userId");
     setUserId(loggedInUserId);
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (!id ) {
