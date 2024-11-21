@@ -49,8 +49,6 @@ export class TrainerRequestService {
   }
 
   async update(id: UUID, updateTrainerRequestDto: UpdateTrainerRequestDto) {
-    const request = await this.findOne(id);
-
     await this.trainerRequestRepository.update(id, updateTrainerRequestDto);
 
     return this.trainerRequestRepository.findOne({
@@ -59,8 +57,6 @@ export class TrainerRequestService {
   }
 
   async remove(id: UUID) {
-    const request = await this.findOne(id);
-
     await this.trainerRequestRepository.delete(id);
     return { message: `Request ${id} successfully deleted.` };
   }
