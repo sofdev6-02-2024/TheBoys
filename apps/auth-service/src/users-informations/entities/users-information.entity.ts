@@ -52,8 +52,8 @@ export const UserInformationSchema =
 
 UserInformationSchema.set('toJSON', {
   transform: function (ret) {
-    ret.id = ret._id; 
-    delete ret._id; 
+    ret.id = ret._id;
+    delete ret._id;
     return ret;
   },
 });

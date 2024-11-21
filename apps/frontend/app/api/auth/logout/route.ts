@@ -1,5 +1,5 @@
 import { Session } from 'next-auth';
-import { authOptions } from '../[...nextauth]/route';
+import { authOptions } from "@/app/utils/authOptions";
 import { getServerSession } from 'next-auth';
 import { getIdToken } from '@/app/utils/sessionTokenAccessor';
 
@@ -14,7 +14,7 @@ export async function GET(): Promise<Response> {
     //   return new Response(null, { status: 500 });
     // }
 
-    const url = `http://localhost:8080/realms/bodybost/protocol/openid-connect/logout?id_token_hint=${idToken}&post_logout_redirect_uri=${encodeURIComponent('http://localhost:3000')}`;
+    const url = `http://172.17.0.1:8080/realms/bodybost/protocol/openid-connect/logout?id_token_hint=${idToken}&post_logout_redirect_uri=${encodeURIComponent('http://localhost:3000')}`;
 
     try {
       await fetch(url, { method: 'GET' });
