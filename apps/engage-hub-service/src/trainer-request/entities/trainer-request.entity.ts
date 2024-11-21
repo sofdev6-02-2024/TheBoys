@@ -22,7 +22,10 @@ export class TrainerRequest {
   @OneToMany(
     () => Certification,
     (certification) => certification.trainerRequest,
-    { cascade: true },
+    {
+      cascade: true,
+      eager: true,
+    },
   )
   certifications: Certification[];
 

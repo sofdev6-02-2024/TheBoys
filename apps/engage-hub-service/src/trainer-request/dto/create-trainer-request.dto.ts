@@ -6,9 +6,9 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
-import { CertificationDto } from './certification.dto';
 import { UUID } from 'crypto';
 import { SpecializationTypes } from '../entities/especialization-types.entity';
+import { CreateCertificationDto } from './create-certification.dto';
 
 export class CreateTrainerRequestDto {
   @IsNotEmpty()
@@ -16,7 +16,7 @@ export class CreateTrainerRequestDto {
   experience: string;
 
   @IsArray()
-  certifications: CertificationDto[];
+  certifications: CreateCertificationDto[];
 
   @IsNotEmpty()
   @IsString()

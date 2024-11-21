@@ -1,6 +1,6 @@
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
-export class CertificationDto {
+export class CreateCertificationDto {
   @IsNotEmpty()
   @IsString()
   name: string;

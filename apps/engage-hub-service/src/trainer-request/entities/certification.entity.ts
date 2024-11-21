@@ -1,11 +1,10 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TrainerRequest } from './trainer-request.entity';
-import { UUID } from 'crypto';
 
 @Entity()
 export class Certification {
   @PrimaryGeneratedColumn('uuid')
-  CertificationId: UUID;
+  CertificationId: string;
 
   @Column()
   name: string;
