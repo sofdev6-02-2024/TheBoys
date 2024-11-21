@@ -57,10 +57,10 @@ export class TrainerRequestService {
       throw new NotFoundException('Request not found.');
     }
   
-    const { certifications, userId: _userId, ...updatableFields } = updateTrainerRequestDto;
-      
-
-
+    const { certifications, userId, ...updatableFields } = updateTrainerRequestDto;
+    
+    console.log(userId)
+    
     await this.trainerRequestRepository.update(id, updatableFields);
   
     if (certifications) {
