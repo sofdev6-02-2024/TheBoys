@@ -177,7 +177,9 @@ services:
       - "8080:8080"
     depends_on:
       - keycloak-db
-    command: start-dev
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
+    command: start-dev --import-realm
 
   keycloak-db:
     image: mysql:8.0

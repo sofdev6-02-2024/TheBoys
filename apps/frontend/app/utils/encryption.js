@@ -15,3 +15,4 @@ export function decrypt(encryptedString) {
     const text = cryptr.decrypt(encryptedString);
     return text;
   }
+  
