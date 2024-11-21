@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import ProgressCircle from "../../../components/ProgressCircle";
 import Popup from "./Popup";
-import Notification from "./Notification";
-import Image from 'next/image';
+
+import Image from "next/image";
+import { toast } from "sonner";
 
 interface ExerciseCardProps {
   gifUrl: string;
@@ -30,7 +30,6 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   const [exerciseStatus, setExerciseStatus] = useState<"completed" | "in progress" | "not started">(status);
   const [reps, setReps] = useState<number | null>(repetitions);
   const [, setLoading] = useState(false);
-  const [notification, setNotification] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
   const handleClick = () => {
     setPopupVisible(true);
@@ -72,36 +71,26 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       });
 
       if (!response.ok) {
-        throw new Error("Error updating the fiscal year");
+        throw new Error("Error updating the exercise");
       }
 
-      showNotification("Exercise successfully updated.", "success");
+      toast.success("Exercise successfully updated.");
     } catch (error) {
-      showNotification("An error occurred while updating the exercise.", "error");
+      toast.error("An error occurred while updating the exercise.");
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
-  const showNotification = (message: string, type: "success" | "error") => {
-    setNotification({ type, message });
-    setTimeout(() => {
-      setNotification(null); 
-    }, 2000);
-  };
-
   const getProgress = () => {
-    switch (exerciseStatus) {
-      case "completed":
-        return 100;
-      case "in progress":
-        return 50;
-      case "not started":
-        return 0;
-      default:
-        return 0;
-    }
+    const progressMap: { [key: string]: number } = {
+      completed: 100,
+      "in progress": 50,
+      "not started": 0,
+    };
+  
+    return progressMap[exerciseStatus] ?? 0;
   };
 
   return (
@@ -109,11 +98,11 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       <button
         onClick={handleClick}
         className="w-full h-full"
-        aria-label={`Seleccionar ejercicio ${name}`}
+        aria-label={`Select exercise ${name}`}
       >
         <Image
           src={gifUrl}
-          alt={`Ejercicio ${name}`}
+          alt={`Exercise ${name}`}
           className={`w-full h-full object-contain transition-all duration-500 ${
             exerciseStatus !== "not started" ? "filter brightness-50" : ""
           }`}
@@ -141,13 +130,6 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
           onClose={closePopup}
           onStatusChange={changeStatus}
           onRepsChange={setReps}
-        />
-      )}
-
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
         />
       )}
     </div>

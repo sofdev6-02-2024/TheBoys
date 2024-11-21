@@ -45,9 +45,8 @@ const RoutineExercisesPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!id || !userId) {
+    if (!id ) {
       if (!id) setError("A routine ID was not provided.");
-      if (!userId) setError("User is not logged in.");
       setLoading(false);
       return;
     }
@@ -56,7 +55,7 @@ const RoutineExercisesPage: React.FC = () => {
       try {
         setLoading(true);
 
-        const routineRes = await fetch(`http://localhost:4444/routines/user/${userId}`);
+        const routineRes = await fetch(`http://localhost:4444/routines/user/673a9754eda4707d9db77058`);
         if (!routineRes.ok) {
           throw new Error(`Error in obtaining the routines: ${routineRes.statusText}`);
         }
@@ -133,7 +132,7 @@ const RoutineExercisesPage: React.FC = () => {
   
   const progressPercentage = exercises ? calculateProgress(exercises) : 0;
 
-  if (loading) return <p className="text-white">Cargando ejercicios...</p>;
+  if (loading) return <p className="text-white">Loading exercises...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
   if (!exercises || exercises.length === 0)
     return <p className="text-white">No exercises were found for the routine with ID: {id}</p>;

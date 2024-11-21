@@ -11,27 +11,40 @@ const ExerciseStatusButton: React.FC<ExerciseStatusButtonProps> = ({
   currentStatus,
   onClick,
 }) => {
-  let icon;
-  let buttonText;
-  let buttonColor;
+  const statusMap: {
+    [key in "completed" | "in progress" | "not started"]: {
+      icon: JSX.Element;
+      buttonText: string;
+      buttonColor: string;
+    };
+  } = {
+    completed: {
+      icon: <FaCheckCircle className="mr-2" />,
+      buttonText: "completed",
+      buttonColor:
+        currentStatus === "completed"
+          ? "bg-green-500 border-2 border-white"
+          : "bg-green-200",
+    },
+    "in progress": {
+      icon: <FaPauseCircle className="mr-2" />,
+      buttonText: "in progress",
+      buttonColor:
+        currentStatus === "in progress"
+          ? "bg-blue-500 border-2 border-white"
+          : "bg-blue-200",
+    },
+    "not started": {
+      icon: <FaRegCircle className="mr-2" />,
+      buttonText: "not started",
+      buttonColor:
+        currentStatus === "not started"
+          ? "bg-yellow-500 border-2 border-white"
+          : "bg-yellow-200",
+    },
+  };
 
-  switch (status) {
-    case "completed":
-      icon = <FaCheckCircle className="mr-2" />;
-      buttonText = "completed";
-      buttonColor = currentStatus === status ? "bg-green-500 border-2 border-white" : "bg-green-200";
-      break;
-    case "in progress":
-      icon = <FaPauseCircle className="mr-2" />;
-      buttonText = "in progress";
-      buttonColor = currentStatus === status ? "bg-blue-500 border-2 border-white" : "bg-blue-200";
-      break;
-    case "not started":
-      icon = <FaRegCircle className="mr-2" />;
-      buttonText = "not started";
-      buttonColor = currentStatus === status ? "bg-yellow-500 border-2 border-white" : "bg-yellow-200";
-      break;
-  }
+  const { icon, buttonText, buttonColor } = statusMap[status];
 
   return (
     <button

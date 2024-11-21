@@ -51,7 +51,7 @@ const Popup: React.FC<PopupProps> = ({
           height={300}
         />
 <div className="mb-4 text-white flex flex-col items-center">
-  <h3 className="text-xl font-semibold mb-2">Instrucciones:</h3>
+  <h3 className="text-xl font-semibold mb-2">Instructions:</h3>
   <ul className="list-disc pl-5 text-center">
     {instructions.map((instruction, index) => (
       <li key={index} className="whitespace-normal break-words max-w-2xl">
@@ -62,7 +62,7 @@ const Popup: React.FC<PopupProps> = ({
 </div>
 
 <div className="flex items-center justify-center mb-4 ">
-  <label htmlFor="reps" className="mr-4 text-white">Repeticiones:</label>
+  <label htmlFor="reps" className="mr-4 text-white">Repetitions:</label>
   <input
     id="reps"
     value={reps || ""}
