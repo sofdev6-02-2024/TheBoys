@@ -57,8 +57,10 @@ export class TrainerRequestService {
       throw new NotFoundException('Request not found.');
     }
   
-    const { certifications, userId, ...updatableFields } = updateTrainerRequestDto;
+    const { certifications, userId: _userId, ...updatableFields } = updateTrainerRequestDto;
       
+
+
     await this.trainerRequestRepository.update(id, updatableFields);
   
     if (certifications) {
@@ -71,7 +73,6 @@ export class TrainerRequestService {
       const updatedCertifications = certifications.map(cert => 
         plainToInstance(Certification, cert)
       );
-
   
       await this.trainerRequestRepository.manager.save(updatedCertifications);
 
