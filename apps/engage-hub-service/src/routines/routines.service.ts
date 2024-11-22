@@ -71,8 +71,8 @@ export class RoutinesService {
 
   findOneByUserId(id: UUID) {
     const user = this.routinesRepository.find({
-      where: {userRutine: { userId: id }},
-      relations: ['exercises']
+      where: { userRutine: { userId: id } },
+      relations: ['exercises'],
     });
 
     if (!user) throw new NotFoundException('User Not Found');
