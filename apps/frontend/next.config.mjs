@@ -1,8 +1,22 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  images: {
-    domains: ['v2.exercisedb.io', 'res.cloudinary.com'],
-  },
-};
+import withPWAInit from "@ducanh2912/next-pwa";
 
-export default nextConfig;
+const withPWA = withPWAInit({
+  dest: "public", 
+});
+
+export default withPWA({
+  reactStrictMode: true,
+  images: {
+    domains: ["v2.exercisedb.io, 'res.cloudinary.com'"],
+  },
+  experimental: {
+    esmExternals: false, 
+  },
+  pwa: {
+    register: true,
+    skipWaiting: true,
+    debug: true, 
+    mode: process.env.NODE_ENV === "production" ? "production" : "development", 
+  },
+});
+
