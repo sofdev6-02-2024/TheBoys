@@ -1,14 +1,16 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { MailerService } from './mailer.service';
-import { SendEmailDto } from './dto/send-emal.dto';
+import { SendEmailDto } from './dto/send-email.dto';
 
-@Controller('mailes')
+@Controller()
 export class MailerController {
   constructor(private readonly mailerService: MailerService) {}
 
-  @MessagePattern('sendEmail')
+  @MessagePattern({ cmd: 'sendEmailMailer' })
   async sendEmail(@Payload() payload: SendEmailDto) {
+    console.log('Mensaje recibido en el microservicio con payload:', payload);
+
     const { toEmail, subject, body, comments, signature } = payload;
 
     const finalBody = `
@@ -17,9 +19,13 @@ export class MailerController {
       <p>Signature: ${signature}</p>
     `;
 
-    const imageUrl = '/resources/body-bost.jpg';
+    const imageUrl = 'resources/body-bost.jpg';
     await this.mailerService.sendEmail(toEmail, subject, finalBody, imageUrl);
 
-    return { message: 'Correo enviado correctamente!' };
+    return {
+      status: 'success',
+      message: 'Email sent successfully!',
+      timestamp: new Date().toISOString(),
+    };
   }
 }

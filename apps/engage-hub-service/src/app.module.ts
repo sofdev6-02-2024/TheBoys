@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TrainerRequestModule } from './trainer-request/trainer-request.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { join } from 'path';
       envFilePath: ['.env'],
     }),
     TrainerRequestModule,
+    MailerModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'apps/engage-hub-service/resources'),
       serveRoot: '/resources',

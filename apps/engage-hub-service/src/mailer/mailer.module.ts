@@ -11,7 +11,7 @@ dotenv.config();
     NestMailerModule.forRoot({
       transport: {
         host: process.env.MAIL_HOST,
-        port: parseInt(process.env.MAIL_PORT, 10),
+        port: parseInt(process.env.MAIL_PORT) || 587,
         secure: false,
         auth: {
           user: process.env.MAIL_USER,
