@@ -6,8 +6,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    UsersModule,
-    UsersInformationsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -18,6 +16,8 @@ import { MongooseModule } from '@nestjs/mongoose';
         useUnifiedTopology: true,
       }),
     }),
+    UsersModule,
+    UsersInformationsModule,
   ],
   controllers: [],
   providers: [],

@@ -9,7 +9,14 @@ import { TrainerRequestModule } from './trainer-request/trainer-request.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env'],
+    }),
+
+    
     TypeOrmModule.forRoot({
+      
       type: 'mysql',
       host: `${process.env.DB_HOST}`,
       username: `${process.env.DB_USER}`,
@@ -20,13 +27,10 @@ import { TrainerRequestModule } from './trainer-request/trainer-request.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
+
+    TrainerRequestModule,
     RoutinesModule,
     ExerciseModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: ['.env'],
-    }),
-    TrainerRequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

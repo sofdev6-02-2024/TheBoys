@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "./Header/NavBarDisplay";
+import { Toaster } from "sonner"; 
 import SessionProviderWrapper from '@/app/utils/sessionProviderWrapper';
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -77,6 +79,7 @@ export default function RootLayout({
       >
         <Header />
         {children}
+        <Toaster position="bottom-right" richColors /> 
       </body>
     </html>
     </SessionProviderWrapper>
