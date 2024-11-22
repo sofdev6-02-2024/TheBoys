@@ -18,7 +18,7 @@ import benefit3Mobile from "./Assets/benefit3Mobile.webp";
 import benefit4Mobile from "./Assets/benefit4Mobile.webp";
 import { AuthProvider, useAuth } from "../AuthContextType"; 
 import { useRouter } from 'next/navigation';
-import RoutesNavigation from "../../ routes"; 
+import RoutesNavigation from "../../routes"; 
 
 
 

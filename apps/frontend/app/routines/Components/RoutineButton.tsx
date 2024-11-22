@@ -19,9 +19,11 @@ export const RoutineButton = ({
         onClick={onClick}
         onKeyPress={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
-            onClick && onClick();
+            if (onClick) {
+              onClick();
+            }
           }
-        }}
+        }}        
         aria-label={buttonText}
       >
         <header>

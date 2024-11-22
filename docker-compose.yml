@@ -13,6 +13,7 @@ services:
       - NODE_ENV=development
     depends_on:
       - api-gateway
+      - keycloak
 
   engage-hub-service:
     container_name: engage-hub-service
@@ -160,6 +161,38 @@ services:
       MONGO_INITDB_DATABASE: auth
     volumes:
       - mongo-auth:/data/db
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - DB_VENDOR=mysql
+      - DB_ADDR=keycloak-db
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=password
+      - PROXY_ADDRESS_FORWARDING=true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - keycloak-db
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
+    command: start-dev --import-realm
+
+  keycloak-db:
+    image: mysql:8.0
+    container_name: keycloak-db
+    environment:
+      - MYSQL_DATABASE=keycloak
+      - MYSQL_USER=keycloak
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root_password
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-keycloak:/var/lib/mysql
 
 volumes:
   frontend-node_modules:
@@ -173,3 +206,4 @@ volumes:
   mongo-training:
   mysql-payment:
   mongo-auth:
+  mysql-keycloak:
