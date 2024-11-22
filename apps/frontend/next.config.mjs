@@ -7,7 +7,7 @@ const withPWA = withPWAInit({
 export default withPWA({
   reactStrictMode: true,
   images: {
-    domains: ["v2.exercisedb.io, 'res.cloudinary.com'"],
+    domains: ["v2.exercisedb.io", "res.cloudinary.com"], // Corrección aquí
   },
   experimental: {
     esmExternals: false, 
@@ -19,4 +19,3 @@ export default withPWA({
     mode: process.env.NODE_ENV === "production" ? "production" : "development", 
   },
 });
-

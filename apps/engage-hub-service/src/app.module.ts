@@ -13,7 +13,7 @@ import { TrainerRequestModule } from './trainer-request/trainer-request.module';
       isGlobal: true,
       envFilePath: ['.env'],
     }),
-    TrainerRequestModule,
+
     
     TypeOrmModule.forRoot({
       
@@ -27,9 +27,10 @@ import { TrainerRequestModule } from './trainer-request/trainer-request.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
+
+    TrainerRequestModule,
     RoutinesModule,
     ExerciseModule,
-
   ],
   controllers: [AppController],
   providers: [AppService],
