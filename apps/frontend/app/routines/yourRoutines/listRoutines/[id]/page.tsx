@@ -28,6 +28,7 @@ interface Routine {
   exercises: Exercise[];
 }
 
+
 const RoutineExercisesPage: React.FC = () => {
   const params = useParams();
   const id = params?.id;

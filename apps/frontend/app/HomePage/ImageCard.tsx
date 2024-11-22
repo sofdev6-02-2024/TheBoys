@@ -2,7 +2,7 @@
 
 import Image, { StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
-import RoutesNavigation from "../../ routes"; 
+import RoutesNavigation from "../../routes"; 
 
 interface ImageCardProps {
   className: string;
