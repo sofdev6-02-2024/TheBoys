@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Types } from 'mongoose';
+import { Roles } from 'nest-keycloak-connect';
 import { Observable } from 'rxjs';
 
 @Controller('users-information')
@@ -20,6 +21,7 @@ export class UsersInformationController {
   ) {}
 
   @Get()
+  @Roles({ roles: ['admin'] })
   findAll(): Observable<any> {
     return this.authService.send('findAllUsersInfo', {});
   }
@@ -46,6 +48,7 @@ export class UsersInformationController {
   }
 
   @Delete(':id')
+  @Roles({ roles: ['admin'] })
   remove(@Param('id') id: Types.ObjectId): Observable<any> {
     return this.authService.send('removeUsersInfo', id);
   }
