@@ -72,7 +72,7 @@ export interface User {
   userImage?: string;
   role: "trainer" | "user";
   timezone: string;
-  userInformation?: any;
+  userInformation?: unknown;
 }
 
 export interface Certification {
