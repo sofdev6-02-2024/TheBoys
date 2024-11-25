@@ -11,12 +11,15 @@ import { TrainerRequest } from './entities/trainer-request.entity';
 import { UpdateTrainerRequestDto } from './dto/update-trainer-request.dto';
 import { CreateTrainerRequestDto } from './dto/create-trainer-request.dto';
 import { Certification } from './entities/certification.entity';
+import { TrainerStatusService } from 'src/mailer/trainer-status/trainer-status.service';
+import { SendEmailDto } from 'src/mailer/trainer-status/dto/trainer-status.dto';
 
 @Injectable()
 export class TrainerRequestService {
   constructor(
     @InjectRepository(TrainerRequest)
     private readonly trainerRequestRepository: Repository<TrainerRequest>,
+    private readonly trainerStatusService: TrainerStatusService,
   ) {}
 
   async create(createTrainerRequestDto: CreateTrainerRequestDto) {
@@ -57,11 +60,21 @@ export class TrainerRequestService {
       throw new NotFoundException('Request not found.');
     }
   
-    const { certifications, userId, ...updatableFields } = updateTrainerRequestDto;
+    const { certifications, userId, status, ...updatableFields } = updateTrainerRequestDto;
+
+    if (status !== 'Pending') {
+      const emailDto: SendEmailDto = {
+        toEmail: 'jheremykayz@gmail.com',
+        status: status,
+        comments: null,
+      };
+  
+      await this.trainerStatusService.create(emailDto);
+    }  
     
     console.log(userId)
     
-    await this.trainerRequestRepository.update(id, updatableFields);
+    await this.trainerRequestRepository.update(id, { ...updatableFields, status });
   
     if (certifications) {
       await this.trainerRequestRepository
