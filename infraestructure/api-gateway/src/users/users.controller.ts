@@ -21,13 +21,13 @@ export class UsersController {
   ) {}
 
   @Get()
-  @Unprotected()
+  @Roles({ roles: ['admin'] })
   findAll(): Observable<any> {
     return this.authService.send('findAllUsers', {});
   }
 
   @Get(':id')
-  @Unprotected()
+  @Roles({ roles: ['admin'] })
   findOne(@Param('id') id: string): Observable<any> {
     return this.authService.send('findOneUser', id);
   }
