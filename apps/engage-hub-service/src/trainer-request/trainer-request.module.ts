@@ -8,14 +8,16 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([TrainerRequest]), 
+    TypeOrmModule.forFeature([TrainerRequest]),
     TrainerStatusModule,
     ClientsModule.register([
       {
         name: 'EVENT_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqps://pavmrrlo:ZbV7I0bm_f1r6hil6ajQ7pIvWJI7xjp6@duck.lmq.cloudamqp.com/pavmrrlo'],
+          urls: [
+            'amqps://pavmrrlo:ZbV7I0bm_f1r6hil6ajQ7pIvWJI7xjp6@duck.lmq.cloudamqp.com/pavmrrlo',
+          ],
           queue: 'event_queue',
           queueOptions: {
             durable: false,

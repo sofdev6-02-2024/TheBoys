@@ -55,38 +55,43 @@ export class TrainerRequestService {
 
   async update(id: UUID, updateTrainerRequestDto: UpdateTrainerRequestDto) {
     const existingRequest = await this.findOne(id);
-  
+
     if (!existingRequest) {
       throw new NotFoundException('Request not found.');
     }
-  
-    const { certifications, userId, status, comments, ...updatableFields } = updateTrainerRequestDto;
-    
+
+    const { certifications, userId, status, comments, ...updatableFields } =
+      updateTrainerRequestDto;
+
     if (status !== 'Pending') {
       const emailDto: SendEmailDto = {
         toEmail: 'jheremykayz@gmail.com',
         status: status,
         comments: comments ?? null,
       };
-  
+
       await this.trainerStatusService.create(emailDto);
-    }  
-    
-    console.log(userId)
-    
-    await this.trainerRequestRepository.update(id, { ...updatableFields, comments, status });
-  
+    }
+
+    console.log(userId);
+
+    await this.trainerRequestRepository.update(id, {
+      ...updatableFields,
+      comments,
+      status,
+    });
+
     if (certifications) {
       await this.trainerRequestRepository
         .createQueryBuilder()
         .relation(TrainerRequest, 'certifications')
         .of(existingRequest)
         .remove(existingRequest.certifications);
-  
-      const updatedCertifications = certifications.map(cert => 
-        plainToInstance(Certification, cert)
+
+      const updatedCertifications = certifications.map((cert) =>
+        plainToInstance(Certification, cert),
       );
-  
+
       await this.trainerRequestRepository.manager.save(updatedCertifications);
 
       await this.trainerRequestRepository
@@ -95,13 +100,13 @@ export class TrainerRequestService {
         .of(existingRequest)
         .add(updatedCertifications);
     }
-  
+
     return this.trainerRequestRepository.findOne({
       where: { TrainerRequestId: id },
       relations: ['certifications'],
     });
   }
-  
+
   async remove(id: UUID) {
     await this.trainerRequestRepository.delete(id);
     return { message: `Request ${id} successfully deleted.` };

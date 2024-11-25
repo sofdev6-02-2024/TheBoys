@@ -7,7 +7,7 @@ export class UpdateTrainerRequestDto {
   @IsOptional()
   @IsString()
   userId: string;
-  
+
   @IsOptional()
   @IsString()
   experience?: string;
