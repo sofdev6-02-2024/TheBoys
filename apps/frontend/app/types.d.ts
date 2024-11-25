@@ -64,10 +64,12 @@ export interface RoutineActionButtonsProps {
 export interface User {
   userId: string;
   username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password?: string;
   userImage?: string;
-  role: string;
+  role: "trainer" | "user";
   timezone: string;
   userInformation?: any;
 }
