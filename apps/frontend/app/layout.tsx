@@ -5,7 +5,6 @@ import Header from "./Header/NavBarDisplay";
 import { Toaster } from "sonner"; 
 import SessionProviderWrapper from '@/app/utils/sessionProviderWrapper';
 
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",

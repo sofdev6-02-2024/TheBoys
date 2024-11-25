@@ -1,5 +1,6 @@
 "use client";
 
+import RoutesNavigation from "@/routes";
 import { Session } from "next-auth";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -48,7 +49,7 @@ export default function AuthStatus({ onClose }: AuthStatusProps) {
           <button
             className="w-full text-left px-4 py-2 bg-[#33333D] text-white hover:bg-[#44444F] rounded my-1"
             onClick={() => {
-              router.push("/");
+              router.push(RoutesNavigation.Profile);
               onClose();
             }}
           >

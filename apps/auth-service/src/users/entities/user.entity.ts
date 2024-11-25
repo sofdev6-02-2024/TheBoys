@@ -9,13 +9,16 @@ export class User extends Document {
   userId: Types.ObjectId;
 
   @Prop()
-  username: string;
+  username: string; 
 
   @Prop()
   email: string;
 
   @Prop()
   password: string;
+
+  @Prop()
+  userImage: string;
 
   @Prop({ default: 'User' })
   role: string;

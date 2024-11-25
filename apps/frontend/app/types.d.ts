@@ -14,6 +14,7 @@ export interface ButtonProps {
   children: ReactNode;
   className?: string;
   backgroundColor: "primary" | "secondary";
+  disabled?: boolean;
 }
 
 export interface IconButtonProps {
@@ -59,4 +60,31 @@ export interface RoutineActionButtonsProps {
   setExercises: (exercises: Exercise[]) => void;
   title: string;
   description: string;
+}
+
+export interface User {
+  userId: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string;
+  userImage?: string;
+  role: "trainer" | "user";
+  timezone: string;
+  userInformation?: unknown;
+}
+
+export interface Certification {
+  name: string;
+  issuedBy: string;
+  issueDate: string;
+}
+
+export interface TrainerRequest {
+  userId: string;
+  experience: string;
+  availability: string;
+  specialization: string;
+  certifications: Certification[];
 }
