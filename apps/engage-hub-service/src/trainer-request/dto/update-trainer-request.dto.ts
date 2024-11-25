@@ -1,13 +1,12 @@
 import { IsArray, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 import { SpecializationTypes } from '../entities/especialization-types.entity';
 import { StatusTypes } from '../entities/status-types.entity';
-import { UUID } from 'crypto';
 import { UpdateCertificationDto } from './upate-certification.dto';
 
 export class UpdateTrainerRequestDto {
   @IsOptional()
-  @IsUUID()
-  userId: UUID;
+  @IsString()
+  userId: string;
   
   @IsOptional()
   @IsString()

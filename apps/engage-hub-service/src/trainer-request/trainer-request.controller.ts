@@ -1,5 +1,5 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, Inject } from '@nestjs/common';
+import { ClientProxy, MessagePattern, Payload } from '@nestjs/microservices';
 import { TrainerRequestService } from './trainer-request.service';
 import { CreateTrainerRequestDto } from './dto/create-trainer-request.dto';
 import { UpdateTrainerRequestDto } from './dto/update-trainer-request.dto';
@@ -7,6 +7,7 @@ import { UUID } from 'crypto';
 
 @Controller('trainer-request')
 export class TrainerRequestController {
+  @Inject('EVENT_SERVICE') private readonly client: ClientProxy;
   constructor(private readonly trainerRequestService: TrainerRequestService) {}
 
   @MessagePattern('createTrainerRequest')
@@ -32,6 +33,7 @@ export class TrainerRequestController {
       updateTrainerRequestDto: UpdateTrainerRequestDto;
     },
   ) {
+    this.client.emit('updateTrainerRequest', 'Update successfully');
     const { id, updateTrainerRequestDto } = payload;
     return this.trainerRequestService.update(id, updateTrainerRequestDto);
   }

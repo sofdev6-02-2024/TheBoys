@@ -20,7 +20,6 @@ export class TrainerRequestService {
     @InjectRepository(TrainerRequest)
     private readonly trainerRequestRepository: Repository<TrainerRequest>,
     private readonly trainerStatusService: TrainerStatusService,
-
   ) {}
 
   async create(createTrainerRequestDto: CreateTrainerRequestDto) {
@@ -62,7 +61,7 @@ export class TrainerRequestService {
     }
   
     const { certifications, userId, status, comments, ...updatableFields } = updateTrainerRequestDto;
-
+    
     if (status !== 'Pending') {
       const emailDto: SendEmailDto = {
         toEmail: 'jheremykayz@gmail.com',
@@ -108,7 +107,7 @@ export class TrainerRequestService {
     return { message: `Request ${id} successfully deleted.` };
   }
 
-  async findOneActiveRequestByUserId(userId: UUID) {
+  async findOneActiveRequestByUserId(userId: string) {
     return this.trainerRequestRepository.findOne({
       where: { userId, status: 'Pending' },
     });

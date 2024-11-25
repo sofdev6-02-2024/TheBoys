@@ -20,8 +20,9 @@ export class UserController {
   }
 
   @MessagePattern('findOneUser')
-  findOne(@Payload() id: Types.ObjectId) {
-    return this.usersService.findOne(id);
+  findOne(@Payload() id: string) {
+    const ObjectId = new Types.ObjectId(id)
+    return this.usersService.findOne(ObjectId);
   }
 
   @MessagePattern('updateUser')

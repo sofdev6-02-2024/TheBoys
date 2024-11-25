@@ -21,14 +21,14 @@ export class UsersController {
   ) {}
 
   @Get()
-  @Roles({ roles: ['admin'] })
+  @Unprotected()
   findAll(): Observable<any> {
     return this.authService.send('findAllUsers', {});
   }
 
   @Get(':id')
-  @Roles({ roles: ['admin'] })
-  findOne(@Param('id') id: Types.ObjectId): Observable<any> {
+  @Unprotected()
+  findOne(@Param('id') id: string): Observable<any> {
     return this.authService.send('findOneUser', id);
   }
 
@@ -39,6 +39,7 @@ export class UsersController {
   }
 
   @Put(':id')
+  @Unprotected()
   update(
     @Body() updateUserDto: any,
     @Param('id') id: Types.ObjectId,
@@ -50,6 +51,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Unprotected()
   @Roles({ roles: ['admin'] })
   remove(@Param('id') id: Types.ObjectId): Observable<any> {
     return this.authService.send('removeUser', id);
