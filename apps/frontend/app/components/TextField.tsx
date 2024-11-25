@@ -7,6 +7,7 @@ interface TextFieldProps {
   value: string | undefined;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
+  disabled?: boolean; 
 }
 
 const TextField: React.FC<TextFieldProps> = ({

@@ -14,6 +14,7 @@ export interface ButtonProps {
   children: ReactNode;
   className?: string;
   backgroundColor: "primary" | "secondary";
+  disabled?: boolean;
 }
 
 export interface IconButtonProps {
@@ -72,4 +73,18 @@ export interface User {
   role: "trainer" | "user";
   timezone: string;
   userInformation?: any;
+}
+
+export interface Certification {
+  name: string;
+  issuedBy: string;
+  issueDate: string;
+}
+
+export interface TrainerRequest {
+  userId: string;
+  experience: string;
+  availability: string;
+  specialization: string;
+  certifications: Certification[];
 }

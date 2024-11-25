@@ -4,6 +4,9 @@ import React from "react";
 import TextField from "../components/TextField";
 import Button from "../components/Button";
 import { useKeycloakProfile } from "./hooks/useUserProfile";
+import { useCoachRequest } from "./hooks/useCoachRequest";
+import { CoachRequestModal } from "./modals/RequestModal";
+import { ConfirmExitModal } from "./modals/ExitModal";
 
 const UserProfile: React.FC = () => {
   const {
@@ -14,8 +17,19 @@ const UserProfile: React.FC = () => {
     //isEditingImage,
     //setIsEditingImage,
     //handleImageSave,
-    handleApplyForTrainer
+    //handleApplyForTrainer
   } = useKeycloakProfile();
+
+  const {
+    isModalOpen,
+    setIsModalOpen,
+    isConfirmExitOpen,
+    setIsConfirmExitOpen,
+    isLoading: isSubmitting,
+    handleSubmit,
+    handleClose,
+    confirmClose
+  } = useCoachRequest();
 
   if (isLoading) {
     return <p className="text-white text-center">Loading user data...</p>;
@@ -52,93 +66,76 @@ const UserProfile: React.FC = () => {
       <Button
         backgroundColor="secondary"
         className={buttonStyles}
-        onClick={handleApplyForTrainer}
+        onClick={() => setIsModalOpen(true)}
       >
-        Apply for Trainer
+        Request to be a Coach
       </Button>
     );
   };
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center p-4">
-      <h1 className="text-white text-2xl sm:text-4xl font-bold text-center sm:mb-12 sm:absolute sm:top-24">
-        {`${user.role.charAt(0).toUpperCase() + user.role.slice(1)} Profile`}
-      </h1>
-      <div className="flex flex-col sm:flex-row sm:gap-24 gap-8 items-center sm:mt-20">
-        <div className="flex flex-col items-center gap-6">
-          <div className="relative">
-            <div
-              style={{
-                backgroundImage: `url(${user.userImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-              className="rounded-full w-48 sm:w-64 h-48 sm:h-64 border-4 sm:border-8 border-black"
-              role="img"
-              aria-label="Profile Picture"
-            />
-            {/* <button
-              className="absolute bottom-2 right-2 p-2 bg-black rounded-full"
-              onClick={() => setIsEditingImage(true)}
-            >
-              ✏️
-            </button> */}
+    <>
+      <div className="flex flex-col h-screen justify-center items-center p-4">
+        <h1 className="text-white text-2xl sm:text-4xl font-bold text-center sm:mb-12 sm:absolute sm:top-24">
+          {`${user.role.charAt(0).toUpperCase() + user.role.slice(1)} Profile`}
+        </h1>
+        <div className="flex flex-col sm:flex-row sm:gap-24 gap-8 items-center sm:mt-20">
+          <div className="flex flex-col items-center gap-6">
+            <div className="relative">
+              <div
+                style={{
+                  backgroundImage: `url(${user.userImage})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+                className="rounded-full w-48 sm:w-64 h-48 sm:h-64 border-4 sm:border-8 border-black"
+                role="img"
+                aria-label="Profile Picture"
+              />
+            </div>
+            {renderRoleButtons()}
           </div>
-          {renderRoleButtons()}
-        </div>
-        <div className="flex flex-col justify-center items-center sm:items-start h-auto sm:pt-12 w-full sm:w-auto">
-          <div className="flex flex-col gap-4 w-full sm:w-auto">
-            <TextField
-              label="First Name:"
-              type="text"
-              placeholder="First Name"
-              value={user.firstName}
-            />
-            <TextField
-              label="Last Name:"
-              type="text"
-              placeholder="Last Name"
-              value={user.lastName}
-            />
-            <TextField
-              label="Email:"
-              type="email"
-              placeholder="Email"
-              value={user.email}
-            />
-          </div>
-        </div>
-      </div>
-      {/* {isEditingImage && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-[#28292E] p-4 rounded shadow-lg w-11/12 sm:w-auto">
-            <h2 className="mb-2">Edit Profile Image URL</h2>
-            <TextField
-              type="text"
-              placeholder="Enter new image URL"
-              value={newImageUrl}
-              onChange={(e) => setNewImageUrl(e.target.value)}
-            />
-            <div className="flex justify-end mt-4 gap-4">
-              <Button
-                backgroundColor="secondary"
-                className="bg-secondary-default hover:bg-secondary-hover active:bg-secondary-active text-white"
-                onClick={() => setIsEditingImage(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                backgroundColor="secondary"
-                className="bg-secondary-default hover:bg-secondary-hover active:bg-secondary-active text-white"
-                onClick={handleImageSave}
-              >
-                Save
-              </Button>
+          <div className="flex flex-col justify-center items-center sm:items-start h-auto sm:pt-12 w-full sm:w-auto">
+            <div className="flex flex-col gap-4 w-full sm:w-auto">
+              <TextField
+                label="First Name:"
+                type="text"
+                placeholder="First Name"
+                value={user.firstName}
+                disabled
+              />
+              <TextField
+                label="Last Name:"
+                type="text"
+                placeholder="Last Name"
+                value={user.lastName}
+                disabled
+              />
+              <TextField
+                label="Email:"
+                type="email"
+                placeholder="Email"
+                value={user.email}
+                disabled
+              />
             </div>
           </div>
         </div>
-      )} */}
-    </div>
+      </div>
+
+      <CoachRequestModal
+        isOpen={isModalOpen}
+        onClose={handleClose}
+        onSubmit={handleSubmit}
+        isLoading={isSubmitting}
+      />
+
+      <ConfirmExitModal
+        isOpen={isConfirmExitOpen}
+        onConfirm={confirmClose}
+        onCancel={() => setIsConfirmExitOpen(false)}
+      />
+    </>
   );
 };
 
