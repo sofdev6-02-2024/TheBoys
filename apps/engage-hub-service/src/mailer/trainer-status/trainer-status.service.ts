@@ -40,9 +40,6 @@ export class TrainerStatusService {
       'body_boost.jpg',
     );
     const body = this.bodyMessages[status]?.();
-    const commentsSection = comments
-      ? `<p><strong>Comments:</strong> ${comments}</p>`
-      : '';
     const textClosing = 'Best regards, The Admin Team, Body Boost';
     const imageCid = 'body_boost_image';
     const imageText = 'Body Boost Image';
@@ -54,7 +51,7 @@ export class TrainerStatusService {
       imagePath,
       status,
       body,
-      commentsSection,
+      comments,
       textClosing,
       imageCid,
       imageText,

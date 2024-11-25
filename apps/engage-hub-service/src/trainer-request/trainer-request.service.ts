@@ -20,6 +20,7 @@ export class TrainerRequestService {
     @InjectRepository(TrainerRequest)
     private readonly trainerRequestRepository: Repository<TrainerRequest>,
     private readonly trainerStatusService: TrainerStatusService,
+
   ) {}
 
   async create(createTrainerRequestDto: CreateTrainerRequestDto) {
@@ -60,13 +61,13 @@ export class TrainerRequestService {
       throw new NotFoundException('Request not found.');
     }
   
-    const { certifications, userId, status, ...updatableFields } = updateTrainerRequestDto;
+    const { certifications, userId, status, comments, ...updatableFields } = updateTrainerRequestDto;
 
     if (status !== 'Pending') {
       const emailDto: SendEmailDto = {
         toEmail: 'jheremykayz@gmail.com',
         status: status,
-        comments: null,
+        comments: comments ?? null,
       };
   
       await this.trainerStatusService.create(emailDto);
@@ -74,7 +75,7 @@ export class TrainerRequestService {
     
     console.log(userId)
     
-    await this.trainerRequestRepository.update(id, { ...updatableFields, status });
+    await this.trainerRequestRepository.update(id, { ...updatableFields, comments, status });
   
     if (certifications) {
       await this.trainerRequestRepository
