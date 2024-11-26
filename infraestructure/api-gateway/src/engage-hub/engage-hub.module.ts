@@ -3,6 +3,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ExercisesController } from './exercises/exercises.controller';
 import { RoutinesController } from './routines/routines.controller';
 import { TrainerRequestController } from './trainer_request/trainer-request.controller';
+import { MailerController } from './mailer/mailer.controller';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TrainerRequestController } from './trainer_request/trainer-request.cont
     RoutinesController,
     ExercisesController,
     TrainerRequestController,
+    MailerController,
   ],
 })
 export class EngageHubModule {}

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoutinesModule } from './routines/routines.module';
 import { ConfigModule } from '@nestjs/config';
 import { TrainerRequestModule } from './trainer-request/trainer-request.module';
+import { TrainerStatusModule } from './mailer/trainer-status/trainer-status.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { TrainerRequestModule } from './trainer-request/trainer-request.module';
     TrainerRequestModule,
     RoutinesModule,
     ExerciseModule,
+    TrainerStatusModule,
   ],
   controllers: [AppController],
   providers: [AppService],

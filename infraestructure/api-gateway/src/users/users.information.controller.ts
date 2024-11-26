@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Types } from 'mongoose';
-import { Roles } from 'nest-keycloak-connect';
+import { Roles, Unprotected } from 'nest-keycloak-connect';
 import { Observable } from 'rxjs';
 
 @Controller('users-information')
@@ -27,16 +27,19 @@ export class UsersInformationController {
   }
 
   @Get(':id')
+  @Roles({ roles: ['admin'] })
   findOne(@Param('id') id: Types.ObjectId): Observable<any> {
     return this.authService.send('findOneUsersInfo', id);
   }
 
   @Post()
+  @Unprotected()
   create(@Body() createUserInfoDto: any): Observable<any> {
     return this.authService.send('createUsersInfo', createUserInfoDto);
   }
 
   @Put(':id')
+  @Unprotected()
   update(
     @Body() updateUserInfoDto: any,
     @Param('id') id: Types.ObjectId,
@@ -48,6 +51,7 @@ export class UsersInformationController {
   }
 
   @Delete(':id')
+  @Unprotected()
   @Roles({ roles: ['admin'] })
   remove(@Param('id') id: Types.ObjectId): Observable<any> {
     return this.authService.send('removeUsersInfo', id);

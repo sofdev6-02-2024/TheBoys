@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { UUID } from 'crypto';
-import { Observable } from 'rxjs';
 import { Unprotected } from 'nest-keycloak-connect';
+import { Observable } from 'rxjs';
 
 @Controller('trainer-requests')
 export class TrainerRequestController {
@@ -43,7 +43,6 @@ export class TrainerRequestController {
 
   @Put(':id')
   @Unprotected()
-
   update(
     @Body() updateTrainerRequestDto: any,
     @Param('id') id: UUID,
@@ -57,14 +56,12 @@ export class TrainerRequestController {
 
   @Delete(':id')
   @Unprotected()
-
   remove(@Param('id') id: UUID): Observable<any> {
     return this.engageHubService.send('removeTrainerRequest', id);
   }
 
   @Get('user/:id')
   @Unprotected()
-
   findOneByUserId(@Param('id') id: UUID): Observable<any> {
     return this.engageHubService.send('findTrainerRequestByUserId', id);
   }
