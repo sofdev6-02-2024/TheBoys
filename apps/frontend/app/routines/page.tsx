@@ -66,7 +66,7 @@ function RoutinesPage() {
                 isLoggedIn={isLoggedIn}
             />
 
-            {isLoggedIn ? (
+            {!isLoggedIn ? (
                 <>
                     <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                         <RoutineButton buttonText="New Routine" description="Start with a new training routine" onClick={handleNewRoutineClick}/>
