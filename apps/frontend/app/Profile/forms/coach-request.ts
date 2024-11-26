@@ -8,10 +8,16 @@ export const certificationSchema = z.object({
 
 export const coachRequestSchema = z.object({
   experience: z.string().min(1, "Experience is required"),
-  availability: z.string().min(1, "Availability is required"),
-  specialization: z.string().min(1, "Specialization is required"),
-  certifications: z.array(certificationSchema).min(1, "At least one certification is required")
+  specialization: z
+    .enum(["weightlifting", "resistance training", "cardio", "yoga", "pilates", "crossfit", "hiit", "functional training", "boxing", "martial arts"])
+    .transform((val) => val.split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ')
+    ),
+  certifications: z.array(certificationSchema).min(1, "At least one certification is required"),
 });
+
 
 export type CoachRequest = z.infer<typeof coachRequestSchema>;
 export type Certification = z.infer<typeof certificationSchema>;
+
