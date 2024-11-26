@@ -4,9 +4,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsUUID,
 } from 'class-validator';
-import { UUID } from 'crypto';
 import { SpecializationTypes } from '../entities/especialization-types.entity';
 import { CreateCertificationDto } from './create-certification.dto';
 
@@ -33,6 +31,6 @@ export class CreateTrainerRequestDto {
   comments?: string;
 
   @IsOptional()
-  @IsUUID()
-  userId: UUID;
+  @IsString()
+  userId: string;
 }

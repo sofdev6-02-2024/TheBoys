@@ -54,6 +54,6 @@ export class TrainerRequest {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @Column({ type: 'uuid' })
-  userId: UUID;
+  @Column()
+  userId: string;
 }

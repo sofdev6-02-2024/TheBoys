@@ -5,7 +5,7 @@ export class SpecializationTypes {
   static readonly Yoga = 'Yoga';
   static readonly Pilates = 'Pilates';
   static readonly Crossfit = 'Crossfit';
-  static readonly HIIT = 'HIIT';  
+  static readonly HIIT = 'HIIT';
   static readonly FunctionalTraining = 'Functional Training';
   static readonly Boxing = 'Boxing';
   static readonly MartialArts = 'Martial Arts';
