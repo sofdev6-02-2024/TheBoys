@@ -54,7 +54,7 @@ const schema = z.object({
 export type FormValues = z.infer<typeof schema>;
 
 function RoutineFormWrapper() {
-  const { user, isLoading } = useKeycloakProfile();
+  const { user } = useKeycloakProfile();
   const [showPopup, setShowPopup] = useState(false);
   const [exercisesList, setExercises] = useState([] as Exercise[]);
   const {

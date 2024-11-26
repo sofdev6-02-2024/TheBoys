@@ -1,5 +1,29 @@
 import { FormValues } from "../../routines/create/components";
 
+interface Exercise {
+  id: string;
+  routineId: string;
+  exerciseId: string;
+  repetitions: number | null;
+  time: number | null;
+  status: "completed" | "in progress" | "not started";
+}
+
+interface Routine {
+  id: string;
+  title: string;
+  imageUrl: string;
+  exercises: Exercise[];
+}
+
+interface DetailedExercise {
+  id: string;
+  name: string;
+  gifUrl: string;
+  instructions: string[];
+  exerciseId: string;
+}
+
 export const createRoutine = async (data: FormValues, url: string, creatorId: string, userId: string) => {
   return await fetch("http://localhost:4444/routines", {
     method: "POST",
@@ -18,7 +42,7 @@ export const createRoutine = async (data: FormValues, url: string, creatorId: st
   });
 };
 
-export const getRoutinesByUser = async (userId: string | null) => {
+export const getRoutinesByUser = async (userId: string | null): Promise<Routine[]> => {
   if (!userId) throw new Error("User ID is required");
 
   const res = await fetch(`http://localhost:4444/routines/user/${userId}`);
@@ -26,31 +50,33 @@ export const getRoutinesByUser = async (userId: string | null) => {
     throw new Error(`Error fetching routines: ${res.statusText}`);
   }
 
-  const data = await res.json();
-  return data.map((routine: any) => ({
+  const data: Routine[] = await res.json();
+  
+  return data.map((routine) => ({
     ...routine,
-    exercises: routine.exercises.map((exercise: any) => ({
+    exercises: routine.exercises.map((exercise) => ({
       ...exercise,
       status: exercise.status as "completed" | "in progress" | "not started",
     })),
   }));
 };
 
-export const getExercises = async () => {
+export const getExercises = async (): Promise<DetailedExercise[]> => {
   const res = await fetch("http://localhost:4444/exercises");
   if (!res.ok) {
     throw new Error(`Error fetching exercises: ${res.statusText}`);
   }
 
-  const data = await res.json();
-  return data.map((exercise: any) => ({
+  const data: DetailedExercise[] = await res.json();
+  
+  return data.map((exercise) => ({
     id: exercise.id,
     name: exercise.name,
     gifUrl: exercise.gifUrl,
     instructions: exercise.instructions || [],
+    exerciseId: exercise.exerciseId, 
   }));
 };
-
 
 export const updateExercise = async (
   routineId: string | string[], 

@@ -26,7 +26,7 @@ const RoutinesGrid: React.FC = () => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
-  const { user, isLoading } = useKeycloakProfile();
+  const { user } = useKeycloakProfile();
 
   useEffect(() => {
     if (user?.id) {
@@ -38,20 +38,18 @@ const RoutinesGrid: React.FC = () => {
     const fetchRoutines = async () => {
       if (!userId) return;
 
-      setLoading(true); 
+      setLoading(true);
       try {
-
         const data = await getRoutinesByUser(userId);
         setRoutines(data);
       } catch (error) {
         console.error("Error fetching routines:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
-    fetchRoutines(); 
+    fetchRoutines();
   }, [userId]);
-
 
   if (loading) {
     return (
