@@ -3,9 +3,9 @@ import { EventPattern } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-  @EventPattern('T')
+  @EventPattern('updateTrainerRequest')
   async handleUpdateTrainerRequest(data: string) {
-    console.log('Evento recibido:', data);
+    console.log(data);
     return data;
-}
+  }
 }

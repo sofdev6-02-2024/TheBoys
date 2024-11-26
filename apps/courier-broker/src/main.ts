@@ -11,7 +11,7 @@ async function bootstrap() {
         urls: [
           'amqps://pavmrrlo:ZbV7I0bm_f1r6hil6ajQ7pIvWJI7xjp6@duck.lmq.cloudamqp.com/pavmrrlo',
         ],
-        queue: 'event_queue',
+        queue: 'trainer_requests',
         queueOptions: {
           durable: false,
         },

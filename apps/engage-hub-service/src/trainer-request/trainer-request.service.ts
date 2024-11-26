@@ -2,6 +2,7 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
+  Inject,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +14,7 @@ import { CreateTrainerRequestDto } from './dto/create-trainer-request.dto';
 import { Certification } from './entities/certification.entity';
 import { TrainerStatusService } from 'src/mailer/trainer-status/trainer-status.service';
 import { SendEmailDto } from 'src/mailer/trainer-status/dto/trainer-status.dto';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class TrainerRequestService {
@@ -20,6 +22,7 @@ export class TrainerRequestService {
     @InjectRepository(TrainerRequest)
     private readonly trainerRequestRepository: Repository<TrainerRequest>,
     private readonly trainerStatusService: TrainerStatusService,
+    @Inject('ENGAGE_HUB_BUS_EVENT') private readonly client: ClientProxy,
   ) {}
 
   async create(createTrainerRequestDto: CreateTrainerRequestDto) {
@@ -59,6 +62,11 @@ export class TrainerRequestService {
     if (!existingRequest) {
       throw new NotFoundException('Request not found.');
     }
+
+    this.client.emit('updateTrainerRequest', 'Update successfully').subscribe({
+      next: () => console.log('Successful'),
+      error: () => console.log('Error'),
+    });
 
     const { certifications, userId, status, comments, ...updatableFields } =
       updateTrainerRequestDto;
