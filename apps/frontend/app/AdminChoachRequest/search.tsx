@@ -14,7 +14,7 @@ export default function Search() {
     const [searchQuery, setSearchQuery] = useState("");
     const [showFilterMenu, setShowFilterMenu] = useState(false);
     const [popupData, setPopupData] = useState<TrainerRequest | null>(null);
-    const { updateTrainerRequest, isLoading, error } = useCoachRequestUpdate();
+    const { updateTrainerRequest } = useCoachRequestUpdate();
     const [confirmationPopup, setConfirmationPopup] = useState<{
         type: "Accept" | "Reject";
         request: TrainerRequest | null;
@@ -175,11 +175,11 @@ export default function Search() {
                 <Popup
                     data={popupData}
                     onClose={() => setPopupData(null)}
-                    onAccept={(id) => {
+                    onAccept={() => {
                         openConfirmationPopup("Accept", popupData);
                         setPopupData(null);
                     }}
-                    onReject={(id) => {
+                    onReject={() => {
                         openConfirmationPopup("Reject", popupData);
                         setPopupData(null);
                     }}
