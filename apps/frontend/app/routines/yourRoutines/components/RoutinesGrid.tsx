@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import RoutineCard from "./RoutineCard";
+import { getRoutinesByUser } from "@/app/utils/Connections/connectionsRoutine";
+import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
 
 interface Exercise {
   id: string;
@@ -23,32 +25,21 @@ const RoutinesGrid: React.FC = () => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const { user, isLoading } = useKeycloakProfile(); 
 
   useEffect(() => {
-    const loggedInUserId = localStorage.getItem("userId");
-    setUserId(loggedInUserId);
-  }, [userId]);
+    if (user && user.id) {
+      setUserId(user.id); 
+    }
+  }, [user]); 
 
   useEffect(() => {
     const fetchRoutines = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:4444/routines/user/${userId}`
-        );
-        if (!res.ok) {
-          throw new Error(`Error fetching routines: ${res.statusText}`);
+        if (userId) {
+          const data = await getRoutinesByUser(userId);
+          setRoutines(data);
         }
-        const data: Routine[] = await res.json();
-
-        const mappedData = data.map((routine) => ({
-          ...routine,
-          exercises: routine.exercises.map((exercise) => ({
-            ...exercise,
-            status: exercise.status as "completed" | "in progress" | "not started",
-          })),
-        }));
-
-        setRoutines(mappedData);
       } catch (error) {
         console.error("Error fetching routines:", error);
       } finally {

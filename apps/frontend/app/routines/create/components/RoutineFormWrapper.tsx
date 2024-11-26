@@ -12,7 +12,9 @@ import ExercisesPopup from "./ExercisesPopup";
 import { Exercise } from "@/app/types";
 import ExerciseListLayout from "./ExerciseListLayout";
 import { uploadImage } from "@/app/utils/cloudinary";
-import { createRoutine } from "@/app/utils/connections";
+import { createRoutine } from "@/app/utils/Connections/connectionsRoutine";
+import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
+
 
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -52,6 +54,7 @@ const schema = z.object({
 export type FormValues = z.infer<typeof schema>;
 
 function RoutineFormWrapper() {
+  const { user, isLoading } = useKeycloakProfile();
   const [showPopup, setShowPopup] = useState(false);
   const [exercisesList, setExercises] = useState([] as Exercise[]);
   const {
@@ -75,12 +78,16 @@ function RoutineFormWrapper() {
 
     if (!url) alert("There was an error uploading the image");
 
-    const res = await createRoutine(data, url ?? "");
+    if (user && user.id) {
+      const res = await createRoutine(data, url ?? "", user.id,user.id);
 
-    if (res.ok) {
-      alert("Routine created successfully");
+      if (res.ok) {
+        alert("Routine created successfully");
+      } else {
+        alert("Error creating routine");
+      }
     } else {
-      alert("Error creating routine");
+      alert("User ID is missing");
     }
   };
 

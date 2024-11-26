@@ -5,6 +5,9 @@ import { useParams } from "next/navigation";
 import ProgressMessage from "./components/ProgressMessage";
 import Pagination from "./components/Pagination";
 import ExerciseCard from "./components/ExerciseCard";
+import { getRoutinesByUser,getExercises } from "@/app/utils/Connections/connectionsRoutine";
+import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
+
 
 interface Exercise {
   id: string;
@@ -23,15 +26,11 @@ interface DetailedExercise {
   exerciseId: string;
 }
 
-interface Routine {
-  id: string;
-  exercises: Exercise[];
-}
-
-
 const RoutineExercisesPage: React.FC = () => {
   const params = useParams();
   const id = params?.id;
+  const { user, isLoading } = useKeycloakProfile(); 
+
 
   const [userId, setUserId] = useState<string | null>(null);
   const [exercises, setExercises] = useState<(Exercise & DetailedExercise)[] | null>(null);
@@ -41,60 +40,73 @@ const RoutineExercisesPage: React.FC = () => {
   const exercisesPerPage = 9;
 
   useEffect(() => {
-    const loggedInUserId = localStorage.getItem("userId");
-    setUserId(loggedInUserId);
-  }, [userId]);
-
-  useEffect(() => {
-    if (!id ) {
-      if (!id) setError("A routine ID was not provided.");
-      setLoading(false);
-      return;
+    if (user && user.id) {
+      setUserId(user.id);
     }
-
+  }, [user]);
+  
+  useEffect(() => {
     const fetchRoutineAndExercises = async () => {
       try {
+        if (!id) {
+          setError("A routine ID was not provided.");
+          return;
+        }
+  
+        if (!userId) {
+          setError("User ID is not available.");
+          return;
+        }
+  
         setLoading(true);
-
-        const routineRes = await fetch(`http://localhost:4444/routines/user/${userId}`);
-        if (!routineRes.ok) {
-          throw new Error(`Error in obtaining the routines: ${routineRes.statusText}`);
-        }
-        const routines: Routine[] = await routineRes.json();
-        const foundRoutine = routines.find((routine) => routine.id === id);
+  
+      
+        const routines = await getRoutinesByUser(userId);
+        const foundRoutine = routines.find(
+          (routine: { id: string }) => routine.id === id
+        );
+  
         if (!foundRoutine) {
-          throw new Error(`No routine was found with the ID: ${id}`);
+          setError(`No routine was found with the ID: ${id}`);
+          return;
         }
-
-        const exerciseRes = await fetch("http://localhost:4444/exercises");
-        if (!exerciseRes.ok) {
-          throw new Error(`Error in obtaining the exercises:  ${exerciseRes.statusText}`);
-        }
-        const allExercises: DetailedExercise[] = await exerciseRes.json();
-
-        const detailedExercises = foundRoutine.exercises.map((exercise) => {
-          const detailedById = allExercises.find((e) => e.id === exercise.exerciseId);
-        
-          if (detailedById) {
-            return {
-              ...detailedById, 
-              id: exercise.id,
-              exerciseId: exercise.exerciseId,  
-              routineId: exercise.routineId,   
-              repetitions: exercise.repetitions,
-              time: exercise.time,
-              status: exercise.status,
-            };
-          } else {
-            return {
-              ...exercise,  
-              name: "Unknown",
-              gifUrl: "",
-              instructions: [],
-            };
+ 
+        const allExercises = await getExercises();
+ 
+        const detailedExercises = foundRoutine.exercises.map(
+          (exercise: {
+            exerciseId: string;
+            id: string;
+            routineId: string;
+            repetitions: number | null;
+            time: number | null;
+            status: "completed" | "in progress" | "not started";
+          }) => {
+            const detailedById = allExercises.find(
+              (e: { id: string }) => e.id === exercise.exerciseId
+            );
+  
+            if (detailedById) {
+              return {
+                ...detailedById,
+                id: exercise.id,
+                exerciseId: exercise.exerciseId,
+                routineId: exercise.routineId,
+                repetitions: exercise.repetitions,
+                time: exercise.time,
+                status: exercise.status,
+              };
+            } else {
+              return {
+                ...exercise,
+                name: "Unknown",
+                gifUrl: "",
+                instructions: [],
+              };
+            }
           }
-        });
-
+        );
+  
         setExercises(detailedExercises);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unexpected error");
@@ -103,8 +115,11 @@ const RoutineExercisesPage: React.FC = () => {
       }
     };
 
-    fetchRoutineAndExercises();
-  }, [id]);
+    if (userId) {
+      fetchRoutineAndExercises();
+    }
+  }, [id, userId]);
+  
 
   const calculateProgress = (exercises: (Exercise & DetailedExercise)[]) => {
     const totalExercises = exercises.length;

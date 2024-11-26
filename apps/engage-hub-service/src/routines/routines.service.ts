@@ -96,8 +96,6 @@ export class RoutinesService {
     return updatedRoutine;
   }
   
-  
-
   remove(id: UUID) {
     this.routinesRepository.delete({ id });
     return { id };

@@ -20,3 +20,4 @@ export class UserRoutineRepository extends Repository<UserRoutine> {
     return this.find({ where: { userId } });
   }
 }
+
