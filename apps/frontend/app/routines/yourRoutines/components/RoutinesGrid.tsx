@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import RoutineCard from "./RoutineCard";
 import { getRoutinesByUser } from "@/app/utils/Connections/connectionsRoutine";
 import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
+import Image from "next/image";
 
 interface Exercise {
   id: string;
@@ -25,37 +26,54 @@ const RoutinesGrid: React.FC = () => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
-  const { user, isLoading } = useKeycloakProfile(); 
+  const { user, isLoading } = useKeycloakProfile();
 
   useEffect(() => {
-    if (user && user.id) {
-      setUserId(user.id); 
+    if (user?.id) {
+      setUserId(user.id);
     }
-  }, [user]); 
+  }, [user]);
 
   useEffect(() => {
     const fetchRoutines = async () => {
+      if (!userId) return;
+
+      setLoading(true); 
       try {
-        if (userId) {
-          const data = await getRoutinesByUser(userId);
-          setRoutines(data);
-        }
+
+        const data = await getRoutinesByUser(userId);
+        setRoutines(data);
       } catch (error) {
         console.error("Error fetching routines:", error);
       } finally {
-        setLoading(false);
+        setLoading(false); 
       }
     };
-
-    fetchRoutines();
+    fetchRoutines(); 
   }, [userId]);
 
+
   if (loading) {
-    return <div className="text-white text-center">Loading routines...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-[#28292E]">
+        <Image
+          src="/loading.gif"
+          alt="Loading"
+          width={280}
+          height={280}
+          className="mb-0"
+        />
+        <p className="text-white text-center text-lg">Loading routines...</p>
+      </div>
+    );
   }
 
   if (routines.length === 0) {
-    return <div className="text-white text-center">No routines found.</div>;
+    return (
+      <div className="text-white text-center">
+        No routines found.
+      </div>
+    );
   }
 
   return (

@@ -7,7 +7,7 @@ import Pagination from "./components/Pagination";
 import ExerciseCard from "./components/ExerciseCard";
 import { getRoutinesByUser,getExercises } from "@/app/utils/Connections/connectionsRoutine";
 import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
-
+import Image from "next/image";
 
 interface Exercise {
   id: string;
@@ -29,9 +29,7 @@ interface DetailedExercise {
 const RoutineExercisesPage: React.FC = () => {
   const params = useParams();
   const id = params?.id;
-  const { user, isLoading } = useKeycloakProfile(); 
-
-
+  const { user } = useKeycloakProfile(); 
   const [userId, setUserId] = useState<string | null>(null);
   const [exercises, setExercises] = useState<(Exercise & DetailedExercise)[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -52,27 +50,20 @@ const RoutineExercisesPage: React.FC = () => {
           setError("A routine ID was not provided.");
           return;
         }
-  
         if (!userId) {
           setError("User ID is not available.");
           return;
         }
-  
         setLoading(true);
-  
-      
         const routines = await getRoutinesByUser(userId);
         const foundRoutine = routines.find(
           (routine: { id: string }) => routine.id === id
         );
-  
         if (!foundRoutine) {
           setError(`No routine was found with the ID: ${id}`);
           return;
         }
- 
         const allExercises = await getExercises();
- 
         const detailedExercises = foundRoutine.exercises.map(
           (exercise: {
             exerciseId: string;
@@ -85,7 +76,6 @@ const RoutineExercisesPage: React.FC = () => {
             const detailedById = allExercises.find(
               (e: { id: string }) => e.id === exercise.exerciseId
             );
-  
             if (detailedById) {
               return {
                 ...detailedById,
@@ -106,7 +96,6 @@ const RoutineExercisesPage: React.FC = () => {
             }
           }
         );
-  
         setExercises(detailedExercises);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unexpected error");
@@ -125,7 +114,6 @@ const RoutineExercisesPage: React.FC = () => {
     const totalExercises = exercises.length;
     const completedExercises = exercises.filter(ex => ex.status === "completed").length;
     const inProgressExercises = exercises.filter(ex => ex.status === "in progress").length;
-
     return ((completedExercises + inProgressExercises * 0.5) / totalExercises) * 100;
   };
 
@@ -145,13 +133,24 @@ const RoutineExercisesPage: React.FC = () => {
       );
     });
   };
-  
   const progressPercentage = exercises ? calculateProgress(exercises) : 0;
-
-  if (loading) return <p className="text-white">Loading exercises...</p>;
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-[#28292E]">
+        <Image
+          src="/loading.gif"
+          alt="Loading"
+          width={280}
+          height={280}
+          className="mb-0"
+        />
+        <p className="text-white text-center text-lg">Loading exercises...</p>
+      </div>
+    );
+  }
+  
   if (error) return <p className="text-red-500">Error: {error}</p>;
-  if (!exercises || exercises.length === 0)
-    return <p className="text-white">No exercises were found for the routine with ID: {id}</p>;
+  if (!exercises || exercises.length === 0) return <p className="text-white">No exercises were found for the routine with ID: {id}</p>;
 
   return (
     <div className="p-4">

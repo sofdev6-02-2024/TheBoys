@@ -50,3 +50,41 @@ export const getExercises = async () => {
     instructions: exercise.instructions || [],
   }));
 };
+
+
+export const updateExercise = async (
+  routineId: string | string[], 
+  exerciseId: string | undefined, 
+  status: "completed" | "in progress" | "not started", 
+  reps: number | null
+) => {
+  const url = `http://localhost:4444/routines/${routineId}`;
+  const body = {
+    exercises: [
+      {
+        id: exerciseId,
+        repetitions: reps !== null ? reps : 0,
+        time: 30,
+        status: status,
+      },
+    ],
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error updating the exercise");
+    }
+    return await response.json(); 
+  } catch (error) {
+    throw new Error("An error occurred while updating the exercise.");
+  }
+};
+
