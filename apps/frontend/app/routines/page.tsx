@@ -16,24 +16,22 @@ import benefit1Mobile from "./Assets/benefit1Mobile.webp";
 import benefit2Mobile from "./Assets/benefit2Mobile.webp";
 import benefit3Mobile from "./Assets/benefit3Mobile.webp";
 import benefit4Mobile from "./Assets/benefit4Mobile.webp";
-import { AuthProvider, useAuth } from "../AuthContextType"; 
 import { useRouter } from 'next/navigation';
-import RoutesNavigation from "../../routes"; 
-
+import RoutesNavigation from "../../routes";
+import { useSession } from "next-auth/react";
 
 
 export default function RoutinesUser() {
     return (
-      <AuthProvider>
         <RoutinesPage />
-      </AuthProvider>
     );
   }
 
 function RoutinesPage() {
 
-    const {isLoggedIn}  = useAuth(); 
     const router = useRouter(); 
+
+    const { status } = useSession();
 
     const routineBenefits = [
         { src: benefit1, mobileSrc: benefit1Mobile, alt: "Image 1", title: "Create your Routines", text: "Customize and create the routine that best suits your objectives."},
@@ -42,10 +40,11 @@ function RoutinesPage() {
         { src: benefit4, mobileSrc: benefit4Mobile, alt: "Image 4", title: "Progress Visualization", text: "Visualize your progress with detailed statistics"},
     ];
 
-    const heroDescription = !isLoggedIn 
-        ? "Join us to start creating your personalized workout routines and track your progress."
-        : undefined;
-
+    const heroDescription =
+    status === "unauthenticated"
+      ? "Join us to start creating your personalized workout routines and track your progress."
+      : undefined;
+      
         const handleNewRoutineClick = () => {
             router.push(RoutesNavigation.CreateRoutine)
           };
@@ -54,7 +53,13 @@ function RoutinesPage() {
             router.push(RoutesNavigation.YouRoutine)
           };  
 
-    
+          if (status === "loading") {
+            return (
+              <div className="text-center py-8">
+                <p>Loading...</p>
+              </div>
+            );
+          }
     return (
         
         <main className="w-full max-w-7xl mx-auto px-4  ">
@@ -63,10 +68,9 @@ function RoutinesPage() {
                 mobileSrc={routineHeroMobile}
                 bannerTitle="Routines"
                 description={heroDescription}
-                isLoggedIn={isLoggedIn}
+                isLoggedIn={status === "authenticated"}
             />
-
-            {!isLoggedIn ? (
+            {status === "authenticated" ? (
                 <>
                     <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                         <RoutineButton buttonText="New Routine" description="Start with a new training routine" onClick={handleNewRoutineClick}/>
