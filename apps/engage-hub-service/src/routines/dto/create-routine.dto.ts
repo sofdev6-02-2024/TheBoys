@@ -36,7 +36,5 @@ export class CreateRoutineDto {
   @IsString()
   description: string;
 
-  @IsOptional()
-  @IsUUID()
-  userId: UUID | null; 
+
 }

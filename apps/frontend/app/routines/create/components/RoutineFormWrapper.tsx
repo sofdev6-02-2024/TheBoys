@@ -75,12 +75,9 @@ function RoutineFormWrapper() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const url = await uploadImage(data.image);
-
     if (!url) alert("There was an error uploading the image");
-
     if (user && user.id) {
-      const res = await createRoutine(data, url ?? "", user.id,user.id);
-
+      const res = await createRoutine(data, url ?? "", user.id);
       if (res.ok) {
         alert("Routine created successfully");
       } else {

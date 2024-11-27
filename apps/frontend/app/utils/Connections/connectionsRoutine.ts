@@ -24,7 +24,7 @@ interface DetailedExercise {
   exerciseId: string;
 }
 
-export const createRoutine = async (data: FormValues, url: string, creatorId: string, userId: string) => {
+export const createRoutine = async (data: FormValues, url: string, creatorId: string) => {
   return await fetch("http://localhost:4444/routines", {
     method: "POST",
     headers: {
@@ -36,8 +36,7 @@ export const createRoutine = async (data: FormValues, url: string, creatorId: st
       exercises: data.exercises.map((exercise) => exercise.id),
       description: data.description,
       imageUrl: url,
-      creatorId,  
-      userId: userId || null, 
+      creatorId
     }),
   });
 };

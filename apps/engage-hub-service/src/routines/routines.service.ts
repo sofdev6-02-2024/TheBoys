@@ -31,7 +31,7 @@ export class RoutinesService {
   }
 
   async create(createRoutineDto: CreateRoutineDto) {
-    const { exercises, userId, ...routineData } = createRoutineDto;  
+    const { exercises, creatorId, ...routineData } = createRoutineDto;  
 
     const exercisesList = await this.getValidExerciseList(exercises);
 
@@ -52,7 +52,7 @@ export class RoutinesService {
       await this.routineExerciseRepository.save(routineExercise);
     }
         const userRoutine = this.userRoutineRepository.create({
-          userId: userId || null,  
+          userId: creatorId || null,  
           rutine: newRoutine, 
           status: 'not started', 
         });
