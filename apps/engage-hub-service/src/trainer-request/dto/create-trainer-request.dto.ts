@@ -17,10 +17,6 @@ export class CreateTrainerRequestDto {
   certifications: CreateCertificationDto[];
 
   @IsNotEmpty()
-  @IsString()
-  availability: string;
-
-  @IsNotEmpty()
   @IsEnum(SpecializationTypes.getAllSpecializations(), {
     message: `specialization must be one of: ${SpecializationTypes.getAllSpecializations().join(', ')}`,
   })

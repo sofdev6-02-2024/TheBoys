@@ -1,9 +1,10 @@
 import React from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray} from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { coachRequestSchema, CoachRequest } from './coach-request';
 import FormInput from '../../routines/create/components/FormInput';
 import Button from '@/app/components/Button';
+import FormDropDown from "../../routines/create/components/FormDropDown";
 
 interface Props {
   onSubmit: (data: CoachRequest) => Promise<void>;
@@ -12,12 +13,16 @@ interface Props {
 }
 
 export const CoachRequestForm: React.FC<Props> = ({ onSubmit, onClose, isLoading }) => {
-  const { control, handleSubmit, formState: { errors, isValid } } = useForm<CoachRequest>({
+  const { 
+    register, 
+    control, 
+    handleSubmit, 
+    formState: { errors, isValid } 
+  } = useForm<CoachRequest>({
     resolver: zodResolver(coachRequestSchema),
     mode: 'onChange',
     defaultValues: {
       experience: '',
-      availability: '',
       specialization: '',
       certifications: [{ name: '', issuedBy: '', issueDate: '' }]
     }
@@ -38,20 +43,14 @@ export const CoachRequestForm: React.FC<Props> = ({ onSubmit, onClose, isLoading
         error={errors.experience}
       />
       
-      <FormInput
-        name="availability"
-        control={control}
-        label="Availability"
-        type="text"
-        error={errors.availability}
-      />
-      
-      <FormInput
+      <FormDropDown
         name="specialization"
         control={control}
         label="Specialization"
-        type="text"
+        defaultMessage="Select an Option"
+        options={["Weightlifting", "Resistance Training", "Cardio", "Yoga", "Pilates", "Crossfit", "HIIT", "Functional Training", "Boxing", "Martial Arts"]}
         error={errors.specialization}
+        register={register} 
       />
 
       <div className="space-y-4">

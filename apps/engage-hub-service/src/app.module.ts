@@ -7,6 +7,7 @@ import { RoutinesModule } from './routines/routines.module';
 import { ConfigModule } from '@nestjs/config';
 import { TrainerRequestModule } from './trainer-request/trainer-request.module';
 import { TrainerStatusModule } from './mailer/trainer-status/trainer-status.module';
+import { CommunitiesModule } from './communities/communities.module';
 
 @Module({
   imports: [
@@ -15,9 +16,7 @@ import { TrainerStatusModule } from './mailer/trainer-status/trainer-status.modu
       envFilePath: ['.env'],
     }),
 
-    
     TypeOrmModule.forRoot({
-      
       type: 'mysql',
       host: `${process.env.DB_HOST}`,
       username: `${process.env.DB_USER}`,
@@ -33,6 +32,7 @@ import { TrainerStatusModule } from './mailer/trainer-status/trainer-status.modu
     RoutinesModule,
     ExerciseModule,
     TrainerStatusModule,
+    CommunitiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

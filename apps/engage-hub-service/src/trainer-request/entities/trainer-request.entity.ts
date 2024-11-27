@@ -29,9 +29,6 @@ export class TrainerRequest {
   )
   certifications: Certification[];
 
-  @Column()
-  availability: string;
-
   @Column({
     type: 'enum',
     enum: SpecializationTypes.getAllSpecializations(),
