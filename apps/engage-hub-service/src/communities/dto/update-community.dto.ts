@@ -4,28 +4,27 @@ import { SpecializationTypes } from 'src/trainer-request/entities/especializatio
 export class UpdateCommunityDto {
   @IsString()
   @IsOptional()
-  name: string;
+  name?: string;
 
   @IsString()
   @IsOptional()
-  description: string;
+  description?: string;
 
   @IsEnum(SpecializationTypes.getAllSpecializations(), {
     message: `specialization must be one of: ${SpecializationTypes.getAllSpecializations().join(', ')}`,
   })
   @IsOptional()
-  type: string;
+  type?: string;
 
   @IsNumber()
   @IsOptional()
-  cost: number;
+  cost?: number;
 
-  @IsString()
   @IsOptional()
   @IsUrl()
-  imageUrl: string;
+  imageUrl?: string;
 
   @IsString()
   @IsOptional()
-  trainerId: string;
+  trainerId?: string;
 }

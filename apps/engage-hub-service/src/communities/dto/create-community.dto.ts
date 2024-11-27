@@ -20,7 +20,6 @@ export class CreateCommunityDto {
   @IsNotEmpty()
   cost: number;
 
-  @IsString()
   @IsNotEmpty()
   @IsUrl()
   imageUrl: string;
