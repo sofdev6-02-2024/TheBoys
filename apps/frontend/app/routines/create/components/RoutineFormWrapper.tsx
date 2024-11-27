@@ -13,7 +13,8 @@ import { Exercise } from "@/app/types";
 import ExerciseListLayout from "./ExerciseListLayout";
 import { uploadImage } from "@/app/utils/cloudinary";
 import { createRoutine } from "@/app/utils/connections";
-
+import { toast } from "sonner";
+ 
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -73,14 +74,14 @@ function RoutineFormWrapper() {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const url = await uploadImage(data.image);
 
-    if (!url) alert("There was an error uploading the image");
+    if (!url) toast.error("There was an error uploading the image");
 
     const res = await createRoutine(data, url ?? "");
 
     if (res.ok) {
-      alert("Routine created successfully");
+      toast.success("Routine created successfully");
     } else {
-      alert("Error creating routine");
+      toast.error("Error creating routine");
     }
   };
 
