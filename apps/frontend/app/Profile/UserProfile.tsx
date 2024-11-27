@@ -7,6 +7,7 @@ import { useKeycloakProfile } from "./hooks/useUserProfile";
 import { useCoachRequest } from "./hooks/useCoachRequest";
 import { CoachRequestModal } from "./modals/RequestModal";
 import { ConfirmExitModal } from "./modals/ExitModal";
+import { toast } from "sonner";
 
 const UserProfile: React.FC = () => {
   const {
@@ -49,14 +50,14 @@ const UserProfile: React.FC = () => {
           <Button
             backgroundColor="secondary"
             className={buttonStyles}
-            onClick={() => alert("Viewing Statistics")}
+            onClick={() => toast.success("Viewing Statistics")}
           >
             Statistics
           </Button>
           <Button
             backgroundColor="secondary"
             className={buttonStyles}
-            onClick={() => alert("Managing Communities")}
+            onClick={() => toast.success("Viewing Communities")}
           >
             Communities
           </Button>
