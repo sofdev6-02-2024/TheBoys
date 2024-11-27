@@ -27,7 +27,6 @@ export default function RoutinesUser() {
     );
   }
 
-
 function RoutinesPage() {
 
     const router = useRouter(); 

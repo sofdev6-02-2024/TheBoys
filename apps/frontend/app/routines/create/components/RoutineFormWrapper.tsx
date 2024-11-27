@@ -12,9 +12,10 @@ import ExercisesPopup from "./ExercisesPopup";
 import { Exercise } from "@/app/types";
 import ExerciseListLayout from "./ExerciseListLayout";
 import { uploadImage } from "@/app/utils/cloudinary";
-import { createRoutine } from "@/app/utils/connections";
+import { createRoutine } from "@/app/utils/Connections/connectionsRoutine";
+import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
 import { toast } from "sonner";
- 
+
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -53,6 +54,7 @@ const schema = z.object({
 export type FormValues = z.infer<typeof schema>;
 
 function RoutineFormWrapper() {
+  const { user } = useKeycloakProfile();
   const [showPopup, setShowPopup] = useState(false);
   const [exercisesList, setExercises] = useState([] as Exercise[]);
   const {
@@ -73,15 +75,16 @@ function RoutineFormWrapper() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const url = await uploadImage(data.image);
-
     if (!url) toast.error("There was an error uploading the image");
-
-    const res = await createRoutine(data, url ?? "");
-
-    if (res.ok) {
-      toast.success("Routine created successfully");
+    if (user && user.id) {
+      const res = await createRoutine(data, url ?? "", user.id);
+      if (res.ok) {
+        toast.success("Routine created successfully");
+      } else {
+        toast.error("Error creating routine");
+      }
     } else {
-      toast.error("Error creating routine");
+      toast.error("User ID is missing");
     }
   };
 
@@ -154,3 +157,4 @@ function RoutineFormWrapper() {
 }
 
 export default RoutineFormWrapper;
+

@@ -35,4 +35,6 @@ export class CreateRoutineDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+
 }

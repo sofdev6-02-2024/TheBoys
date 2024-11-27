@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { toast } from "sonner";
 import ProgressCircle from "../../../components/ProgressCircle";
 import Popup from "./Popup";
-
 import Image from "next/image";
-import { toast } from "sonner";
+import { updateExercise } from "@/app/utils/Connections/connectionsRoutine";
 
 interface ExerciseCardProps {
   gifUrl: string;
@@ -36,8 +36,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   };
 
   const closePopup = async () => {
-    await updateExercise(); 
-    setPopupVisible(false); 
+    await handleUpdateExercise(); 
+    setPopupVisible(false);
   };
 
   const changeStatus = (newStatus: "completed" | "in progress" | "not started") => {
@@ -47,33 +47,11 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
     }
   };
 
-  const updateExercise = async () => {
+  const handleUpdateExercise = async () => {
     setLoading(true);
-    const url = `http://localhost:4444/routines/${routineId}`;
-    const body = {
-      exercises: [
-        {
-          id: id,
-          repetitions: reps !== null ? reps : 0,
-          time: 30,
-          status: exerciseStatus,
-        },
-      ],
-    };
 
     try {
-      const response = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error updating the exercise");
-      }
-
+      await updateExercise(routineId, id, exerciseStatus, reps);
       toast.success("Exercise successfully updated.");
     } catch (error) {
       toast.error("An error occurred while updating the exercise.");
@@ -94,7 +72,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   };
 
   return (
-    <div className="relative w-full h-[400px] rounded overflow-hidden shadow-md mx-auto ">
+    <div className="relative w-full h-[400px] rounded overflow-hidden shadow-md mx-auto">
       <button
         onClick={handleClick}
         className="w-full h-full"

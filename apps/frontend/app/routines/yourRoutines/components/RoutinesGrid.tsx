@@ -2,6 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import RoutineCard from "./RoutineCard";
+import { getRoutinesByUser } from "@/app/utils/Connections/connectionsRoutine";
+import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
+import Image from "next/image";
 
 interface Exercise {
   id: string;
@@ -23,48 +26,52 @@ const RoutinesGrid: React.FC = () => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const { user } = useKeycloakProfile();
 
   useEffect(() => {
-    const loggedInUserId = localStorage.getItem("userId");
-    setUserId(loggedInUserId);
-  }, [userId]);
+    if (user?.id) {
+      setUserId(user.id);
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchRoutines = async () => {
+      if (!userId) return;
+
+      setLoading(true);
       try {
-        const res = await fetch(
-          `http://localhost:4444/routines/user/${userId}`
-        );
-        if (!res.ok) {
-          throw new Error(`Error fetching routines: ${res.statusText}`);
-        }
-        const data: Routine[] = await res.json();
-
-        const mappedData = data.map((routine) => ({
-          ...routine,
-          exercises: routine.exercises.map((exercise) => ({
-            ...exercise,
-            status: exercise.status as "completed" | "in progress" | "not started",
-          })),
-        }));
-
-        setRoutines(mappedData);
+        const data = await getRoutinesByUser(userId);
+        setRoutines(data);
       } catch (error) {
         console.error("Error fetching routines:", error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchRoutines();
   }, [userId]);
 
   if (loading) {
-    return <div className="text-white text-center">Loading routines...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-[#28292E]">
+        <Image
+          src="/loading.gif"
+          alt="Loading"
+          width={280}
+          height={280}
+          className="mb-0"
+        />
+        <p className="text-white text-center text-lg">Loading routines...</p>
+      </div>
+    );
   }
 
   if (routines.length === 0) {
-    return <div className="text-white text-center">No routines found.</div>;
+    return (
+      <div className="text-white text-center">
+        No routines found.
+      </div>
+    );
   }
 
   return (

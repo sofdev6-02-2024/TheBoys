@@ -7,6 +7,7 @@ import { CreateRoutineDto } from './dto/create-routine.dto';
 import { UpdateRoutineDto } from './dto/update-routine.dto';
 import { ExerciseService } from 'src/ExerciseService/exercise.service';
 import { RoutineExercise } from 'src/routines_exercises/entities/routine-exercise.entity';
+import { UserRoutine } from 'src/user/entities/user.routine.entity';
 
 @Injectable()
 export class RoutinesService {
@@ -16,6 +17,8 @@ export class RoutinesService {
     @InjectRepository(RoutineExercise)
     private readonly routineExerciseRepository: Repository<RoutineExercise>,
     private readonly exerciseService: ExerciseService,
+    @InjectRepository(UserRoutine)
+    private readonly userRoutineRepository: Repository<UserRoutine>,
   ) {}
 
   async getValidExerciseList(exercises: string[]) {
@@ -28,7 +31,7 @@ export class RoutinesService {
   }
 
   async create(createRoutineDto: CreateRoutineDto) {
-    const { exercises, ...routineData } = createRoutineDto;
+    const { exercises, creatorId, ...routineData } = createRoutineDto;  
 
     const exercisesList = await this.getValidExerciseList(exercises);
 
@@ -48,6 +51,12 @@ export class RoutinesService {
       });
       await this.routineExerciseRepository.save(routineExercise);
     }
+        const userRoutine = this.userRoutineRepository.create({
+          userId: creatorId || null,  
+          rutine: newRoutine, 
+          status: 'not started', 
+        });
+        await this.userRoutineRepository.save(userRoutine);
 
     return newRoutine;
   }
@@ -87,8 +96,6 @@ export class RoutinesService {
     return updatedRoutine;
   }
   
-  
-
   remove(id: UUID) {
     this.routinesRepository.delete({ id });
     return { id };

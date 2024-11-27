@@ -7,8 +7,8 @@ export class UserRoutine {
   @PrimaryGeneratedColumn('uuid')
   id: UUID;
 
-  @Column()
-  userId: UUID;
+  @Column({ nullable: true })
+  userId: UUID | null;
 
   @Column({
     type: 'enum',
@@ -21,5 +21,5 @@ export class UserRoutine {
   createdAt: Date;
 
   @ManyToOne(() => Routine, (rutine) => rutine.userRutine)
-  rutine: Routine[];
+  rutine: Routine; 
 }
