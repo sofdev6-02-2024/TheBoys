@@ -4,20 +4,20 @@ import {
   Controller,
   FieldError,
   UseFormRegister,
+  Path,
 } from "react-hook-form";
-import { FormValues } from "./RoutineFormWrapper";
 
-interface Props {
-  name: string;
-  control: Control<any>;
+interface Props<T extends Record<string, any>> {
+  name: Path<T>;
+  control: Control<T>;
   label: string;
   defaultMessage: string;
   options: string[];
   error?: FieldError;
-  register: UseFormRegister<FormValues>;
+  register: UseFormRegister<T>;
 }
 
-function FormDropDown({
+function FormDropDown<T extends Record<string, any>>({
   name,
   control,
   label,
@@ -25,7 +25,7 @@ function FormDropDown({
   options,
   error,
   register,
-}: Props) {
+}: Props<T>) {
   return (
     <div className="flex flex-col gap-2">
       <Controller
@@ -35,8 +35,8 @@ function FormDropDown({
           <label className="flex flex-col text-xs gap-2">
             {label}
             <select
-              className={`border border-whiteGray bg-transparent p-2 rounded-md h-12 cursor-pointer`}
-              {...register("difficultLevel")}
+              className="border border-whiteGray bg-transparent p-2 rounded-md h-12 cursor-pointer"
+              {...register(name)}
               defaultValue="Select an Option"
             >
               <option disabled className="hidden">
