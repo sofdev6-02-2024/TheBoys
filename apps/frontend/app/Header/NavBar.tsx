@@ -39,6 +39,13 @@ const NavBar = ({
   const router = useRouter();
   const pathname = usePathname();
 
+  const routesMap: Record<string, string> = {
+    home: RoutesNavigation.HomePage,
+    users: RoutesNavigation.Users,
+    routines: RoutesNavigation.Routines,
+    notifications: RoutesNavigation.Notifications,
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
@@ -54,13 +61,6 @@ const NavBar = ({
 
   const handleIconClick = async (id: string) => {
     console.log(`Icon clicked: ${id}`);
-
-    const routesMap: Record<string, string> = {
-      home: RoutesNavigation.HomePage,
-      users: RoutesNavigation.Users,
-      routines: RoutesNavigation.Routines,
-      notifications: RoutesNavigation.Notifications,
-    };
 
     if (routesMap[id]) {
       await router.push(routesMap[id]);
@@ -78,13 +78,6 @@ const NavBar = ({
         ? "text-red-500"
         : "text-white";
     }
-
-    const routesMap: Record<string, string> = {
-      home: RoutesNavigation.HomePage,
-      users: RoutesNavigation.Users,
-      routines: RoutesNavigation.Routines,
-      notifications: RoutesNavigation.Notifications,
-    };
 
     return pathname === routesMap[id] || selectedIcon === id
       ? "text-red-500"
