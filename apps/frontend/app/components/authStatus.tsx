@@ -43,8 +43,11 @@ export default function AuthStatus({ onClose }: AuthStatusProps) {
   }
 
   return (
-    <div className="absolute top-20 right-10 bg-[#1E1E24] text-black flex flex-col items-start py-2 px-4 rounded-sm shadow-md z-50 w-[150px]">
-      {session ? (
+    <div
+    className={`absolute sm:top-20 top-80 right-10 bg-[#1E1E24] text-black flex flex-col items-start py-2 px-4 rounded-sm shadow-md z-50 w-[150px] ${
+      session ? "translate-y-[500px] sm:translate-y-[0px]": "translate-y-[550px] sm:translate-y-[0px]"
+    }`}
+  >      {session ? (
         <>
           <button
             className="w-full text-left px-4 py-2 bg-[#33333D] text-white hover:bg-[#44444F] rounded my-1"
@@ -56,7 +59,7 @@ export default function AuthStatus({ onClose }: AuthStatusProps) {
             Profile
           </button>
           <button
-            className="w-full text-left px-4 py-2 bg-[#33333D] text-white hover:bg-[#44444F] rounded my-1"
+            className=" w-full text-left px-4 py-2 bg-[#33333D] text-white hover:bg-[#44444F] rounded my-1"
             onClick={() => {
               keycloakSessionLogOut().then(() => {
                 signOut({ callbackUrl: "/" });
