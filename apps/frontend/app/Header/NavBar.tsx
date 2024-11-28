@@ -58,7 +58,7 @@ const NavBar = ({
     const routesMap: Record<string, string> = {
       home: RoutesNavigation.HomePage,
       users: RoutesNavigation.Users,
-      workout: RoutesNavigation.Workout,
+      routines: RoutesNavigation.Routines,
       notifications: RoutesNavigation.Notifications,
     };
 
@@ -82,7 +82,7 @@ const NavBar = ({
     const routesMap: Record<string, string> = {
       home: RoutesNavigation.HomePage,
       users: RoutesNavigation.Users,
-      workout: RoutesNavigation.Workout,
+      routines: RoutesNavigation.Routines,
       notifications: RoutesNavigation.Notifications,
     };
 
