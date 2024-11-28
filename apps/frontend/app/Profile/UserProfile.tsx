@@ -8,11 +8,14 @@ import { useCoachRequest } from "./hooks/useCoachRequest";
 import { CoachRequestModal } from "./modals/RequestModal";
 import { ConfirmExitModal } from "./modals/ExitModal";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import RoutesNavigation from "../../routes";
 
 const UserProfile: React.FC = () => {
   const {
     user,
     isLoading,
+    
     //newImageUrl,
     //setNewImageUrl,
     //isEditingImage,
@@ -20,6 +23,8 @@ const UserProfile: React.FC = () => {
     //handleImageSave,
     //handleApplyForTrainer
   } = useKeycloakProfile();
+
+  const router = useRouter();
 
   const {
     isModalOpen,
@@ -31,6 +36,11 @@ const UserProfile: React.FC = () => {
     handleClose,
     confirmClose
   } = useCoachRequest();
+
+  const handleMenuItemClick = () => {
+ 
+    router.push(RoutesNavigation.Communities);
+  };
 
   if (isLoading) {
     return <p className="text-white text-center">Loading user data...</p>;
@@ -44,7 +54,7 @@ const UserProfile: React.FC = () => {
     const buttonStyles =
       "bg-secondary-default hover:bg-secondary-hover active:bg-secondary-active text-white";
 
-    return user.role === "trainer" ? (
+    return user.role != "trainer" ? (
       <div className="flex flex-col items-center gap-4">
         <div className="flex gap-4">
           <Button
@@ -57,7 +67,7 @@ const UserProfile: React.FC = () => {
           <Button
             backgroundColor="secondary"
             className={buttonStyles}
-            onClick={() => toast.success("Viewing Communities")}
+            onClick={() => handleMenuItemClick()}
           >
             Communities
           </Button>

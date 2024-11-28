@@ -7,7 +7,8 @@ const RoutesNavigation = {
     Calendar: "/Calendar",
     ChatBot: "/ChatBot",
     CreateRoutine: "/routines/create",
-    YouRoutine: "/routines/yourRoutines"
+    YouRoutine: "/routines/yourRoutines",
+    Communities: "/communities"
   };
   
   export default RoutesNavigation;
