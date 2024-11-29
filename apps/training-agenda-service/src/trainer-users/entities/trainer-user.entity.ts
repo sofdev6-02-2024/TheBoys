@@ -1,7 +1,6 @@
 import { UUID } from 'crypto';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany, JoinTable } from 'typeorm';
 import { RelationTypes } from './relation_type.entity';
-import { User } from 'src/users/entities/user.entity';
 
 @Entity()
 export class TrainerUser {
