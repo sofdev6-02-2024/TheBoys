@@ -39,7 +39,7 @@ const UserProfile: React.FC = () => {
 
   const handleMenuItemClick = () => {
  
-    router.push(RoutesNavigation.Communities);
+    router.push(RoutesNavigation.CommunitiesTrainer);
   };
 
   if (isLoading) {
@@ -54,7 +54,7 @@ const UserProfile: React.FC = () => {
     const buttonStyles =
       "bg-secondary-default hover:bg-secondary-hover active:bg-secondary-active text-white";
 
-    return user.role != "trainer" ? (
+    return user.role === "trainer" ? (
       <div className="flex flex-col items-center gap-4">
         <div className="flex gap-4">
           <Button

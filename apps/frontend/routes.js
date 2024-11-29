@@ -8,7 +8,7 @@ const RoutesNavigation = {
     ChatBot: "/ChatBot",
     CreateRoutine: "/routines/create",
     YouRoutine: "/routines/yourRoutines",
-    Communities: "/communities"
+    CommunitiesTrainer: "/communitiesTrainer"
   };
   
   export default RoutesNavigation;
