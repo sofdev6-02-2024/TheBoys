@@ -5,8 +5,23 @@ import {
 } from "@stripe/react-stripe-js";
 import { toast } from "sonner";
 import Button from "../components/Button";
+import PaymentInformation from "./paymentInformation";
 
-function CheckoutForm() {
+interface Props {
+  name: string;
+  description: string;
+  amount: number;
+  image_url: string;
+  currency: string;
+}
+
+function CheckoutForm({
+  name,
+  description,
+  amount,
+  image_url,
+  currency,
+}: Props) {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -20,16 +35,16 @@ function CheckoutForm() {
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "https://example.com/order/123/complete",
+        // TODO: Successful payment page
+        return_url: "http://localhost:3000/",
       },
     });
 
-    console.log(result)
 
     if (result.error) {
       toast.error("A processing error occurred.");
     } else {
-      toast.success("Your payment was processed")
+      toast.success("Your payment was processed");
     }
   };
 
@@ -39,6 +54,13 @@ function CheckoutForm() {
         onSubmit={handleSubmit}
         className="flex flex-col bg-primary-hover shadow-md rounded-xl px-8 pt-6 pb-8 mb-4 w-full max-w-md gap-4"
       >
+        <PaymentInformation
+          name={name}
+          description={description}
+          amount={amount}
+          image_url={image_url}
+          currency={currency}
+        />
         <PaymentElement />
         <div className="flex items-center justify-between">
           <Button

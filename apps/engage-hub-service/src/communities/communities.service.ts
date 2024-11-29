@@ -26,8 +26,6 @@ export class CommunitiesService {
   async findOne(id: UUID) {
     const community = await this.communityRepository.findOneBy({ id });
 
-    console.log(community);
-
     if (!community)
       throw new RpcException({
         statusCode: 404,
