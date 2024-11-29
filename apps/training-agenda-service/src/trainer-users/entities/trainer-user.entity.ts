@@ -1,5 +1,5 @@
 import { UUID } from 'crypto';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 import { RelationTypes } from './relation_type.entity';
 
 @Entity()
