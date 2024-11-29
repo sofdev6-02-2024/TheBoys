@@ -12,7 +12,7 @@ export interface KeycloakUserProfile {
   lastName: string;
   email: string;
   userImage?: string;
-  role: "user" | "trainer";
+  role: "user" | "trainer" | "admin";
 }
 
 export function useKeycloakProfile() {
@@ -33,7 +33,7 @@ export function useKeycloakProfile() {
           lastName: decodedToken.family_name || '',
           email: decodedToken.email || '',
           userImage: decodedToken.userImage || 'https://t3.ftcdn.net/jpg/06/19/26/46/360_F_619264680_x2PBdGLF54sFe7kTBtAvZnPyXgvaRw0Y.jpg',
-          role: decodedToken.realm_roles?.includes('trainer') ? 'trainer' : 'user'
+          role: decodedToken.realm_roles?.includes('admin') ? 'admin' : decodedToken.realm_roles?.includes('trainer') ? 'trainer' : 'user'
         });
       } catch (error) {
         console.error('Error decoding token:', error);

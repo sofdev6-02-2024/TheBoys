@@ -84,6 +84,7 @@ export interface Certification {
 }
 
 export interface TrainerRequest {
+  TrainerRequestId: string;
   userId: string;
   experience: string;
   availability: string;
@@ -103,4 +104,11 @@ export interface PaymentItemDto {
   amount: number;
   currency: CurrencyTypes;
   client_secret: string;
+}
+
+export interface CommentPopupProps {
+  type: "Accept" | "Reject";
+  request: TrainerRequest | null;
+  onClose: () => void;
+  onConfirm: (comment: string | null) => void;
 }

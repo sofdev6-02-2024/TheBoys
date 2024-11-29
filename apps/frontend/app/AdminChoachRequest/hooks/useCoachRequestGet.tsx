@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { TrainerRequest } from "../../types";
 
 export const useCoachRequestGet = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<TrainerRequest[]>([]);
     
     useEffect(() => {
         async function fetchData() {
@@ -13,6 +14,5 @@ export const useCoachRequestGet = () => {
         fetchData();
     }, []);
     
-    console.log(data);
     return { data };
 };
