@@ -3,7 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { StripeService } from './stripe.service';
 import { CreateIntentDto } from './dto/create-intent.dto';
 
-@Controller('stripe')
+@Controller()
 export class StripeController {
   constructor(private readonly stripeService: StripeService) {}
 

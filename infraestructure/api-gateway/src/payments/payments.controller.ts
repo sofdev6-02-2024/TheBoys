@@ -13,4 +13,10 @@ export class PaymentsController {
   createIntent(@Body() createIntentDto: any) {
     return this.paymentService.send('createIntent', createIntentDto);
   }
+
+  @Post('wrap-data')
+  @Unprotected()
+  wrapData(@Body() generateDataDto: any) {
+    return this.paymentService.send('generateToken', generateDataDto);
+  }
 }
