@@ -24,8 +24,12 @@ export const useCoachRequestUpdate = () => {
 
       const result = await response.json();
       return result;
-    } catch (err: any) {
-      setError(err.message || "An unknown error occurred.");
+    } catch (err: string | unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
       console.error(err);
     } finally {
       setIsLoading(false);
