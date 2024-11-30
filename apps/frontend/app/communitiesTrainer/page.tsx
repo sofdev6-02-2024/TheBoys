@@ -4,6 +4,7 @@ import React from "react";
 import CommunityList from "./components/CommunityList";
 import CommunityModal from "./components/CommunityModal";
 import { useCommunities } from "./components/hooks/useCommunities";
+import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
 
 export default function CommunitiesPage() {
   const {
@@ -14,12 +15,25 @@ export default function CommunitiesPage() {
     imageUrl,
     filteredCommunities,
     isEditing,
-    isLoading, 
+    isLoading,
     handleImageUpload,
     handleConfirm,
     handleEditCommunity,
     handleDeleteCommunity,
   } = useCommunities();
+
+  const { user } = useKeycloakProfile(); 
+  const userRole = user?.role;
+
+  if (userRole !== "trainer") {
+  
+    return (
+      <div className="flex flex-col justify-center items-center h-full">
+        <h1 className="text-3xl font-bold text-red-500">Access Denied</h1>
+        <p className="text-lg text-gray-300">You do not have permission to access this page.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col justify-start items-center h-full space-y-10 px-4 pt-20">
@@ -57,11 +71,11 @@ export default function CommunitiesPage() {
           <p className="text-center text-lg font-semibold">Loading communities...</p>
         ) : (
           <CommunityList
-              communities={filteredCommunities}
-              onEdit={handleEditCommunity}
-              onDelete={handleDeleteCommunity} 
-              isLoading={isLoading}   
-                     />
+            communities={filteredCommunities}
+            onEdit={handleEditCommunity}
+            onDelete={handleDeleteCommunity}
+            isLoading={isLoading}
+          />
         )}
       </div>
     </div>
