@@ -8,8 +8,10 @@ const RoutesNavigation = {
     ChatBot: "/ChatBot",
     CreateRoutine: "/routines/create",
     YouRoutine: "/routines/yourRoutines",
-    CommunitiesTrainer: "/communitiesTrainer"
+    Payment: "/Payment",
+    CommunitiesTrainer: "/communitiesTrainer",
   };
   
   export default RoutesNavigation;
+  
   
