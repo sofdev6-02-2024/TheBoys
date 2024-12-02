@@ -9,6 +9,7 @@ import {
 } from 'nest-keycloak-connect';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { PaymentsModule } from './payments/payments.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -26,6 +27,7 @@ import configuration from './config/configuration';
     }),
     UsersModule,
     EngageHubModule,
+    PaymentsModule,
   ],
   providers: [
     {

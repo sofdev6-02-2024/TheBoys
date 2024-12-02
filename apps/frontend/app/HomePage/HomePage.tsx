@@ -28,7 +28,7 @@ export default function HomePage() {
         src={calendarImage} 
         alt="Calendar" 
         label="Calendar" 
-        onClickOption="Calendar" 
+        onClickOption="Payment" 
       />
 
       <ImageCard 

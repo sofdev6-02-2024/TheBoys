@@ -1,3 +1,5 @@
+import { CurrencyTypes } from "./enums";
+
 export interface InputFieldProps {
   type: string;
   placeholder?: string;
@@ -45,14 +47,14 @@ export interface ExerciseListItemsProps {
 }
 
 export interface Exercise {
-  bodyPart: string
-  equipment: string
-  gifUrl: string
-  id: string
-  name: string
-  target: string
-  secondaryMuscles: string[]
-  instructions: string[]
+  bodyPart: string;
+  equipment: string;
+  gifUrl: string;
+  id: string;
+  name: string;
+  target: string;
+  secondaryMuscles: string[];
+  instructions: string[];
 }
 
 export interface RoutineActionButtonsProps {
@@ -87,4 +89,18 @@ export interface TrainerRequest {
   availability: string;
   specialization: string;
   certifications: Certification[];
+}
+
+export interface IntentDto {
+  amount: number;
+  currency: CurrencyTypes;
+}
+
+export interface PaymentItemDto {
+  name: string;
+  description: string;
+  image_url: string;
+  amount: number;
+  currency: CurrencyTypes;
+  client_secret: string;
 }

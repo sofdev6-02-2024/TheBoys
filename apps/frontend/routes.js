@@ -1,5 +1,6 @@
 
 const RoutesNavigation = {
+
   HomePage: "/",
   Routines: "/routines",
   Profile: "/Profile",
@@ -10,10 +11,8 @@ const RoutesNavigation = {
   YouRoutine: "/routines/yourRoutines",
   Users: "/users",
   Workout:"/workout",
-  Notifications:"/notifications"
+  Notifications:"/notifications",
+  Payment: "/Payment",
 
 
 };
-
-export default RoutesNavigation;
-
