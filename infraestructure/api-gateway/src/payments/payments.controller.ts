@@ -8,15 +8,9 @@ export class PaymentsController {
     @Inject('PAYMENT_SERVICE') private readonly paymentService: ClientProxy,
   ) {}
 
-  @Post()
-  @Unprotected()
-  createIntent(@Body() createIntentDto: any) {
-    return this.paymentService.send('createIntent', createIntentDto);
-  }
-
-  @Post('wrap-data')
+  @Post('generate')
   @Unprotected()
   wrapData(@Body() generateDataDto: any) {
-    return this.paymentService.send('generateToken', generateDataDto);
+    return this.paymentService.send('generate', generateDataDto);
   }
 }

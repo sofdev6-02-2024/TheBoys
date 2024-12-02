@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { StripeModule } from './stripe/stripe.module';
-import { DataWrapperModule } from './data-wrapper/data-wrapper.module';
+import { TokenGeneratorModule } from './token-generator/token-generator.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import configuration from './config/configuration';
@@ -24,7 +24,7 @@ import configuration from './config/configuration';
       }),
       global: true,
     }),
-    DataWrapperModule,
+    TokenGeneratorModule,
   ],
   controllers: [],
   providers: [],

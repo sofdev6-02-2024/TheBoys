@@ -26,8 +26,4 @@ export class GenerateJwtDto {
 
   @IsEnum(CurrencyTypes)
   currency: CurrencyTypes;
-
-  @IsString()
-  @IsNotEmpty()
-  client_secret: string;
 }
