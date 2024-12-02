@@ -16,3 +16,4 @@ const RoutesNavigation = {
 
 
 };
+export default RoutesNavigation;
