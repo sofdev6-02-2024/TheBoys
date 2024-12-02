@@ -4,7 +4,8 @@ function Button(props: ButtonProps) {
   return (
     <button
       className={`bg-${props.backgroundColor}-default hover:bg-${props.backgroundColor}-hover
-      active:bg-${props.backgroundColor}-active text-white rounded-md px-6 py-2 text-xl
+      active:bg-${props.backgroundColor}-active text-white rounded-md px-6 py-2
+      disabled:bg-secondary-default disabled:opacity-80 disabled:cursor-default cursor-pointer
       w-fit h-fit ${props.className}`}
       type={props.type}
       onClick={props.onClick}
