@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useKeycloakProfile } from '../Profile/hooks/useUserProfile';
+import RoutesNavigation from '../../routes';
 import Search from './search';
 
 export default function AdminChoachRequest() {
@@ -15,8 +16,8 @@ export default function AdminChoachRequest() {
   }, []);
 
   useEffect(() => {
-    if (isClient && !isLoading && user && user.role !== 'admin') {
-      router.push('/access-denied');
+    if (isClient && !isLoading && user && user.role !== 'Admin') {
+      router.push(RoutesNavigation.AccessDenied);
     }
   }, [isClient, isLoading, user, router]);
 

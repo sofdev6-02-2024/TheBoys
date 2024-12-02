@@ -86,6 +86,7 @@ export interface Certification {
 export interface TrainerRequest {
   TrainerRequestId: string;
   userId: string;
+  status: "Pending" | "Accepted" | "Rejected" | "Discontinued";
   experience: string;
   availability: string;
   specialization: string;

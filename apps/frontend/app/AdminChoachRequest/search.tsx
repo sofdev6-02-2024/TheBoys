@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { FaSearch, FaFilter, FaTimes, FaCheck } from "react-icons/fa";
-import { useCoachRequestGet } from "./hooks/useCoachRequestGet";
-import { useCoachRequestUpdate } from "./hooks/useCoachRequestUpdate";
+import { useCoachRequestGet } from "../utils/Connections/useCoachRequestGet";
+import { useCoachRequestUpdate } from "../utils/Connections/useCoachRequestUpdate";
 import Popup from "./popUp";
 import ConfirmationPopup from "./CommentPopup";
 import { TrainerRequest } from "../types";
@@ -47,7 +47,7 @@ export default function Search() {
     
         const updatedRequest = {
             ...confirmationPopup.request,
-            status: confirmationPopup.type === "Accept" ? "Accepted" : "Rejected",
+            status: confirmationPopup.type === "Accept" ? "Accepted" : "Rejected" as "Accepted" | "Rejected",
             comments,
         };
         
@@ -128,48 +128,93 @@ export default function Search() {
             <div className="w-full max-w-[90%] md:max-w-2xl bg-[#3A3B43] text-white rounded-lg mt-6 p-4 overflow-y-scroll max-h-[400px]">
                 <h2 className="text-xl font-semibold mb-4">Trainer Requests</h2>
                 {filteredRequests.length > 0 ? (
-                    filteredRequests.map((request) => (
-                        <div
-                            key={request.userId}
-                            className="flex items-center justify-between bg-[#2E2E33] p-4 rounded-lg mb-4 shadow hover:shadow-lg transition cursor-pointer"
-                            onClick={() => setPopupData(request)}
-                        >
-                            <p className="truncate max-w-[100px] md:max-w-[150px] text-sm">
-                                {request.userId.slice(0, 6)}...
-                            </p>
-
-                            <p className="text-sm text-center flex-1 md:truncate">
-                                {request.specialization}
-                            </p>
-
-                            <div className="flex items-center gap-2">
-                                <button
-                                    className="bg-[#4CAF50] hover:bg-[#43a047] text-white p-2 rounded-md"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        openConfirmationPopup("Accept", request);
-                                    }}
-                                    title="Accept"
-                                >
-                                    <FaCheck size={14} />
-                                </button>
-                                <button
-                                    className="bg-[#F44336] hover:bg-[#e53935] text-white p-2 rounded-md"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        openConfirmationPopup("Reject", request);
-                                    }}
-                                    title="Reject"
-                                >
-                                    <FaTimes size={14} />
-                                </button>
-                            </div>
+                    <div>
+                        {/* Encabezados de columnas */}
+                        <div className="hidden md:flex items-center justify-between text-gray-400 text-sm mb-2">
+                            <p className="w-1/4">User ID</p>
+                            <p className="w-1/4 text-center">Specialization</p>
+                            <p className="w-1/4 text-center">Status</p>
+                            <p className="w-1/4 text-center">Actions</p>
                         </div>
-                    ))
+
+                        {filteredRequests.map((request) => {
+                            // Determinar íconos y estilos basados en el estado
+                            let statusIcon, statusColor;
+                            switch (request.status) {
+                                case "Accepted":
+                                    statusIcon = "✔️";
+                                    statusColor = "text-green-500";
+                                    break;
+                                case "Rejected":
+                                    statusIcon = "❌";
+                                    statusColor = "text-red-500";
+                                    break;
+                                case "Discontinued":
+                                    statusIcon = "⚠️";
+                                    statusColor = "text-yellow-500";
+                                    break;
+                                default:
+                                    statusIcon = "⏳";
+                                    statusColor = "text-blue-500";
+                                    break;
+                            }
+
+                            return (
+                                <div
+                                    key={request.userId}
+                                    className="flex flex-wrap md:flex-nowrap items-center justify-between bg-[#2E2E33] p-4 rounded-lg mb-4 shadow hover:shadow-lg transition cursor-pointer"
+                                    onClick={() => setPopupData(request)}
+                                >
+                                    {/* User ID */}
+                                    <p className="truncate max-w-[100px] md:max-w-[150px] text-sm w-1/4">
+                                        {request.userId.slice(0, 6)}...
+                                    </p>
+
+                                    {/* Specialization */}
+                                    <p className="text-sm text-center flex-1 md:w-1/4 md:truncate">
+                                        {request.specialization}
+                                    </p>
+
+                                    {/* Status */}
+                                    <p
+                                        className={`flex items-center justify-center text-sm ${statusColor} w-1/4`}
+                                    >
+                                        <span className="hidden md:inline">{request.status}</span>
+                                        <span className="md:hidden">{statusIcon}</span>
+                                    </p>
+
+                                    {/* Buttons */}
+                                    <div className="flex items-center gap-2 w-1/4 justify-end">
+                                        <button
+                                            className="bg-[#4CAF50] hover:bg-[#43a047] text-white p-2 rounded-md"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                openConfirmationPopup("Accept", request);
+                                            }}
+                                            title="Accept"
+                                        >
+                                            <FaCheck size={14} />
+                                        </button>
+                                        <button
+                                            className="bg-[#F44336] hover:bg-[#e53935] text-white p-2 rounded-md"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                openConfirmationPopup("Reject", request);
+                                            }}
+                                            title="Reject"
+                                        >
+                                            <FaTimes size={14} />
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 ) : (
                     <p>No trainer requests available.</p>
                 )}
             </div>
+
 
             {popupData && (
                 <Popup
