@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import useCalendar from "./hooks/userCalendar";
 import EventForm from "./eventForm";
 import { CalendarEvent } from "./types";
+import { EventClickArg } from "@fullcalendar/core/index.js";
 
 const Calendar: React.FC = () => {
   const { events, role, setFilter, handleAddEvent, getEventColor } =
@@ -31,11 +32,11 @@ const Calendar: React.FC = () => {
     }
     setIsModalOpen(false);
   };
-
-  const handleEventClick = (info: any) => {
+  
+  const handleEventClick = (info: EventClickArg) => {
     toast.success(`Clicked on event: ${info.event.title}`);
   };
-
+  
   return (
     <div>
       <div>
