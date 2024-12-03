@@ -9,7 +9,7 @@ import { FaMonument,FaDumbbell } from "react-icons/fa";
 const icons = [
   { id: 'home', IconElement: <FaHouseChimney className="w-11 h-11" />, alt: 'Home icon' },
   { id: 'users', IconElement: <HiUsers className="w-11 h-11" />, alt: 'Users icon' },
-  { id: 'workout', IconElement: <FaDumbbell className="w-11 h-11" />, alt: 'Workout icon' },
+  { id: 'routines', IconElement: <FaDumbbell className="w-11 h-11" />, alt: 'Workout icon' },
   { id: 'profile', IconElement: <FaUser className="w-11 h-11" />, alt: 'Profile icon' },
   { id: 'notifications', IconElement: <FaMonument className="w-11 h-11" />, alt: 'Notifications icon' },
 ];
