@@ -11,16 +11,19 @@ interface ImageCardProps {
   label: string;
   onClickOption: keyof typeof RoutesNavigation;
 }
-
 export default function ImageCard({ className, src, alt, label, onClickOption }: ImageCardProps) {
   const router = useRouter();
 
-  const handleImageClick = () => {
-    const route = RoutesNavigation[onClickOption];
-    if (route) {
-      router.push(route);
-    } else {
-      console.error("Route doesn't exist.");
+  const handleImageClick = async () => {
+    try {
+      const route = RoutesNavigation[onClickOption];
+      if (route) {
+        await router.push(route); 
+      } else {
+        throw new Error("Route doesn't exist.");
+      }
+    } catch (error) {
+      console.error("Error during navigation:", error);
     }
   };
 
