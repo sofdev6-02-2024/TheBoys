@@ -6,7 +6,7 @@ import SubMenu from "./SubMenu";
 import AuthStatus from "../components/authStatus";
 import { ReactNode } from "react";
 import RoutesNavigation from "../../routes";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 interface IconType {
   id: string;
@@ -35,7 +35,16 @@ const NavBar = ({
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthPopupOpen, setIsAuthPopupOpen] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
+
+  const routesMap: Record<string, string> = {
+    home: RoutesNavigation.HomePage,
+    users: RoutesNavigation.Users,
+    routines: RoutesNavigation.Routines,
+    notifications: RoutesNavigation.Notifications,
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -45,9 +54,34 @@ const NavBar = ({
     setIsAuthPopupOpen((prev) => !prev);
   };
 
-  const handleMenuItemClick = (item: string) => {
+  const handleMenuItemClick = async (item: string) => {
     console.log(`${item} clicked`);
-    router.push(RoutesNavigation.HomePage);
+    await router.push(RoutesNavigation.HomePage);
+  };
+
+  const handleIconClick = async (id: string) => {
+    console.log(`Icon clicked: ${id}`);
+
+    if (routesMap[id]) {
+      await router.push(routesMap[id]);
+    }
+    
+    if (id === "profile") {
+      setIsAuthPopupOpen(true);
+    }
+    setSelectedIcon(id);
+  };
+
+  const getIconClass = (id: string) => {
+    if (id === "profile") {
+      return pathname === RoutesNavigation.Profile 
+        ? "text-red-500"
+        : "text-white";
+    }
+
+    return pathname === routesMap[id] || selectedIcon === id
+      ? "text-red-500"
+      : "text-white";
   };
 
   return (
@@ -67,9 +101,6 @@ const NavBar = ({
           <div onClick={toggleAuthPopup} className="cursor-pointer">
             {userIcon}
           </div>
-          {isAuthPopupOpen && (
-            <AuthStatus onClose={() => setIsAuthPopupOpen(false)} />
-          )}
         </div>
       </header>
       {isMenuOpen && <SubMenu menuItemsSearch={menuItems} onClickItem={handleMenuItemClick} />}
@@ -79,14 +110,16 @@ const NavBar = ({
             <div
               key={id}
               title={alt}
-              className="cursor-pointer text-white"
-              onClick={() => id === "user" && toggleAuthPopup()}
+              className={`cursor-pointer ${getIconClass(id)}`}
+              onClick={() => handleIconClick(id)}
             >
               {IconElement}
             </div>
           ))}
         </div>
       </footer>
+
+      {isAuthPopupOpen && <AuthStatus onClose={() => setIsAuthPopupOpen(false)} />}
     </>
   );
 };
