@@ -16,8 +16,7 @@ const RoutesNavigation = {
   CommunitiesTrainer: "/communitiesTrainer",
   AdminChoachRequest: "/adminChoachRequest",
   AccessDenied:"/access-denied",
-
-
-
+  CommunitiesUser:"/communitiesUser",
+  
 };
 export default RoutesNavigation;

@@ -54,9 +54,13 @@ const NavBar = ({
     setIsAuthPopupOpen((prev) => !prev);
   };
 
-  const handleMenuItemClick = async (item: string) => {
+  const handleMenuItemClick = (item: string) => {
     console.log(`${item} clicked`);
-    await router.push(RoutesNavigation.HomePage);
+    if(item == "Community"){
+      router.push(RoutesNavigation.CommunitiesUser);
+    }else{
+      router.push(RoutesNavigation.HomePage);
+    }
   };
 
   const handleIconClick = async (id: string) => {
