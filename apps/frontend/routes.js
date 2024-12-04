@@ -14,6 +14,9 @@ const RoutesNavigation = {
   Notifications:"/notifications",
   Payment: "/Payment",
   CommunitiesTrainer: "/communitiesTrainer",
+  AdminChoachRequest: "/adminChoachRequest",
+  AccessDenied:"/access-denied",
+
 
 
 };
