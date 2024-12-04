@@ -64,6 +64,11 @@ interface DecodedToken {
         clientId: `nextjs`,
         clientSecret: `**********`,
         issuer: `http://172.17.0.1:8080/realms/body-boost/`,
+        authorization: {
+          params: {
+            prompt: 'login',
+          },
+        },
       }),
     ],
     callbacks: {
