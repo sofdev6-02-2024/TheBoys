@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./Header/NavBarDisplay";
 import { Toaster } from "sonner"; 
 import SessionProviderWrapper from '@/app/utils/sessionProviderWrapper';
+import Chatbox from "./chatbox/ChatBox";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -78,7 +79,8 @@ export default function RootLayout({
       >
         <Header />
         {children}
-        <Toaster position="bottom-right" richColors /> 
+        <Toaster position="bottom-right" richColors />
+        <Chatbox />
       </body>
     </html>
     </SessionProviderWrapper>
