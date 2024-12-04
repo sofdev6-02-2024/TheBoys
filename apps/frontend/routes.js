@@ -13,6 +13,8 @@ const RoutesNavigation = {
   Workout:"/workout",
   Notifications:"/notifications",
   Payment: "/Payment",
+  AdminChoachRequest: "/adminChoachRequest",
+  AccessDenied:"/access-denied",
 
 
 };

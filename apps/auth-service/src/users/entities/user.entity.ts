@@ -9,7 +9,7 @@ export class User extends Document {
   userId: Types.ObjectId;
 
   @Prop()
-  username: string; 
+  username: string;
 
   @Prop()
   email: string;

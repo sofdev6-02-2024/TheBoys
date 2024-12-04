@@ -12,7 +12,7 @@ export interface KeycloakUserProfile {
   lastName: string;
   email: string;
   userImage?: string;
-  role: "user" | "trainer";
+  role: "user" | "trainer" | "Admin";
 }
 
 export function useKeycloakProfile() {
@@ -25,15 +25,21 @@ export function useKeycloakProfile() {
   useEffect(() => {
     if (session?.access_token) {
       try {
-        const decodedToken = jwtDecode<{ sub: string; given_name?: string; family_name?: string; email?: string; userImage?: string; realm_roles?: string[] }>(decrypt(session.access_token));
-        
+        const decodedToken = jwtDecode<{ sub: string; given_name?: string; family_name?: string; email?: string; userImage?: string; resource_access?: Record<string, { roles: string[] }> }>(decrypt(session.access_token));
+        const clientRoles = decodedToken.resource_access?.nextjs?.roles || [];
+          console.log("Client-specific roles:", clientRoles);
+  
+          const role =
+            clientRoles.includes("Admin") ? "Admin" :
+            clientRoles.includes("trainer") ? "trainer" :
+            "user";
         setUser({
           id: decodedToken.sub,
           firstName: decodedToken.given_name || '',
           lastName: decodedToken.family_name || '',
           email: decodedToken.email || '',
           userImage: decodedToken.userImage || 'https://t3.ftcdn.net/jpg/06/19/26/46/360_F_619264680_x2PBdGLF54sFe7kTBtAvZnPyXgvaRw0Y.jpg',
-          role: decodedToken.realm_roles?.includes('trainer') ? 'trainer' : 'user'
+          role,
         });
       } catch (error) {
         console.error('Error decoding token:', error);
