@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString, IsUrl } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
 import { SpecializationTypes } from 'src/trainer-request/entities/especialization-types.entity';
 
 export class CreateCommunityDto {
@@ -27,4 +27,8 @@ export class CreateCommunityDto {
   @IsString()
   @IsNotEmpty()
   trainerId: string;
+
+  @IsOptional() 
+  @IsString({ each: true })
+  users: string[] = []; 
 }

@@ -50,6 +50,18 @@ export class CommunitiesController {
     });
   }
 
+  @Put(':id/users')
+  @Unprotected()
+  updateUsersComunity(
+    @Body() updateCommunityUsersDto: any,
+    @Param('id') id: UUID,
+  ): Observable<any> {
+    return this.engageHubService.send('updateCommunityUsers', {
+      id,
+      updateCommunityUsersDto,
+    });
+  }
+
   @Delete(':id')
   @Unprotected()
   remove(@Param('id') id: UUID): Observable<any> {
