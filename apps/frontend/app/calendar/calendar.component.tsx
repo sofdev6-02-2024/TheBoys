@@ -3,14 +3,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { toast } from "sonner";
-import useCalendar from "./hooks/userCalendar";
 import EventForm from "./eventForm";
 import { CalendarEvent } from "./types";
 import { EventClickArg } from "@fullcalendar/core/index.js";
+import useCalendar from "./hooks/user.calendar";
 
 const Calendar: React.FC = () => {
-  const { events, role, setFilter, handleAddEvent, getEventColor } =
-    useCalendar();
+  const { events, role, setFilter, handleAddEvent, getEventColor } = useCalendar();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddNewEvent = (newEvent: {
@@ -32,11 +31,11 @@ const Calendar: React.FC = () => {
     }
     setIsModalOpen(false);
   };
-  
+
   const handleEventClick = (info: EventClickArg) => {
     toast.success(`Clicked on event: ${info.event.title}`);
   };
-  
+
   return (
     <div>
       <div>
