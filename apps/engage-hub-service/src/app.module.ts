@@ -8,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TrainerRequestModule } from './trainer-request/trainer-request.module';
 import { TrainerStatusModule } from './mailer/trainer-status/trainer-status.module';
 import { CommunitiesModule } from './communities/communities.module';
+import { MessageHistoryModule } from './messageHistory/messageHistory.module';
+
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { CommunitiesModule } from './communities/communities.module';
     ExerciseModule,
     TrainerStatusModule,
     CommunitiesModule,
+    MessageHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
