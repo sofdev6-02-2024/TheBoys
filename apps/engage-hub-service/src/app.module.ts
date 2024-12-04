@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TrainerRequestModule } from './trainer-request/trainer-request.module';
 import { TrainerStatusModule } from './mailer/trainer-status/trainer-status.module';
 import { CommunitiesModule } from './communities/communities.module';
+import { TrainingPlanModule } from './training-plan/training-plan.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CommunitiesModule } from './communities/communities.module';
     ExerciseModule,
     TrainerStatusModule,
     CommunitiesModule,
+    TrainingPlanModule,
   ],
   controllers: [AppController],
   providers: [AppService],
