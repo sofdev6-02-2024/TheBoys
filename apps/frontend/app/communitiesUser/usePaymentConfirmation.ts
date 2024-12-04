@@ -1,22 +1,25 @@
-import { useState } from "react";
+import { useEffect } from "react";
 
-// Hook para manejar la confirmación del pago
 function usePaymentConfirmation() {
-  const [paymentConfirmed, setPaymentConfirmed] = useState(true);
+  const getPaymentStatus = () => {
+    const savedPaymentStatus = localStorage.getItem("paymentConfirmed");
+    return savedPaymentStatus === "true"; 
+  };
 
   const confirmPayment = () => {
-    
-    setPaymentConfirmed(true);
-    console.log("EL PAGO ESTA : "+paymentConfirmed);
+    localStorage.setItem("paymentConfirmed", "true"); 
   };
 
   const resetPaymentConfirmation = () => {
-    setPaymentConfirmed(false);
-    console.log("EL PAGO ESTA : "+paymentConfirmed);
+    localStorage.removeItem("paymentConfirmed"); 
   };
 
+  useEffect(() => {
+    console.log("EL PAGO ESTA: " + localStorage.getItem("paymentConfirmed"));
+  }, [getPaymentStatus()]);
+
   return {
-    paymentConfirmed,
+    getPaymentStatus,
     confirmPayment,
     resetPaymentConfirmation,
   };

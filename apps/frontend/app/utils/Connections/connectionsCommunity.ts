@@ -13,7 +13,13 @@ const API_URL = "http://localhost:4444/communities";
   }
 
   export interface Community extends CreateCommunity {
+    users: any;
+
     id: string;
+  }
+
+  export interface CommunityUsers extends CreateCommunity {
+    users: any;
   }
 
   export const fetchCommunities = async (): Promise<Community[]> => {

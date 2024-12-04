@@ -37,26 +37,26 @@ function CheckoutForm({
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:3000/communitiesUser", // URL final de éxito
+        return_url: "http://localhost:3000",
       },
-      redirect: "if_required", // Evita redirección automática
+      redirect: "if_required",
     });
   
     if (result.error) {
       toast.error("A processing error occurred.");
     } else if (result.paymentIntent?.status === "succeeded") {
-      // Si el pago fue exitoso, maneja la lógica adicional antes de redirigir
-      confirmPayment(); // Acción posterior al pago
+      confirmPayment(); // Actualiza el estado paymentConfirmed a true
       toast.success("Your payment was processed");
   
-      // Retraso para permitir completar otras tareas antes de redirigir
+      // Espera un poco antes de redirigir, para asegurarte de que el estado haya sido actualizado
       setTimeout(() => {
-        window.location.href = "http://localhost:3000/communitiesUser";
-      }, 500); // Retraso de 500ms (ajustar según sea necesario)
+        window.location.href = "http://localhost:3000";
+      }, 500); 
     } else {
       toast.error("Payment was not completed.");
     }
   };
+  
   
   
 
