@@ -7,7 +7,6 @@ import { generatePayment } from "../utils/Connections/communityService";
 import CommunityCard from "./componets/CommunityCard";
 import CommunityList from "./componets/CommunityList";
 import CommunityModal from "./componets/CommunityModal";
-import LoadingMessage from "./componets/LoadingMessage";
 import { useCommunities } from "./hooks/useCommunities";
 import { Community } from "../utils/Connections/connectionsCommunity";
 
@@ -60,6 +59,10 @@ function CommunitiesUser() {
 
   const ErrorMessage: React.FC<Props> = ({ message }) => (
     <p className="text-red-500">{message}</p>
+  );
+
+  const LoadingMessage = () => (
+    <p>Loading communities...</p>
   );
 
   return (

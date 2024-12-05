@@ -85,6 +85,7 @@ const CommunityMessages = () => {
         handleSendMessage={handleSendMessage}
         handleImageChange={handleImageChange}
         imageUrl={imageUrl}
+        setImageUrl={setImageUrl}
       />
     </section>
   );

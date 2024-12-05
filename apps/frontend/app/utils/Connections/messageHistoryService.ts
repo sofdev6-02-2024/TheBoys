@@ -3,7 +3,7 @@ import axios from "axios";
 const API_BASE_URL = "http://localhost:4444/messageHistory";
 
 export class MessageHistoryService {
-  // Obtener los mensajes de una comunidad
+
   static async fetchCommunityMessages(communityId: string) {
     try {
       const response = await axios.get(`${API_BASE_URL}/community/${communityId}`);
@@ -14,7 +14,7 @@ export class MessageHistoryService {
     }
   }
 
-  // Enviar un nuevo mensaje
+
   static async sendMessage(data: {
     userName: string;
     userId: string;

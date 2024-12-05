@@ -20,13 +20,13 @@ const CommunityList: React.FC<Props> = ({ communities, userId }) => {
     <section className="w-full max-w-6xl mb-8">
       <h2 className="text-xl font-bold mb-4">Your Communities</h2>
       {communities.some((community) =>
-        // Verificar si el 'userId' está en la lista de 'community.users'
+       
         community.users.includes(userId) 
       ) ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {communities
             .filter((community) =>
-              // Filtrar solo las comunidades donde el 'userId' está presente en 'community.users'
+              
               community.users.includes(userId)
             )
             .map((community) => (
@@ -34,7 +34,7 @@ const CommunityList: React.FC<Props> = ({ communities, userId }) => {
                 key={community.id}
                 community={community}
                 buttonText="Enter"
-                buttonStyle="bg-blue-500 hover:bg-blue-600"
+                buttonStyle="bg-[#7E7E2D] hover:bg-[#9D9D38]"
                 onClick={() => handleEnterCommunity(community.id)}
               />
             ))}
