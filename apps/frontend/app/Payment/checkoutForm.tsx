@@ -6,7 +6,7 @@ import {
 import { toast } from "sonner";
 import Button from "../components/Button";
 import PaymentInformation from "./paymentInformation";
-import usePaymentConfirmation from "../communitiesUser/usePaymentConfirmation";
+import usePaymentConfirmation from "../communitiesUser/hooks/usePaymentConfirmation";
 
 interface Props {
   name: string;
@@ -45,21 +45,14 @@ function CheckoutForm({
     if (result.error) {
       toast.error("A processing error occurred.");
     } else if (result.paymentIntent?.status === "succeeded") {
-      confirmPayment(); // Actualiza el estado paymentConfirmed a true
+      confirmPayment(); 
       toast.success("Your payment was processed");
-  
-      // Espera un poco antes de redirigir, para asegurarte de que el estado haya sido actualizado
-      setTimeout(() => {
         window.location.href = "http://localhost:3000";
-      }, 500); 
     } else {
       toast.error("Payment was not completed.");
     }
   };
   
-  
-  
-
   return (
     <div className="flex justify-center items-center h-full p-4 sm:p-0">
       <form

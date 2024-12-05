@@ -15,7 +15,6 @@ function usePaymentConfirmation() {
   };
 
   useEffect(() => {
-    console.log("EL PAGO ESTA: " + localStorage.getItem("paymentConfirmed"));
   }, [getPaymentStatus()]);
 
   return {

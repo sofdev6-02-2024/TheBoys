@@ -1,72 +1,25 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Community, fetchCommunities } from "../utils/Connections/connectionsCommunity";
 import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
-import usePaymentConfirmation from "./usePaymentConfirmation";
-import { updateCommunity, generatePayment } from "../utils/Connections/communityService";
+import { generatePayment } from "../utils/Connections/communityService";
 import CommunityCard from "./componets/CommunityCard";
 import CommunityList from "./componets/CommunityList";
 import CommunityModal from "./componets/CommunityModal";
 import LoadingMessage from "./componets/LoadingMessage";
-
+import { useCommunities } from "./hooks/useCommunities";
+import { Community } from "../utils/Connections/connectionsCommunity";
 
 function CommunitiesUser() {
-  const { getPaymentStatus, resetPaymentConfirmation } = usePaymentConfirmation();
-  const [communities, setCommunities] = useState<Community[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const { user } = useKeycloakProfile();
   const userId = user?.id;
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const loadCommunities = async () => {
-      try {
-        setIsLoading(true);
-        const data = await fetchCommunities();
-        setCommunities(data);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setIsLoading(false); 
-      }
-    };
+  const { communities, error, isLoading, setError } = useCommunities(userId);
+  const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    loadCommunities();
-  }, []);
-
-  useEffect(() => {
-    if (getPaymentStatus()) {
-      const communityFromStorage = localStorage.getItem('selectedCommunity');
-      const community = communityFromStorage ? JSON.parse(communityFromStorage) : null;
-  
-      console.log(getPaymentStatus());
-      console.log(communityFromStorage);
-      console.log(community);
-  
-      if (community && userId) {
-        const handleUpdateCommunity = async () => {
-          try {
-            await updateCommunity(community.id, userId);
-            resetPaymentConfirmation();
-            localStorage.removeItem('selectedCommunity');
-            console.log("Comunidad actualizada correctamente.");
-          } catch (err) {
-            // Maneja el error si algo sale mal
-            setError((err as Error).message);
-          }
-        };
-  
-        handleUpdateCommunity();
-      }
-    }
-  }, [getPaymentStatus(), userId]);
-  
-  
   const handleGetInfo = (community: Community) => {
     setSelectedCommunity(community);
     setIsModalOpen(true);
@@ -74,10 +27,9 @@ function CommunitiesUser() {
 
   const handleSubscribe = async () => {
     if (!selectedCommunity) return;
-  
-    // Guarda la comunidad seleccionada en localStorage antes de redirigir
-    localStorage.setItem('selectedCommunity', JSON.stringify(selectedCommunity));
-  
+
+    localStorage.setItem("selectedCommunity", JSON.stringify(selectedCommunity));
+
     const requestBody = {
       amount: selectedCommunity.cost,
       currency: "usd",
@@ -85,7 +37,7 @@ function CommunitiesUser() {
       description: selectedCommunity.description,
       image_url: selectedCommunity.imageUrl,
     };
-  
+
     try {
       const paymentUrl = await generatePayment(requestBody);
       router.push(`http://localhost:3000/Payment/${paymentUrl}`);
@@ -93,10 +45,9 @@ function CommunitiesUser() {
     } catch (err) {
       setError((err as Error).message);
     }
-  
+
     setIsModalOpen(false);
   };
-  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -105,7 +56,7 @@ function CommunitiesUser() {
   type Props = {
     message: string;
   };
-  
+
   const ErrorMessage: React.FC<Props> = ({ message }) => (
     <p className="text-red-500">{message}</p>
   );
@@ -116,7 +67,7 @@ function CommunitiesUser() {
 
       {error ? (
         <ErrorMessage message={error} />
-      ) : isLoading ? (  // Condición para mostrar el mensaje de carga
+      ) : isLoading ? (
         <LoadingMessage />
       ) : (
         <>
@@ -124,7 +75,6 @@ function CommunitiesUser() {
             communities={communities}
             userId={userId!}
             handleGetInfo={handleGetInfo}
-          
           />
 
           <section className="w-full max-w-6xl">
@@ -154,6 +104,5 @@ function CommunitiesUser() {
     </main>
   );
 }
-
 
 export default CommunitiesUser;
