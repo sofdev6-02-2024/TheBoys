@@ -11,6 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { PaymentsModule } from './payments/payments.module';
 import configuration from './config/configuration';
+import { AIServiceProxyModule } from './chatbox/ai-service-proxy.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import configuration from './config/configuration';
     UsersModule,
     EngageHubModule,
     PaymentsModule,
+    AIServiceProxyModule,
   ],
   providers: [
     {

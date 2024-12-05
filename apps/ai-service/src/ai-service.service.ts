@@ -3,7 +3,8 @@ import axios from 'axios';
 
 @Injectable()
 export class AIServiceService {
-  private readonly OPENAI_API_KEY = 'aca iria la api key';
+  private readonly OPENAI_API_KEY =
+    'sk-svcacct-39Uxcr-YDWlt40KoQhF-qp8ZBUvUmHNxrkQEOToDvCDQt7cKN3sO_cq6zD80w8qNgtywT3BlbkFJFR9OoqUukTFA0srTaB4yuJ3MGGIKpBYIgk5B6WPMoQdMTNjQuG3I2sbGFOS7xJeJnuQA';
 
   async generateChatResponse(message: string): Promise<string> {
     try {

@@ -13,7 +13,8 @@ const useChat = () => {
   const sendMessage = async (message: string) => {
     try {
       setIsLoading(true);
-      const response = await axios.post("/api/ai-service/chat", { message });
+      console.log('Sending message:', message); // Log de envío
+      const response = await axios.post("api/ai-service/chat", { message });
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: message, isUser: true },

@@ -1,15 +1,15 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { AIServiceService } from './ai-service.service';
-import { ChatRequestDTO } from './ai-service.dto';
 
-@Controller('ai-service')
+@Controller()
 export class AIServiceController {
   constructor(private readonly aiServiceService: AIServiceService) {}
 
-  @Post('chat')
-  async handleChat(@Body() chatRequest: ChatRequestDTO) {
+  @MessagePattern({ cmd: 'AI' })
+  async handleChat(data: { message: string }) {
     const response = await this.aiServiceService.generateChatResponse(
-      chatRequest.message,
+      data.message,
     );
     return { response };
   }
