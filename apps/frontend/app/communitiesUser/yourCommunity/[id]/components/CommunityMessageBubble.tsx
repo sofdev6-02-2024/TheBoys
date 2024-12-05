@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 type CommunityMessageBubbleProps = {
     message: string;
     imageUrl: string | null;
@@ -25,9 +27,11 @@ type CommunityMessageBubbleProps = {
             {message && <p className="mt-1 text-sm lg:text-base">{message}</p>}
          
             {imageUrl && (
-              <img
+              <Image
                 src={imageUrl}
                 alt="Imagen del mensaje"
+                width={500} 
+                height={300}
                 className="mt-2 rounded-md w-90 h-80"
               />
             )}

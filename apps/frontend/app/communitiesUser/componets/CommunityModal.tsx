@@ -1,5 +1,6 @@
 import { Community } from "@/app/utils/Connections/connectionsCommunity";
 import React from "react";
+import Image from 'next/image';
 
 type Props = {
   selectedCommunity: Community;
@@ -18,9 +19,11 @@ const CommunityModal: React.FC<Props> = ({ selectedCommunity, handleCloseModal, 
           ×
         </button>
         <h2 className="text-xl font-semibold mb-4">{selectedCommunity.name}</h2>
-        <img
+        <Image
           src={selectedCommunity.imageUrl}
           alt={selectedCommunity.name}
+          width={500} 
+          height={300} 
           className="w-32 h-32 rounded-full object-cover mb-4"
         />
         <p className="mb-2">

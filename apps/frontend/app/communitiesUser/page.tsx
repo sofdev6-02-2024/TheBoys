@@ -26,6 +26,7 @@ function CommunitiesUser() {
   };
 
   const handleSubscribe = async () => {
+    
     if (!selectedCommunity) return;
 
     localStorage.setItem("selectedCommunity", JSON.stringify(selectedCommunity));
@@ -80,15 +81,15 @@ function CommunitiesUser() {
           <section className="w-full max-w-6xl">
             <h2 className="text-xl font-bold mb-4">Other Communities</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {communities
-                .filter((community) => !community.users.includes(userId))
-                .map((community) => (
-                  <CommunityCard
-                    key={community.id}
-                    community={community}
-                    onClick={() => handleGetInfo(community)}
-                  />
-                ))}
+            {userId && communities
+               .filter((community) => !community.users.includes(userId)) 
+               .map((community) => (
+                <CommunityCard
+                 key={community.id}
+                 community={community}
+                 onClick={() => handleGetInfo(community)}
+             />
+             ))}
             </div>
           </section>
         </>

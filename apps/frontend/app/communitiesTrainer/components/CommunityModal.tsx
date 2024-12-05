@@ -1,5 +1,6 @@
 import { CreateCommunity } from '@/app/utils/Connections/connectionsCommunity';
 import { FaEdit } from 'react-icons/fa';
+import Image from 'next/image';
 
 type CommunityModalProps = {
   isModalOpen: boolean;
@@ -51,9 +52,11 @@ const CommunityModal = ({
         </button>
 
         <div className="flex flex-col items-center relative">
-          <img
+          <Image
             src={imageUrl || 'defaultImageUrl'}
             alt="Community Profile"
+            width={600}
+             height={600}
             className="w-60 h-60 rounded-full object-cover"
           />
           <label

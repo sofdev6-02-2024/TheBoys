@@ -1,4 +1,5 @@
 import { FaPaperPlane } from "react-icons/fa";
+import Image from 'next/image';
 
 type MessageInputProps = {
   newMessage: string;
@@ -25,9 +26,11 @@ export const MessageInput = ({
       />
       {imageUrl && (
         <div className="mt-2">
-          <img
+          <Image
             src={imageUrl}
             alt="Imagen cargada"
+            width={500} 
+            height={300}
             className="w-40 h-40 object-cover rounded-md"
           />
         </div>

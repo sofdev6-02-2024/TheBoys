@@ -1,5 +1,6 @@
 import { Community } from "@/app/utils/Connections/connectionsCommunity";
 import React from "react";
+import Image from 'next/image';
 
 type Props = {
   community: Community;
@@ -12,9 +13,11 @@ const CommunityCard: React.FC<Props> = ({ community, onClick, buttonText = "Get 
   return (
     <div className="bg-gray-800 p-4 rounded shadow-md flex flex-col items-center">
       <div className="flex items-center mb-4">
-        <img
+        <Image
           src={community.imageUrl}
           alt={community.name}
+          width={500} 
+          height={300}
           className="w-16 h-16 rounded-full object-cover mr-4"
         />
         <h2 className="text-lg font-semibold">{community.name}</h2>
