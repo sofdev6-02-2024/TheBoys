@@ -1,21 +1,26 @@
-import { useEffect } from "react";
 
 function usePaymentConfirmation() {
   const getPaymentStatus = () => {
-    const savedPaymentStatus = localStorage.getItem("paymentConfirmed");
-    return savedPaymentStatus === "true"; 
+    if (typeof window !== "undefined") {
+      const savedPaymentStatus = localStorage.getItem("paymentConfirmed");
+      return savedPaymentStatus === "true"; 
+    }
+    return false; 
   };
 
   const confirmPayment = () => {
-    localStorage.setItem("paymentConfirmed", "true"); 
+    if (typeof window !== "undefined") {
+      localStorage.setItem("paymentConfirmed", "true"); 
+    }
   };
 
   const resetPaymentConfirmation = () => {
-    localStorage.removeItem("paymentConfirmed"); 
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("paymentConfirmed"); 
+    }
   };
 
-  useEffect(() => {
-  }, [getPaymentStatus()]);
+
 
   return {
     getPaymentStatus,
