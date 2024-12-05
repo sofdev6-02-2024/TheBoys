@@ -1,5 +1,4 @@
 import { UUID } from 'crypto';
-import { SpecializationTypes } from 'src/trainer-request/entities/especialization-types.entity';
 import {
   Column,
   CreateDateColumn,

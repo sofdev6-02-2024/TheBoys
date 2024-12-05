@@ -1,5 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
-import { SpecializationTypes } from 'src/trainer-request/entities/especialization-types.entity';
+import {  IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateMessageHistoryDto {
   @IsString()
