@@ -14,9 +14,20 @@ export class TrainingPlanController {
     return this.trainingPlanService.create(createTrainingPlanDto);
   }
 
-  @MessagePattern('findTrainingPlansByCoach')
-  findByCoach(@Payload() coachId: UUID) {
-    return this.trainingPlanService.findByCoach(coachId);
+  @MessagePattern('findAllTrainingPlans')
+  findAll() {
+    return this.trainingPlanService.findAll();
+  }
+
+  @MessagePattern('findTrainingPlanById')
+  findById(
+    @Payload()
+    payload: {
+      trainingPlanId: string;
+    },
+  ) {
+    const { trainingPlanId } = payload;
+    return this.trainingPlanService.findById(trainingPlanId);
   }
 
   @MessagePattern('updateTrainingPlan')
@@ -28,7 +39,7 @@ export class TrainingPlanController {
     },
   ) {
     const { id, updateTrainingPlanDto } = payload;
-    return this.trainingPlanService.update(id, updateTrainingPlanDto.userId, updateTrainingPlanDto);
+    return this.trainingPlanService.update(id, updateTrainingPlanDto);
   }
 
   @MessagePattern('deleteTrainingPlan')
@@ -36,10 +47,9 @@ export class TrainingPlanController {
     @Payload()
     payload: {
       id: UUID;
-      userId: string;
     },
   ) {
-    const { id, userId } = payload;
-    return this.trainingPlanService.delete(id, userId);
+    const { id } = payload;
+    return this.trainingPlanService.delete(id);
   }
 }

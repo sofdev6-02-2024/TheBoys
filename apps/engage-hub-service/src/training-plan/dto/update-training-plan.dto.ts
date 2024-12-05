@@ -4,6 +4,8 @@ import {
   IsNumber,
   IsOptional,
   IsUUID,
+  IsUrl,
+  Matches,
 } from 'class-validator';
 
 export class UpdateTrainingPlanDto {
@@ -22,15 +24,27 @@ export class UpdateTrainingPlanDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
+  @Matches(/\.(jpg|jpeg|png|gif)$/i, {
+    message: 'Each image URL must end with .jpg, .jpeg, .png, or .gif',
+  })
   images?: string[];
 
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
+  @Matches(/^[A-Za-z]+:\d{2}:\d{2}-\d{2}:\d{2}$/, {
+    each: true,
+    message:
+      'Each available time must follow the format "Day:HH:MM-HH:MM", e.g., "Monday:08:00-09:00"',
+  })
   availableTimes?: string[];
 
   @IsOptional()
   @IsString()
+  @IsUrl()
+  @Matches(/\.(mp4|mov|avi|mkv)$/i, {
+    message: 'The video URL must end with .mp4, .mov, .avi, or .mkv',
+  })
   presentationVideo?: string;
 
   @IsOptional()
@@ -50,6 +64,6 @@ export class UpdateTrainingPlanDto {
   @IsString({ each: true })
   prerequisites?: string[];
 
-  @IsUUID()
+  @IsString()
   userId: string;
 }

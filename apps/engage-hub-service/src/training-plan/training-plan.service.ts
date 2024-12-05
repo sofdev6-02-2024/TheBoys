@@ -17,36 +17,51 @@ export class TrainingPlanService {
     return this.trainingPlanRepository.save(newPlan);
   }
 
-  async findByCoach(userId: string): Promise<TrainingPlan[]> {
-    return this.trainingPlanRepository.find({ where: { userId } });
+  async findAll(): Promise<TrainingPlan[]> {
+    return this.trainingPlanRepository.find({ where: { isDeleted: false } });
+  }
+
+  async findById(TrainingPlansID: string): Promise<TrainingPlan> {
+    const plan = await this.trainingPlanRepository.findOne({
+      where: { TrainingPlansID, isDeleted: false },
+    });
+    if (!plan) {
+      throw new NotFoundException('Training plan not found');
+    }
+    return plan;
   }
 
   async update(
-    planId: string,
-    userId: string,
+    TrainingPlansID: string,
     data: UpdateTrainingPlanDto,
   ): Promise<TrainingPlan> {
     const plan = await this.trainingPlanRepository.findOne({
-      where: { id: planId, userId },
+      where: { TrainingPlansID: TrainingPlansID, isDeleted: false },
     });
     if (!plan) {
       throw new NotFoundException(
         'Training plan not found or you are not authorized to modify it',
       );
     }
-    Object.assign(plan, data);
+    const { userId, ...updateData } = data;
+
+    Object.assign(plan, updateData);
     return this.trainingPlanRepository.save(plan);
   }
 
-  async delete(planId: string, userId: string): Promise<void> {
+  async delete(TrainingPlansID: string): Promise<string> {
     const plan = await this.trainingPlanRepository.findOne({
-      where: { id: planId, userId },
+      where: { TrainingPlansID: TrainingPlansID, isDeleted: false },
     });
     if (!plan) {
       throw new NotFoundException(
         'Training plan not found or you are not authorized to delete it',
       );
     }
-    await this.trainingPlanRepository.remove(plan);
+
+    plan.isDeleted = true;
+    await this.trainingPlanRepository.save(plan);
+
+    return 'Training plan deleted successfully';
   }
 }
