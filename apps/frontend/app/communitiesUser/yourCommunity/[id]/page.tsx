@@ -60,7 +60,7 @@ const CommunityMessages = () => {
         return;
       }
   
-      const isTrainer = currentCommunity.trainerId === user.id; // Verifica si el usuario es el entrenador
+      const isTrainer = currentCommunity.trainerId === user.id; 
   
       const finalMessage = newMessage + (imageUrl ? ` ${imageUrl}` : "");
 
