@@ -3,7 +3,6 @@ import {
   IsString,
   IsNumber,
   IsOptional,
-  IsUUID,
   ArrayNotEmpty,
   IsUrl,
   Matches,
@@ -24,7 +23,8 @@ export class CreateTrainingPlanDto {
   @IsString({ each: true })
   @Matches(/^https?:\/\/.*\.(jpg|jpeg|png|gif)$/i, {
     each: true,
-    message: 'Each image URL must be a valid URL and end with .jpg, .jpeg, .png, or .gif',
+    message:
+      'Each image URL must be a valid URL and end with .jpg, .jpeg, .png, or .gif',
   })
   images: string[];
 

@@ -3,7 +3,6 @@ import {
   IsString,
   IsNumber,
   IsOptional,
-  IsUUID,
   IsUrl,
   Matches,
 } from 'class-validator';
