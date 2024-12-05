@@ -22,7 +22,7 @@ export const MessageInput = ({
     <div className="mt-6 max-w-4xl mx-auto p-4 bg-[#202024] rounded-lg shadow-md mb-10">
       <textarea
         className="w-full p-2 border rounded-md text-white bg-[#3A3B43]"
-        placeholder="Escribe tu mensaje..."
+        placeholder="Write your message..."
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
       />

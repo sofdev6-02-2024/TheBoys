@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ExercisesController } from './exercises/exercises.controller';
 import { RoutinesController } from './routines/routines.controller';
-import { TrainerRequestController } from './trainer_request/trainer-request.controller';
+import { TrainerRequestController } from './trainer-request/trainer-request.controller';
 import { MailerController } from './mailer/mailer.controller';
 import { CommunitiesController } from './communities/communities.controller';
+import { TrainingPlanController } from './training-plan/training-plan.controller';
 import { MessageHistoryController } from './messageHistory/messageHistory.controller';
 
 @Module({
@@ -23,6 +24,7 @@ import { MessageHistoryController } from './messageHistory/messageHistory.contro
     TrainerRequestController,
     MailerController,
     CommunitiesController,
+    TrainingPlanController,
     MessageHistoryController,
   ],
 })

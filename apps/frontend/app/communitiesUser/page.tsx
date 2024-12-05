@@ -1,23 +1,51 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
 import { generatePayment } from "../utils/Connections/communityService";
 import CommunityCard from "./componets/CommunityCard";
-import CommunityList from "./componets/CommunityList";
 import CommunityModal from "./componets/CommunityModal";
 import { useCommunities } from "./hooks/useCommunities";
-import { Community } from "../utils/Connections/connectionsCommunity";
+import { Community, fetchCommunities } from "../utils/Connections/connectionsCommunity";
+import { useRouter } from "next/navigation";
+import CommunityList from "./componets/CommunityList";
 
-function CommunitiesUser() {
+const CommunitiesUser = () => {
   const router = useRouter();
   const { user } = useKeycloakProfile();
   const userId = user?.id;
 
-  const { communities, error, isLoading, setError } = useCommunities(userId);
+  const {error, isLoading, setError } = useCommunities(userId);
+  const [filteredCommunities, setFilteredCommunities] = useState<Community[]>([]);
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFiltering, setIsFiltering] = useState(false); 
+
+  useEffect(() => {
+    const loadFilteredCommunities = async () => {
+      if (!userId) return;
+  
+      try {
+        const updatedCommunities = await fetchCommunities(); 
+        const filtered = updatedCommunities.filter((community) =>
+          !community.users.includes(userId) 
+        );
+        setFilteredCommunities(filtered); 
+      } catch (err) {
+        setError("Error when loading communities.");
+      } finally {
+        setIsFiltering(false);
+      }
+    };
+  
+    setIsFiltering(true);
+    const delay = setTimeout(() => {
+      loadFilteredCommunities();
+    }, 1000);
+  
+    return () => clearTimeout(delay);
+  }, [userId, fetchCommunities]);
+  
 
   const handleGetInfo = (community: Community) => {
     setSelectedCommunity(community);
@@ -25,7 +53,6 @@ function CommunitiesUser() {
   };
 
   const handleSubscribe = async () => {
-    
     if (!selectedCommunity) return;
 
     localStorage.setItem("selectedCommunity", JSON.stringify(selectedCommunity));
@@ -53,15 +80,15 @@ function CommunitiesUser() {
     setIsModalOpen(false);
   };
 
-  type Props = {
-    message: string;
-  };
-
-  const ErrorMessage: React.FC<Props> = ({ message }) => (
+  const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
     <p className="text-red-500">{message}</p>
   );
 
   const LoadingMessage = () => (
+    <p>Loading communities...</p>
+  );
+
+  const FilteringMessage = () => (
     <p>Loading communities...</p>
   );
 
@@ -76,24 +103,26 @@ function CommunitiesUser() {
       ) : (
         <>
           <CommunityList
-            communities={communities}
             userId={userId!}
             handleGetInfo={handleGetInfo}
           />
 
           <section className="w-full max-w-6xl">
             <h2 className="text-xl font-bold mb-4">Other Communities</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {userId && communities
-               .filter((community) => !community.users.includes(userId)) 
-               .map((community) => (
-                <CommunityCard
-                 key={community.id}
-                 community={community}
-                 onClick={() => handleGetInfo(community)}
-             />
-             ))}
-            </div>
+
+            {isFiltering ? (
+              <FilteringMessage /> 
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredCommunities.map((community) => (
+                  <CommunityCard
+                    key={community.id}
+                    community={community}
+                    onClick={() => handleGetInfo(community)}
+                  />
+                ))}
+              </div>
+            )}
           </section>
         </>
       )}
@@ -107,6 +136,6 @@ function CommunitiesUser() {
       )}
     </main>
   );
-}
+};
 
 export default CommunitiesUser;

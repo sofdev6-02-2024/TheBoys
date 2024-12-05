@@ -12,6 +12,8 @@ type Props = {
 const CommunityCard: React.FC<Props> = ({ community, onClick, buttonText = "Get Info", buttonStyle = "bg-red-500 hover:bg-red-600" }) => {
     return (
         <div className="border-2 border-white p-4 rounded shadow-md flex flex-col items-center my-4">
+          
+          <h2  className="text-lg font-semibold">{community.users.length} members</h2> 
           <div className="flex items-center mb-4">
             <Image
               src={community.imageUrl}
@@ -20,7 +22,7 @@ const CommunityCard: React.FC<Props> = ({ community, onClick, buttonText = "Get 
               height={300}
               className="w-16 h-16 rounded-full object-cover mr-4"
             />
-            <h2 className="text-lg font-semibold">{community.name}</h2>
+            <h2 className="text-lg font-semibold">{community.name}</h2> 
           </div>
           <button
             className={`px-16 py-2 text-white rounded ${buttonStyle}`}

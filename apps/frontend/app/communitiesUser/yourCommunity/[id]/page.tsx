@@ -1,19 +1,46 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile"; 
 import { uploadImage } from "@/app/utils/cloudinary"; 
 import { MessageHistoryService } from "@/app/utils/Connections/messageHistoryService";
+import { fetchCommunities } from "@/app/utils/Connections/connectionsCommunity"; 
 import { MessageInput } from "./components/MessageInput";
 import { MessageList } from "./components/MessageList";
 import { useFetchCommunityMessages } from "../../hooks/useFetchCommunityMessages";
 
-
 const CommunityMessages = () => {
   const [newMessage, setNewMessage] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null); 
+  const [communityName, setCommunityName] = useState<string>(""); 
   const { user } = useKeycloakProfile(); 
   const { messages, setMessages, loading } = useFetchCommunityMessages(); 
+
+  useEffect(() => {
+    const fetchCommunityName = async () => {
+      const communityId = window.location.pathname.split("/").pop(); 
+      if (!communityId) return;
+
+      try {
+        const communities = await fetchCommunities();
+        const currentCommunity = communities.find(
+          (community) => community.id === communityId
+        );
+      
+        if (currentCommunity) {
+          setCommunityName(currentCommunity.name); 
+        } else {
+          setCommunityName("Community not found");
+        }
+      
+      } catch (error) {
+        console.error("Error fetching community name:", error);
+        setCommunityName("Error loading community");
+      }
+    };
+
+    fetchCommunityName();
+  }, []);
 
   const handleSendMessage = async () => {
     if (!newMessage && !imageUrl) return; 
@@ -22,10 +49,23 @@ const CommunityMessages = () => {
     if (!communityId || !user) return; 
 
     try {
+
+      const communities = await fetchCommunities();
+      const currentCommunity = communities.find(
+        (community) => community.id === communityId
+      );
+  
+      if (!currentCommunity) {
+        console.error("Community not found");
+        return;
+      }
+  
+      const isTrainer = currentCommunity.trainerId === user.id; // Verifica si el usuario es el entrenador
+  
       const finalMessage = newMessage + (imageUrl ? ` ${imageUrl}` : "");
 
       await MessageHistoryService.sendMessage({
-        userName: user.firstName,
+        userName: isTrainer ? `trainer: ${user.firstName}` : user.firstName,
         userId: user.id,
         communityId,
         message: finalMessage,
@@ -35,7 +75,7 @@ const CommunityMessages = () => {
         ...messages,
         {
           id: `${Date.now()}`, 
-          userName: user.firstName,
+          userName: isTrainer ? `trainer: ${user.firstName}` : user.firstName,
           message: finalMessage,
           createdAt: new Date().toISOString(),
           userId: user.id,
@@ -70,7 +110,7 @@ const CommunityMessages = () => {
   const Header = () => {
     return (
       <h1 className="text-xl lg:text-3xl font-bold text-center w-full">
-        Community Messages
+        Community Messages {communityName && ` - ${communityName}`}
       </h1>
     );
   };
