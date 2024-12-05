@@ -45,6 +45,8 @@ export class TrainingPlanService {
     }
     const { userId, ...updateData } = data;
 
+    console.log(userId)
+
     Object.assign(plan, updateData);
     return this.trainingPlanRepository.save(plan);
   }
