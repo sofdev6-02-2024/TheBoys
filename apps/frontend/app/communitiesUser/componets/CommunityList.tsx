@@ -8,7 +8,7 @@ type Props = {
   handleGetInfo: (community: Community) => void;
 };
 
-const CommunityList: React.FC<Props> = ({ userId, handleGetInfo }) => {
+const CommunityList: React.FC<Props> = ({ userId }) => {
   const [filteredCommunities, setFilteredCommunities] = useState<Community[]>([]);
   const [isLoading, setIsLoading] = useState(true); 
   const [error, setError] = useState<string | null>(null); 
