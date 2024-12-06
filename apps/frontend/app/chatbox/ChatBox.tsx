@@ -6,32 +6,34 @@ import useChat from "./hooks/useChat";
 import { FaRobot } from "react-icons/fa";
 
 const Chatbox: React.FC = () => {
-  const { sendMessage, isLoading } = useChat();
-  const [messages, setMessages] = useState([]);
+  const { sendMessage, isLoading, messages } = useChat();  
   const [input, setInput] = useState("");
-  const [isChatOpen, setIsChatOpen] = useState(false); // Estado para controlar el chatbox
+  const [isChatOpen, setIsChatOpen] = useState(false); 
+  const [messagesFetched, setMessagesFetched] = useState(false);  
 
   const handleSend = async () => {
     if (input.trim() === "") return;
-    await sendMessage(input);
-    setInput("");
+    await sendMessage(input);  
+    setInput("");  
   };
 
   useEffect(() => {
     const fetchInitialMessages = async () => {
       try {
-        const initialMessages = await sendMessage("/chat/initial");
-        setMessages(initialMessages);
+        if (!messagesFetched) {
+          const initialMessages = await sendMessage("/chat/initial");
+          setMessagesFetched(true); 
+        }
       } catch (error) {
         console.error("Error fetching initial messages:", error);
       }
     };
-    if (isChatOpen) fetchInitialMessages(); // Solo cargar mensajes si el chat está abierto
-  }, [sendMessage, isChatOpen]);
+    if (isChatOpen) fetchInitialMessages(); 
+  }, [sendMessage, isChatOpen, messagesFetched]);
 
   return (
     <>
-      {/* Botón circular para abrir el chatbox */}
+
       {!isChatOpen && (
         <button
           className="fixed bottom-5 right-5 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none"
@@ -41,10 +43,9 @@ const Chatbox: React.FC = () => {
         </button>
       )}
 
-      {/* Chatbox */}
       {isChatOpen && (
         <div className="fixed bottom-5 right-5 w-80 bg-gray-800 text-white rounded-lg shadow-lg flex flex-col">
-          {/* Header */}
+
           <div className="p-4 border-b border-gray-700 text-lg font-semibold flex justify-between items-center">
             <span>BodyBoost ChatBox</span>
             <button
@@ -55,15 +56,16 @@ const Chatbox: React.FC = () => {
             </button>
           </div>
 
-          {/* Mensajes */}
+
           <div className="flex-1 overflow-y-auto p-4 space-y-2">
+
             {messages.map((message, index) => (
               <ChatMessage key={index} message={message} />
             ))}
             {isLoading && <p className="text-sm text-gray-400">Loading...</p>}
           </div>
 
-          {/* Input */}
+
           <div className="p-2 border-t border-gray-700 flex">
             <input
               type="text"

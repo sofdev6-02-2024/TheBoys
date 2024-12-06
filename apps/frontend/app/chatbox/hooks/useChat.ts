@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 
 type ChatMessage = {
   text: string;
@@ -13,15 +12,38 @@ const useChat = () => {
   const sendMessage = async (message: string) => {
     try {
       setIsLoading(true);
-      console.log('Sending message:', message); // Log de envío
-      const response = await axios.post("api/ai-service/chat", { message });
+      console.log("Sending message:", message); 
+
+      const response = await fetch("http://localhost:4444/api/ai-service/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+
+      console.log("Fetch response status:", response.status);
+      const textResponse = await response.text();
+      console.log("Fetch raw response:", textResponse);
+
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+
+      let finalResponse;
+
+      if (response.status === 201) {
+        finalResponse = textResponse;
+      } else {
+        finalResponse = await response.json(); 
+      }
+
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: message, isUser: true },
-        { text: response.data.response, isUser: false },
+        { text: typeof finalResponse === "string" ? finalResponse : finalResponse.response, isUser: false },
       ]);
+
       setIsLoading(false);
-      return response.data.response;
+      return finalResponse;
     } catch (error) {
       console.error("Error sending message:", error);
       setIsLoading(false);
