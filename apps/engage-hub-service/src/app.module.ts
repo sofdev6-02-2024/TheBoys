@@ -9,6 +9,7 @@ import { TrainerRequestModule } from './trainer-request/trainer-request.module';
 import { TrainerStatusModule } from './mailer/trainer-status/trainer-status.module';
 import { CommunitiesModule } from './communities/communities.module';
 import { TrainingPlanModule } from './training-plan/training-plan.module';
+import { MessageHistoryModule } from './messageHistory/messageHistory.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { TrainingPlanModule } from './training-plan/training-plan.module';
     TrainerStatusModule,
     CommunitiesModule,
     TrainingPlanModule,
+    MessageHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

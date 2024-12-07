@@ -6,6 +6,7 @@ import {
 import { toast } from "sonner";
 import Button from "../components/Button";
 import PaymentInformation from "./paymentInformation";
+import usePaymentConfirmation from "../communitiesUser/hooks/usePaymentConfirmation";
 
 interface Props {
   name: string;
@@ -24,30 +25,34 @@ function CheckoutForm({
 }: Props) {
   const stripe = useStripe();
   const elements = useElements();
-
+  const { confirmPayment } = usePaymentConfirmation();
+  
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     if (!stripe || !elements) {
       return;
     }
-
+  
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // TODO: Successful payment page
-        return_url: "http://localhost:3000/",
+        return_url: "http://localhost:3000",
       },
+      redirect: "if_required",
     });
-
-
+  
     if (result.error) {
       toast.error("A processing error occurred.");
-    } else {
+    } else if (result.paymentIntent?.status === "succeeded") {
+      confirmPayment(); 
       toast.success("Your payment was processed");
+        window.location.href = "http://localhost:3000";
+    } else {
+      toast.error("Payment was not completed.");
     }
   };
-
+  
   return (
     <div className="flex justify-center items-center h-full p-4 sm:p-0">
       <form

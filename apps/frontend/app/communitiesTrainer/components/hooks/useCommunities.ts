@@ -103,6 +103,7 @@ export function useCommunities() {
         response = await updateCommunity(selectedCommunityId, {
           ...communityData,
           id: selectedCommunityId,
+          users: []
         });
         toast.success("Community updated successfully!");
       } else {

@@ -4,6 +4,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateCommunityDto } from './dto/create-community.dto';
 import { UpdateCommunityDto } from './dto/update-community.dto';
 import { UUID } from 'crypto';
+import { UpdateCommunityUsersDto } from './dto/UpdateCommunityUsers.dto';
 
 @Controller()
 export class CommunitiesController {
@@ -35,5 +36,14 @@ export class CommunitiesController {
   @MessagePattern('removeCommunity')
   delete(@Payload() id: UUID) {
     return this.communitiesService.delete(id);
+  }
+
+  @MessagePattern('updateCommunityUsers')
+  updateUsers(
+    @Payload()
+    payload: { id: UUID; updateCommunityUsersDto: UpdateCommunityUsersDto },
+  ) {
+    const { id, updateCommunityUsersDto } = payload;
+    return this.communitiesService.updateUsers(id, updateCommunityUsersDto);
   }
 }

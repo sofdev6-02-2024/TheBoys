@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { Community } from "../../utils/Connections/connectionsCommunity";
+import Image from 'next/image';
 
 type CommunityListProps = {
   communities: Community[];
@@ -46,9 +47,11 @@ const CommunityList = ({ communities, onEdit, onDelete, isLoading }: CommunityLi
                 className="flex items-center justify-between p-4 border-2 border-black rounded-lg"
               >
                 <div className="flex items-center space-x-4">
-                  <img
+                  <Image
                     src={community.imageUrl}
                     alt={community.name}
+                    width={200} 
+                    height={200}
                     className="w-20 h-20 rounded-full object-cover"
                   />
                   <p className="text-lg font-medium">{community.name}</p>

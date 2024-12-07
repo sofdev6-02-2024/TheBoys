@@ -6,6 +6,7 @@ import { TrainerRequestController } from './trainer-request/trainer-request.cont
 import { MailerController } from './mailer/mailer.controller';
 import { CommunitiesController } from './communities/communities.controller';
 import { TrainingPlanController } from './training-plan/training-plan.controller';
+import { MessageHistoryController } from './messageHistory/messageHistory.controller';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TrainingPlanController } from './training-plan/training-plan.controller
     MailerController,
     CommunitiesController,
     TrainingPlanController,
+    MessageHistoryController,
   ],
 })
 export class EngageHubModule {}

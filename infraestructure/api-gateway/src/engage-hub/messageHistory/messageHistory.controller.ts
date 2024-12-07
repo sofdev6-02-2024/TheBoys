@@ -13,8 +13,8 @@ import { UUID } from 'crypto';
 import { Unprotected } from 'nest-keycloak-connect';
 import { Observable } from 'rxjs';
 
-@Controller('communities')
-export class CommunitiesController {
+@Controller('messageHistory')
+export class MessageHistoryController {
   constructor(
     @Inject('ENGAGE_HUB_SERVICE')
     private readonly engageHubService: ClientProxy,
@@ -23,19 +23,19 @@ export class CommunitiesController {
   @Get()
   @Unprotected()
   findAll(): Observable<any> {
-    return this.engageHubService.send('findAllCommunities', {});
+    return this.engageHubService.send('findAllMessageHistory', {});
   }
 
   @Get(':id')
   @Unprotected()
   findOne(@Param('id') id: number): Observable<any> {
-    return this.engageHubService.send('findOneCommunity', id);
+    return this.engageHubService.send('findOneMessageHistory', id);
   }
 
   @Post()
   @Unprotected()
   create(@Body() createRoutineDto: any): Observable<any> {
-    return this.engageHubService.send('createCommunity', createRoutineDto);
+    return this.engageHubService.send('createMessageHistory', createRoutineDto);
   }
 
   @Put(':id')
@@ -44,27 +44,22 @@ export class CommunitiesController {
     @Body() updateCommunityDto: any,
     @Param('id') id: UUID,
   ): Observable<any> {
-    return this.engageHubService.send('updateCommunity', {
+    return this.engageHubService.send('updateMessageHistory', {
       id,
       updateCommunityDto,
     });
   }
 
-  @Put(':id/users')
-  @Unprotected()
-  updateUsersComunity(
-    @Body() updateCommunityUsersDto: any,
-    @Param('id') id: UUID,
-  ): Observable<any> {
-    return this.engageHubService.send('updateCommunityUsers', {
-      id,
-      updateCommunityUsersDto,
-    });
-  }
 
   @Delete(':id')
   @Unprotected()
   remove(@Param('id') id: UUID): Observable<any> {
-    return this.engageHubService.send('removeCommunity', id);
+    return this.engageHubService.send('removeMessageHistory', id);
+  }
+
+  @Get('community/:communityId')
+  @Unprotected()
+  findMessagesByCommunity(@Param('communityId') communityId: string): Observable<any> {
+    return this.engageHubService.send('findMessagesByCommunity', communityId);
   }
 }

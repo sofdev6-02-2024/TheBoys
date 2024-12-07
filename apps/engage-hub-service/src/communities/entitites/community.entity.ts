@@ -35,6 +35,9 @@ export class Community {
   @Column()
   trainerId: string;
 
+  @Column('simple-array') 
+  users: string[]; 
+
   @CreateDateColumn()
   createdAt: Date;
 
