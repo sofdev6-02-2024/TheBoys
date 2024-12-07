@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { EngageHubModule } from './engage-hub/engage-hub.module';
+import { TrainingAgendaModule } from './training-agenda/trainer-agenda.module';
 import {
   AuthGuard,
   KeycloakConnectModule,
@@ -28,6 +29,7 @@ import configuration from './config/configuration';
     UsersModule,
     EngageHubModule,
     PaymentsModule,
+    TrainingAgendaModule,
   ],
   providers: [
     {
