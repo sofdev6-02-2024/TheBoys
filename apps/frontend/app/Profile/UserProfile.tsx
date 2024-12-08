@@ -7,7 +7,6 @@ import { useKeycloakProfile } from "./hooks/useUserProfile";
 import { useCoachRequest } from "./hooks/useCoachRequest";
 import { CoachRequestModal } from "./modals/RequestModal";
 import { ConfirmExitModal } from "./modals/ExitModal";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import RoutesNavigation from "../../routes";
 
