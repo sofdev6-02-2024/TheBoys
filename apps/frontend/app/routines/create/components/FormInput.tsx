@@ -1,13 +1,13 @@
-
 import React, { useEffect, useState } from "react";
-import { Controller } from "react-hook-form";
-import { Control, FieldError } from "react-hook-form";
+import { Controller, Control, FieldError } from "react-hook-form";
 import Image from "next/image";
+import { FormValues } from "./RoutineFormWrapper";
+
 
 interface Props {
-  name: string;
+  name: keyof FormValues | `exercises.${number}` | `exercises.${number}.${keyof FormValues["exercises"][0]}`; 
   placeholder?: string;
-  control: Control<any>;
+  control: Control<FormValues>;
   labelStyle?: string;
   inputStyle?: string;
   containerStyle?: string;
@@ -16,6 +16,7 @@ interface Props {
   error?: FieldError;
   accept?: string;
 }
+
 
 function FormInput({
   name,

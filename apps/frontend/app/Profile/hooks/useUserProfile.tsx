@@ -19,6 +19,11 @@ export interface KeycloakClient {
   id: string;
   clientId: string;
 }
+interface Role {
+  id: string;
+  name: string;
+}
+
 
 export function useKeycloakProfile() {
   const { data: session } = useSession();
@@ -26,6 +31,7 @@ export function useKeycloakProfile() {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditingImage, setIsEditingImage] = useState(false);
   const [newImageUrl, setNewImageUrl] = useState('');
+
 
   useEffect(() => {
     if (session?.access_token) {
@@ -113,7 +119,7 @@ export function useKeycloakProfile() {
       const clientRoleMappingUrl = `http://172.17.0.1:8080/admin/realms/body-boost/clients/${nextjsClient.id}/roles`;
   
       const rolesResponse = await fetch(clientRoleMappingUrl, {
-        method: 'GET', 
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${decrypt(session.access_token)}`,
           'Content-Type': 'application/json',
@@ -122,7 +128,7 @@ export function useKeycloakProfile() {
   
       if (!rolesResponse.ok) throw new Error('Failed to fetch roles for nextjs client');
   
-      const roles: any[] = await rolesResponse.json();
+      const roles: Role[] = await rolesResponse.json();
   
       const trainerRole = roles.find(role => role.name === 'Trainer');
       if (trainerRole) {
@@ -135,7 +141,7 @@ export function useKeycloakProfile() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify([{
-            id: trainerRole.id, 
+            id: trainerRole.id,
             name: trainerRole.name,
           }]),
         });
@@ -144,17 +150,14 @@ export function useKeycloakProfile() {
   
         toast.success('Successfully applied for trainer role');
       } else {
-
         toast.error('Role "Trainer" not found');
       }
     } catch (error) {
-
       toast.error('Error applying for trainer role');
     } finally {
       setIsLoading(false);
     }
   };
-  
   
   
   
