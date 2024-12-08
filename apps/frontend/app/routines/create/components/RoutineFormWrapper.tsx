@@ -1,6 +1,6 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, Control } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "./FormInput";
@@ -58,7 +58,6 @@ function RoutineFormWrapper() {
   const [showPopup, setShowPopup] = useState(false);
   const [exercisesList, setExercises] = useState([] as Exercise[]);
   
-
   const [formValues, setFormValues] = useState<FormValues>({
     title: "",
     description: "",
@@ -75,9 +74,14 @@ function RoutineFormWrapper() {
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: formValues, 
+    defaultValues: {
+      title: "",
+      description: "",
+      difficultLevel: "easy",
+      image: new File([], ""),
+      exercises: exercisesList,
+    }, // Utiliza valores por defecto directamente
   });
-
 
   useEffect(() => {
     setFormValues((prev) => ({

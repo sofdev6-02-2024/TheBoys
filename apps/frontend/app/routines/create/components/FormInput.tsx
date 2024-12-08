@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Controller, Control, FieldError } from "react-hook-form";
+import { Controller, Control, FieldError, FieldValues, Path } from "react-hook-form";
 import Image from "next/image";
-import { FormValues } from "./RoutineFormWrapper";
 
-
-interface Props {
-  name: keyof FormValues | `exercises.${number}` | `exercises.${number}.${keyof FormValues["exercises"][0]}`; 
+// Componente genérico
+interface Props<T extends FieldValues> {
+  name: Path<T>; // Cambiado de 'string' a 'Path<T>'
   placeholder?: string;
-  control: Control<FormValues>;
+  control: Control<T>;  // Tipo genérico Control con una restricción a FieldValues
   labelStyle?: string;
   inputStyle?: string;
   containerStyle?: string;
@@ -17,8 +16,7 @@ interface Props {
   accept?: string;
 }
 
-
-function FormInput({
+function FormInput<T extends FieldValues>({
   name,
   placeholder,
   control,
@@ -29,7 +27,7 @@ function FormInput({
   type,
   error,
   accept,
-}: Props) {
+}: Props<T>) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null); 
 
