@@ -1,10 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CommunityList from "./components/CommunityList";
 import CommunityModal from "./components/CommunityModal";
 import { useCommunities } from "./components/hooks/useCommunities";
 import { useKeycloakProfile } from "@/app/Profile/hooks/useUserProfile";
+
+
+type UserRole = "Trainer" | "Admin" | null;
 
 export default function CommunitiesPage() {
   const {
@@ -22,11 +25,31 @@ export default function CommunitiesPage() {
     handleDeleteCommunity,
   } = useCommunities();
 
-  const { user } = useKeycloakProfile(); 
-  const userRole = user?.role;
+  const { user } = useKeycloakProfile();
+  const [isLoadingUserRole, setIsLoadingUserRole] = useState(true);
+  const [userRole, setUserRole] = useState<UserRole>(null);
 
-  if (userRole !== "trainer") {
-  
+  useEffect(() => {
+    if (user) {
+      if (user.role === "Trainer" || user.role === "Admin") {
+        setUserRole(user.role);
+      } else {
+        setUserRole(null); 
+      }
+      setIsLoadingUserRole(false);
+    }
+  }, [user]);
+
+  if (isLoadingUserRole) {
+    return (
+      <div className="flex flex-col justify-center items-center h-full">
+        <h1 className="text-3xl font-bold text-white">Loading your Community...</h1>
+        <p className="text-lg text-gray-300">Please wait while we fetch your data.</p>
+      </div>
+    );
+  }
+
+  if (userRole !== "Trainer") {
     return (
       <div className="flex flex-col justify-center items-center h-full">
         <h1 className="text-3xl font-bold text-red-500">Access Denied</h1>
