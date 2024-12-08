@@ -1,5 +1,6 @@
 import { FaTimes, FaCheck, FaTimesCircle } from "react-icons/fa";
 import { TrainerRequest } from "../types";
+import { useKeycloakProfile } from "../Profile/hooks/useUserProfile";
 
 interface PopupProps {
     data: TrainerRequest;
@@ -8,7 +9,16 @@ interface PopupProps {
     onReject: (id: string) => void;
 }
 
+
+
 export default function Popup({ data, onClose, onAccept, onReject }: PopupProps) {
+    const {handleApplyForTrainer } = useKeycloakProfile();
+    const handleAccept = () => {
+
+        onAccept(data.userId);
+        handleApplyForTrainer(data.userId); 
+    };
+
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-[#1E1E1E] rounded-lg shadow-lg w-[90%] max-w-[500px] text-white relative">
@@ -61,7 +71,7 @@ export default function Popup({ data, onClose, onAccept, onReject }: PopupProps)
                 <div className="flex justify-between items-center px-4 py-3 bg-[#2E2E33] rounded-b-lg border-t border-[#3A3B43]">
                     <button
                         className="flex items-center gap-2 bg-[#4CAF50] hover:bg-[#43a047] text-white font-medium px-4 py-2 rounded-lg"
-                        onClick={() => onAccept(data.userId)}
+                        onClick={handleAccept} 
                     >
                         <FaCheck />
                         Accept
