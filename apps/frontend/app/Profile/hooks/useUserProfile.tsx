@@ -12,8 +12,18 @@ export interface KeycloakUserProfile {
   lastName: string;
   email: string;
   userImage?: string;
-  role: "user" | "trainer" | "Admin";
+  role: "user" | "Trainer" | "Admin";
 }
+
+export interface KeycloakClient {
+  id: string;
+  clientId: string;
+}
+interface Role {
+  id: string;
+  name: string;
+}
+
 
 export function useKeycloakProfile() {
   const { data: session } = useSession();
@@ -21,6 +31,7 @@ export function useKeycloakProfile() {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditingImage, setIsEditingImage] = useState(false);
   const [newImageUrl, setNewImageUrl] = useState('');
+
 
   useEffect(() => {
     if (session?.access_token) {
@@ -31,7 +42,7 @@ export function useKeycloakProfile() {
   
           const role =
             clientRoles.includes("Admin") ? "Admin" :
-            clientRoles.includes("trainer") ? "trainer" :
+            clientRoles.includes("Trainer") ? "Trainer" :
             "user";
         setUser({
           id: decodedToken.sub,
@@ -82,35 +93,74 @@ export function useKeycloakProfile() {
   //   }
   // };
 
-  const handleApplyForTrainer = async () => {
-    if (!user || !session?.access_token) return;
 
+  const handleApplyForTrainer = async (userId: string) => {
+    if (!session?.access_token) return;
+  
     try {
       setIsLoading(true);
-      
-      // Aquí iría la llamada al endpoint de Keycloak para añadir el rol de trainer
-      const response = await fetch(`http://172.17.0.1:8080/admin/realms/body-boost/users/${user.id}/role-mappings/realm`, {
-        method: 'POST',
+  
+      const clientResponse = await fetch('http://172.17.0.1:8080/admin/realms/body-boost/clients', {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${decrypt(session.access_token)}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify([{
-          name: 'trainer'
-        }])
       });
-
-      if (!response.ok) throw new Error('Failed to apply for trainer role');
-
-      setUser(prev => prev ? {...prev, role: 'trainer'} : null);
-      toast.success('Successfully applied for trainer role');
+  
+      if (!clientResponse.ok) throw new Error('Failed to fetch clients');
+  
+      const clients: KeycloakClient[] = await clientResponse.json();
+  
+      const nextjsClient = clients.find((client: KeycloakClient) => client.clientId === 'nextjs');
+  
+      if (!nextjsClient) throw new Error('Client "nextjs" not found');
+  
+      const clientRoleMappingUrl = `http://172.17.0.1:8080/admin/realms/body-boost/clients/${nextjsClient.id}/roles`;
+  
+      const rolesResponse = await fetch(clientRoleMappingUrl, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${decrypt(session.access_token)}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!rolesResponse.ok) throw new Error('Failed to fetch roles for nextjs client');
+  
+      const roles: Role[] = await rolesResponse.json();
+  
+      const trainerRole = roles.find(role => role.name === 'Trainer');
+      if (trainerRole) {
+        const userRoleMappingUrl = `http://172.17.0.1:8080/admin/realms/body-boost/users/${userId}/role-mappings/clients/${nextjsClient.id}`;
+  
+        const response = await fetch(userRoleMappingUrl, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${decrypt(session.access_token)}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify([{
+            id: trainerRole.id,
+            name: trainerRole.name,
+          }]),
+        });
+  
+        if (!response.ok) throw new Error('Failed to apply for trainer role');
+  
+        toast.success('Successfully applied for trainer role');
+      } else {
+        toast.error('Role "Trainer" not found');
+      }
     } catch (error) {
-      console.error(error);
       toast.error('Error applying for trainer role');
     } finally {
       setIsLoading(false);
     }
   };
+  
+  
+  
 
   return {
     isLoading,

@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-import { Controller } from "react-hook-form";
-import { Control, FieldError } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { Controller, Control, FieldError, FieldValues, Path } from "react-hook-form";
+import Image from "next/image";
 
-interface Props {
-  name: string;
+// Componente genérico
+interface Props<T extends FieldValues> {
+  name: Path<T>; // Cambiado de 'string' a 'Path<T>'
   placeholder?: string;
-  control: Control<any>;
+  control: Control<T>;  // Tipo genérico Control con una restricción a FieldValues
   labelStyle?: string;
   inputStyle?: string;
   containerStyle?: string;
@@ -16,7 +16,7 @@ interface Props {
   accept?: string;
 }
 
-function FormInput({
+function FormInput<T extends FieldValues>({
   name,
   placeholder,
   control,
@@ -27,7 +27,20 @@ function FormInput({
   type,
   error,
   accept,
-}: Props) {
+}: Props<T>) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); 
+
+  useEffect(() => {
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  }, [selectedFile]);
+
   return (
     <div className="flex flex-col gap-2">
       <Controller
@@ -46,13 +59,27 @@ function FormInput({
                 onChange={(e) => {
                   if (type === "file") {
                     const files = (e.target as HTMLInputElement).files;
-                    field.onChange(files?.[0] || null); // Pass the first file or null
+                    setSelectedFile(files?.[0] || null); 
+                    field.onChange(files?.[0] || null); 
                   } else {
-                    field.onChange(e.target.value); // For other input types
+                    field.onChange(e.target.value); 
                   }
                 }}
               />
             </label>
+
+            {previewUrl && (
+              <div className="mt-2">
+                <Image
+                  src={previewUrl}
+                  alt="Preview"
+                  width={150}
+                  height={150}
+                  className="rounded-md"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+            )}
           </p>
         )}
       />

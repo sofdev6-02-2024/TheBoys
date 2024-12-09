@@ -61,7 +61,7 @@ export const CoachRequestForm: React.FC<Props> = ({ onSubmit, onClose, isLoading
         {fields.map((field, index) => (
           <div key={field.id} className="space-y-2">
             <FormInput
-              name={`certifications.${index}.name`}
+               name={`certifications.${index}.name`}
               control={control}
               label="Certification Name"
               type="text"

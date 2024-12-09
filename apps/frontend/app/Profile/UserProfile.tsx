@@ -7,7 +7,6 @@ import { useKeycloakProfile } from "./hooks/useUserProfile";
 import { useCoachRequest } from "./hooks/useCoachRequest";
 import { CoachRequestModal } from "./modals/RequestModal";
 import { ConfirmExitModal } from "./modals/ExitModal";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import RoutesNavigation from "../../routes";
 
@@ -42,6 +41,11 @@ const UserProfile: React.FC = () => {
     router.push(RoutesNavigation.CommunitiesTrainer);
   };
 
+  const handleMenuAdmin= () => {
+ 
+    router.push(RoutesNavigation.AdminCoachRequest);
+  };
+
   if (isLoading) {
     return <p className="text-white text-center">Loading user data...</p>;
   }
@@ -53,36 +57,47 @@ const UserProfile: React.FC = () => {
   const renderRoleButtons = () => {
     const buttonStyles =
       "bg-secondary-default hover:bg-secondary-hover active:bg-secondary-active text-white";
+  
+    if (user.role === "Trainer") {
+      return (
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex gap-4">
 
-    return user.role === "trainer" ? (
-      <div className="flex flex-col items-center gap-4">
-        <div className="flex gap-4">
-          <Button
-            backgroundColor="secondary"
-            className={buttonStyles}
-            onClick={() => toast.success("Viewing Statistics")}
-          >
-            Statistics
-          </Button>
-          <Button
-            backgroundColor="secondary"
-            className={buttonStyles}
-            onClick={() => handleMenuItemClick()}
-          >
-            Communities
-          </Button>
+          
+            <Button
+              backgroundColor="secondary"
+              className={buttonStyles}
+              onClick={() => handleMenuItemClick()}
+            >
+              Communities
+            </Button>
+          </div>
         </div>
-      </div>
-    ) : (
-      <Button
-        backgroundColor="secondary"
-        className={buttonStyles}
-        onClick={() => setIsModalOpen(true)}
-      >
-        Request to be a Coach
-      </Button>
-    );
+      );
+    } else {
+      return (
+        <div className="flex flex-col items-center gap-4">
+          <Button
+            backgroundColor="secondary"
+            className={buttonStyles}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Request to be a Coach
+          </Button>
+          {user.role === "Admin" && (
+            <Button
+              backgroundColor="secondary"
+              className={buttonStyles}
+              onClick={() => handleMenuAdmin()}
+            >
+              Admit Requests
+            </Button>
+          )}
+        </div>
+      );
+    }
   };
+  
 
   return (
     <>

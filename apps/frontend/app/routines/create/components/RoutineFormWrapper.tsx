@@ -7,7 +7,7 @@ import FormInput from "./FormInput";
 import FormDropDown from "./FormDropDown";
 import Button from "@/app/components/Button";
 import { FaDumbbell } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ExercisesPopup from "./ExercisesPopup";
 import { Exercise } from "@/app/types";
 import ExerciseListLayout from "./ExerciseListLayout";
@@ -57,21 +57,40 @@ function RoutineFormWrapper() {
   const { user } = useKeycloakProfile();
   const [showPopup, setShowPopup] = useState(false);
   const [exercisesList, setExercises] = useState([] as Exercise[]);
+  
+  const [, setFormValues] = useState<FormValues>({
+    title: "",
+    description: "",
+    difficultLevel: "easy",
+    image: new File([], ""), 
+    exercises: exercisesList,
+  });
+
   const {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    values: {
+    defaultValues: {
       title: "",
       description: "",
       difficultLevel: "easy",
-      image: null as unknown as File,
+      image: new File([], ""),
       exercises: exercisesList,
-    },
+    }, 
   });
+
+  useEffect(() => {
+    setFormValues((prev) => ({
+      ...prev,
+      exercises: exercisesList,
+    }));
+
+    setValue("exercises", exercisesList);
+  }, [exercisesList, setValue]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const url = await uploadImage(data.image);
@@ -157,4 +176,3 @@ function RoutineFormWrapper() {
 }
 
 export default RoutineFormWrapper;
-
